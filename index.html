@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<title>Strule Automation — Industrial Control Systems &amp; Automation | Napa &amp; Northern California</title>
+<meta name="description" content="Independent, vendor-neutral industrial control-system engineering in Napa and Northern California. PLC, HMI and SCADA troubleshooting, optimisation and integration for organics, waste, quarrying, mining, food and process plants. We improve the systems you already have — any brand.">
+<meta name="keywords" content="industrial automation, control systems, PLC programming, SCADA, HMI, systems integration, controls troubleshooting, optimisation, Napa, Sonoma, Solano, Sacramento, Northern California, organics recycling, composting, anaerobic digestion, waste, MRF, quarrying, aggregates, mining, food and beverage, water wastewater, Allen-Bradley, Rockwell, Siemens, Ignition">
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn.ghost{background:transparent;color:var(--navy)!important;border:1px solid var(--line);padding:10px 19px}
+  .btn.ghost:hover{border-color:var(--slate)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  .hero{padding:100px 0 40px}
+  .hero .wrap{max-width:830px}
+  .hero h1{font-size:3rem;font-weight:680;margin:18px 0 22px;letter-spacing:-0.025em}
+  .hero p{font-size:1.2rem;color:var(--slate);max-width:660px;margin-bottom:32px}
+  .hero .btns a{margin-right:12px}
+  @media(max-width:600px){.hero h1{font-size:2.05rem}.hero{padding:70px 0 30px}}
+
+  .stmt{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--mist)}
+  .stmt .wrap{padding:34px 28px}
+  .stmt p{font-size:1.28rem;color:var(--navy);font-weight:600;max-width:900px;line-height:1.4}
+  .stmt p b{color:var(--acc)}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+  .head{max-width:660px;margin-bottom:44px}
+  .head h2{font-size:1.85rem;margin:12px 0 12px;font-weight:660}
+  .head p{color:var(--slate);font-size:1.06rem}
+
+  .grid{display:grid;gap:2px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:820px){.g3{grid-template-columns:1fr}}
+  .cell{background:#fff;padding:30px 28px}
+  .cell h3{font-size:1.08rem;margin-bottom:9px;font-weight:640}
+  .cell p{color:var(--slate);font-size:.97rem}
+  .cell .k{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--faint);font-weight:700}
+
+  .plat{padding:44px 0;border-bottom:1px solid var(--line)}
+  .plat .lab{text-align:center;margin-bottom:18px}
+  .platrow{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px}
+  .platrow span{color:var(--slate);font-weight:600;font-size:.98rem}
+  .platrow span:not(:last-child):after{content:"·";color:var(--faint);margin-left:26px}
+
+  .band{background:var(--band);color:#e9eef3}
+  .band h2{color:#fff}
+  .band .head p{color:#a9bccc}
+  .band .label{color:#7f97a9}
+  .tier-label{font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:#7f97a9;margin:0 0 14px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px}
+  .chip{border:1px solid rgba(255,255,255,.18);border-radius:4px;padding:9px 16px;font-size:.9rem;color:#cdd9e3}
+  .chip.sub{color:#9fb0bd;border-color:rgba(255,255,255,.12)}
+  .band .area{color:#8fa6b8;font-size:.95rem;margin-top:6px}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
+  @media(max-width:820px){.steps{grid-template-columns:1fr}}
+  .step{border-top:2px solid var(--navy);padding-top:16px}
+  .step .n{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .step h3{font-size:1.1rem;margin:6px 0 8px;font-weight:640}
+  .step p{color:var(--slate);font-size:.96rem}
+
+  .work{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;background:var(--line);border:1px solid var(--line);border-radius:8px;overflow:hidden}
+  @media(max-width:820px){.work{grid-template-columns:1fr}}
+  .wc{background:#fff;padding:26px 24px;min-height:150px}
+  .wc .tag{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700}
+  .wc h3{font-size:1.02rem;margin:6px 0 8px;font-weight:640;color:var(--slate)}
+  .wc p{color:var(--faint);font-size:.92rem;font-style:italic}
+
+  .about{display:grid;grid-template-columns:1.35fr 1fr;gap:52px;align-items:start}
+  @media(max-width:820px){.about{grid-template-columns:1fr;gap:32px}}
+  .about h2{font-size:1.7rem;margin-bottom:16px;font-weight:660}
+  .about p{color:var(--slate);margin-bottom:15px;font-size:1.04rem}
+  .principles{border:1px solid var(--line);border-radius:8px;padding:8px 0}
+  .principles div{padding:13px 22px;border-bottom:1px solid var(--line);font-size:.96rem;color:var(--ink)}
+  .principles div:last-child{border-bottom:none}
+
+  .contact .head{margin-bottom:28px}
+  .cwrap{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+  @media(max-width:760px){.cwrap{grid-template-columns:1fr;gap:30px}}
+  .cinfo div{margin-bottom:20px}
+  .cinfo span{display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--faint);font-weight:700;margin-bottom:4px}
+  .cinfo p{color:var(--navy);font-weight:600}
+  form label{display:block;font-size:.8rem;font-weight:600;color:var(--slate);margin:0 0 5px}
+  form input,form textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:11px 13px;font:inherit;font-size:.95rem;margin-bottom:14px;color:var(--ink)}
+  form input:focus,form textarea:focus{outline:none;border-color:var(--acc)}
+  form button{width:100%;background:var(--navy);color:#fff;border:none;border-radius:6px;padding:13px;font:inherit;font-weight:600;cursor:pointer}
+  form button:hover{background:#0c1d2c}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+  .draft{background:var(--mist);color:var(--slate);text-align:center;font-size:.78rem;padding:8px;border-bottom:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#top">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+        <rect width="48" height="48" rx="10" fill="#132a3e"/>
+        <path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/>
+        <circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/>
+      </svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="#services">Services</a>
+      <a href="#sectors">Sectors</a>
+      <a href="#how">Approach</a>
+      <a href="#about">About</a>
+      <a class="btn" href="#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+
+<div id="top"></div>
+<section class="hero" style="border-bottom:none">
+  <div class="wrap">
+    <div class="label">Industrial control systems · Napa &amp; Northern California</div>
+    <h1>We keep industrial plants running.</h1>
+    <p>Independent control-system engineering — troubleshooting, optimisation and integration for the plants that can’t afford to stop. Deep experience in the process-heavy end of industry, and capable well beyond it.</p>
+    <div class="btns">
+      <a class="btn" href="#contact">Get in touch</a>
+      <a class="btn ghost" href="#services">What we do</a>
+    </div>
+  </div>
+</section>
+
+<div class="stmt">
+  <div class="wrap">
+    <p>Independent and <b>vendor-neutral</b>. We improve and troubleshoot the control systems you already have — whatever the brand — and we don’t sell you hardware you don’t need.</p>
+  </div>
+</div>
+
+<section id="services">
+  <div class="wrap">
+    <div class="head">
+      <div class="label">What we do</div>
+      <h2>Practical automation expertise</h2>
+      <p>Pointed at the problems that cost you uptime and throughput — diagnosed by someone who understands the process, not just the panel.</p>
+    </div>
+    <div class="grid g3">
+      <div class="cell">
+        <div class="k">Troubleshooting</div>
+        <h3>Fault-finding &amp; diagnosis</h3>
+        <p>Nuisance trips, unreliable sequences, alarm floods, a line that stops for no clear reason — found and fixed at the root, not patched over.</p>
+      </div>
+      <div class="cell">
+        <div class="k">Optimisation</div>
+        <h3>Getting more from what you have</h3>
+        <p>Reprogramming, tuning, sequence and logic redesign, alarm rationalisation, and SCADA/HMI visibility so problems are seen before they stop the line.</p>
+      </div>
+      <div class="cell">
+        <div class="k">Engineering</div>
+        <h3>PLC, HMI, SCADA &amp; integration</h3>
+        <p>Migrations off obsolete hardware, retrofits, and tying machines, sensors and data into one working system. Line-voltage installation handled by licensed partners.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="plat">
+  <div class="wrap">
+    <div class="label lab">Platforms we work across</div>
+    <div class="platrow">
+      <span>Rockwell / Allen-Bradley</span><span>Siemens</span><span>Schneider / Modicon</span><span>Ignition</span><span>AVEVA / Wonderware</span><span>GE</span><span>Omron</span><span>Red Lion</span>
+    </div>
+  </div>
+</section>
+
+<section id="sectors" class="band">
+  <div class="wrap">
+    <div class="head">
+      <div class="label">Sectors</div>
+      <h2>Deep specialism, broad capability</h2>
+      <p>The deepest experience is in the harsh, process-heavy plants that depend most on their control systems. The same discipline applies to any operation where reliability matters — we’re not limited to one industry.</p>
+    </div>
+    <div class="tier-label">Deepest experience</div>
+    <div class="chips">
+      <div class="chip">Organics recycling &amp; composting</div>
+      <div class="chip">Anaerobic digestion</div>
+      <div class="chip">Waste &amp; material recovery</div>
+      <div class="chip">Quarrying &amp; aggregates</div>
+      <div class="chip">Mining</div>
+      <div class="chip">Heavy process</div>
+    </div>
+    <div class="tier-label">Equally at home in</div>
+    <div class="chips">
+      <div class="chip sub">Food &amp; beverage</div>
+      <div class="chip sub">Manufacturing</div>
+      <div class="chip sub">Water &amp; wastewater</div>
+      <div class="chip sub">Building materials &amp; cement</div>
+      <div class="chip sub">Packaging</div>
+      <div class="chip sub">Bulk material handling</div>
+    </div>
+    <div class="area">Serving Napa, Sonoma, Solano and the greater Sacramento &amp; North Bay region.</div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="head">
+      <div class="label">Approach</div>
+      <h2>Start with the problem</h2>
+      <p>No large commitment to find out whether we can help. We start with the issue that’s hurting most, and earn the rest.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="n">Step one</div>
+        <h3>Health-Check</h3>
+        <p>A fixed-fee visit to diagnose a specific problem — what’s wrong and a clear plan to fix it. Credited toward the work if you proceed.</p>
+      </div>
+      <div class="step">
+        <div class="n">Step two</div>
+        <h3>Optimisation project</h3>
+        <p>The scoped fix — quoted as a fixed price for the outcome, delivered properly, tested, and documented.</p>
+      </div>
+      <div class="step">
+        <div class="n">Step three</div>
+        <h3>Ongoing support</h3>
+        <p>Scheduled reviews, remote support and priority response — so the system stays reliable, not just fixed once.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about">
+  <div class="wrap about">
+    <div>
+      <div class="label">About</div>
+      <h2>Independent and founder-led</h2>
+      <p>Strule Automation is founded and run by Jonathan Gilmour, a time-served electrician with over 15 years in the trade. He served his apprenticeship in Northern Ireland, worked as an electrical foreman, and has spent his career hands-on in demanding industrial plants — organics recycling, waste, quarrying and mining. The firm takes its name from the River Strule, which runs through Omagh in County Tyrone.</p>
+      <p>The work is straightforward: understand the plant, fix the real problem, and stand behind it. Independent and vendor-neutral, honest scope and pricing, and safety that is never traded for a deadline.</p>
+    </div>
+    <div class="principles">
+      <div>Independent &amp; vendor-neutral — any brand, no hardware upsell</div>
+      <div>Fixed quotes, priced on the outcome</div>
+      <div>We answer the phone, and we’re on site fast — usually within 48 hours</div>
+      <div>Safety comes before every deadline</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="head">
+      <div class="label">Contact</div>
+      <h2>Get in touch</h2>
+      <p>Tell us what’s giving you trouble. The first conversation is free, and you’ll get a straight assessment.</p>
+    </div>
+    <div class="cwrap">
+      <div class="cinfo">
+        <div><span>Email</span><p><a href="mailto:info@struleautomation.com" style="color:var(--acc)">info@struleautomation.com</a></p></div>
+        <div><span>Based in</span><p>Napa · serving Northern California</p></div>
+        <div><span>Install</span><p>Line-voltage work via licensed partners</p></div>
+      </div>
+      <form id="enqForm" action="https://formspree.io/f/mojgoqdd" method="POST">
+        <input type="hidden" name="_subject" value="New enquiry — Strule Automation website">
+        <label>Name</label><input type="text" name="name" required>
+        <label>Company / plant</label><input type="text" name="company">
+        <label>Phone or email</label><input type="text" name="contact" required>
+        <label>What’s giving you trouble?</label><textarea name="message" rows="4"></textarea>
+        <button type="submit">Send</button>
+      </form>
+      <div id="enqOk" style="display:none;padding:16px;background:#eef4ef;border:1px solid #cfe0d4;border-radius:8px;color:#1e5b3a;font-weight:600">Thanks — your message is on its way. We’ll be in touch shortly.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 Strule Automation · Napa, California</div>
+    <div>Control systems · Optimisation · PLC / HMI / SCADA</div>
+    <div class="area">Serving Napa, Sonoma, Solano, Sacramento and the North Bay — organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+<script>
+  // Sends the enquiry via Formspree (AJAX) and shows an inline thank-you — no page reload.
+  var f=document.getElementById('enqForm');
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    fetch(f.action,{method:'POST',body:new FormData(f),headers:{'Accept':'application/json'}})
+      .then(function(r){ if(r.ok){ f.style.display='none'; document.getElementById('enqOk').style.display='block'; } else { f.submit(); } })
+      .catch(function(){ f.submit(); });
+  });
+</script>
+</body>
+</html>
