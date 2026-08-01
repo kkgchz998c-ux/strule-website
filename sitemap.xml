@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://struleautomation.com/</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
-  </url>
+  <url><loc>https://struleautomation.com/</loc><lastmod>2026-08-01</lastmod><priority>1.0</priority></url>
+  <url><loc>https://struleautomation.com/services.html</loc><lastmod>2026-08-01</lastmod><priority>0.9</priority></url>
+  <url><loc>https://struleautomation.com/sectors.html</loc><lastmod>2026-08-01</lastmod><priority>0.9</priority></url>
+  <url><loc>https://struleautomation.com/sectors/organics-recycling-composting.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/anaerobic-digestion.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/waste-material-recovery.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/quarrying-aggregates.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/mining.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/heavy-process.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/food-beverage.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/manufacturing.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/water-wastewater.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/building-materials-cement.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/packaging.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://struleautomation.com/sectors/bulk-material-handling.html</loc><lastmod>2026-08-01</lastmod><priority>0.7</priority></url>
 </urlset>
