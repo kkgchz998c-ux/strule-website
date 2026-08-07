@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chasing Intermittent Network Faults | Strule Automation</title>
+<meta name="description" content="Intermittent network faults masquerade as random I/O dropouts. How to tell EtherNet/IP timeouts, Profibus token drops, duplicate IPs and marginal fiber apart.">
+<link rel="canonical" href="https://struleautomation.com/blog/intermittent-network-faults-plant-floor.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="Chasing Intermittent Network Faults | Strule Automation">
+<meta property="og:description" content="Intermittent network faults masquerade as random I/O dropouts. How to tell EtherNet/IP timeouts, Profibus token drops, duplicate IPs and marginal fiber apart.">
+<meta property="og:url" content="https://struleautomation.com/blog/intermittent-network-faults-plant-floor.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Chasing Intermittent Network Faults | Strule Automation">
+<meta name="twitter:description" content="Intermittent network faults masquerade as random I/O dropouts. How to tell EtherNet/IP timeouts, Profibus token drops, duplicate IPs and marginal fiber apart.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "The Fault That Only Happens on Tuesdays: Chasing Intermittent Network Dropouts", "description": "Intermittent network faults masquerade as random I/O dropouts. How to tell EtherNet/IP timeouts, Profibus token drops, duplicate IPs and marginal fiber apart.", "datePublished": "2026-08-07", "author": {"@type": "Person", "name": "Jonathan Gilmour"}, "publisher": {"@type": "ProfessionalService", "name": "Strule Automation", "url": "https://struleautomation.com/"}, "mainEntityOfPage": "https://struleautomation.com/blog/intermittent-network-faults-plant-floor.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>The Fault That Only</div>
+      <div class="label">Field notes &middot; Troubleshooting</div>
+      <h1>The Fault That Only Happens on Tuesdays: Chasing Intermittent Network Dropouts</h1>
+      <p class="lead">When a remote rack drops for half a second and everything looks fine by the time you get there, the problem usually lives in the network, not the field wiring.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+    <p>You know the one. A remote I/O rack faults, a conveyor trips, an alarm scrolls past, and by the time an operator walks out to look, everything is running like nothing happened. The fault log says "module not responding" or "connection lost," and thirty seconds later, "connection restored." Maintenance replaces a sensor. It happens again the next week. Somebody swaps the I/O card. It happens again. Eventually the trip gets bypassed or the alarm gets acknowledged reflexively, and now you have a plant running on a known-bad system that everyone has quietly agreed to stop trusting.</p>
+    <p>The reason these are so miserable to chase is that the evidence deletes itself. A loose field wire you can wiggle. A failed proximity switch you can meter out. But a network fault that lasts 400 milliseconds and then clears leaves nothing behind except a timestamp and a vague controller message, and those messages are written from the controller's point of view, which is the worst possible vantage point for understanding what actually happened on the wire.</p>
+    <h3>Why the controller's error message lies to you</h3>
+    <p>When a programmable logic controller (PLC) reports a lost connection to a remote rack, it is telling you the symptom it experienced, not the cause. On EtherNet/IP, the controller opens a connection with a requested packet interval (RPI) and watches for those packets to keep arriving. Miss roughly four in a row (the default timeout multiplier is four times the RPI) and the connection times out. The controller faithfully logs "connection timeout." What it cannot tell you is why the packets stopped: a switch dropping frames under load, a duplicate address on the subnet, a cable with a marginal connection that only opens up when the tray warms up in the afternoon, or a segment swamped by multicast traffic because IGMP snooping was never set up and the switch is flooding cyclic I/O out every port as if it were broadcast.</p>
+    <p>So you get a precise, authoritative-sounding message that points at the wrong layer. The usual maintenance response is to go straight to the field device the message named, because that is the only thing the message named, and the field device is fine. The fault lives in the fabric between the controller and that device, and that fabric is invisible unless you go looking for it with the right tools.</p>
+    <h3>The usual suspects, and how they hide</h3>
+    <p>Duplicate Internet Protocol (IP) addresses are the classic. Someone commissions a new drive or a spare panel and reuses an address off a spreadsheet that is three revisions out of date. Most modern EtherNet/IP devices run Address Conflict Detection (ACD) and will refuse to come online, or will flag the conflict outright, so on current hardware you often get caught at commissioning. But disable ACD, or run older gear that never supported it, and the two devices quietly coexist: whichever one the switch's MAC table happens to favor answers a given request, so communication works most of the time and fails in a way that looks random and moves around the plant. People burn days on this because "it works most of the time" feels like it rules out an addressing conflict, when that is one of its signatures.</p>
+    <p>On Profibus, the equivalent is the token dropout. The network passes a token around the masters and polls the slaves, and if noise, a marginal termination, or a failing spur corrupts a frame at the wrong moment, you get retries. A handful and the bus shrugs it off. Let them stack up and a slave finally drops its station and re-registers before anyone's even walked to the panel. The bus diagnostics count those retries even when the segment looks healthy, and a rising retry count is one of the most useful early warnings you will ever get, if anyone is watching it, which usually nobody is. When you do go looking, that means checking the active terminators at the segment ends and putting a scope on the differential A/B pair to see the reflections and glitches the counter is only summarizing.</p>
+    <p>Then there is fiber, which is nasty because it degrades instead of breaking outright. One I chased was a connector nobody cleaned at install; you could see the smudge on the ferrule under a scope. Add a bend radius someone violated pulling the run through a packed tray, or a transmitter slowly losing output as it ages, and the link stays up at marginal signal, passing every casual test, until temperature or vibration nudges it over the edge for a moment. Measure the received power in dBm against the receiver's sensitivity and you find you have almost no margin left, which means every small disturbance becomes a dropout. That is not something clever controller code can fix. Sometimes the honest answer is cleaning a connector, re-terminating a run, or dropping in a new transceiver, and a power meter or an OTDR will tell you which.</p>
+    <h3>What it actually looks like on a plant</h3>
+    <p>A material handling operation I worked with had a screening and transfer line that faulted a remote drive rack two or three times a shift, always under load, and (this took a while to see) mostly on the afternoon shift. The maintenance log ran to pages: two drives replaced, a comms card swapped, the fieldbus cable re-pulled, all of it reasonable, none of it the cause. The pattern that finally mattered was that the dropouts clustered when a particular downstream section started and stopped frequently, which nobody had connected because the two areas were a hundred feet apart and on different one-line drawings.</p>
+    <p>Reading the managed switch's own port statistics, then leaving a laptop on a mirror port running a capture filter into a ring buffer across a couple of shifts, told the story. The switch feeding that rack logged bursts of CRC-errored frames every time the downstream section cycled. Those counts came from the switch, not the capture: a switch drops errored frames before they ever reach the mirror port, so the laptop only showed the gaps. The root cause was a slightly damaged Ethernet cable running alongside a motor lead in a shared tray, picking up interference on every motor start. Cyclic EtherNet/IP I/O runs over UDP with no retransmission, so most of the time the timeout multiplier rode out the occasional lost packet, but under the packet timing that heavy cycling produced, enough frames went missing in a row to time the connection out. The afternoon clustering was simply the plant running its heavy campaigns after lunch. Reroute one cable out of the tray, and the dropouts stopped. Software never entered into it; the controls value was purely in reading the network's own diagnostics to point at the offending cable, so the fix went to the right place the first time instead of the fifth. That interplay between what the process is doing and what the network is doing is most of the job in <a href="/sectors/heavy-process.html">heavy process plants</a>, where the electrical environment is hostile and a trip that looks electronic often traces back to something mechanical or physical.</p>
+    <h3>What to check before you swap another part</h3>
+    <p>Start by refusing to trust the controller's error message as a diagnosis. Treat "connection timeout" or "module not responding" as "something in the path failed," and go read the diagnostics that sit closer to the wire: managed switch port statistics for error and discard counts, fieldbus master retry and diagnostic counters, and optical power against budget on fiber links. Log them over time instead of glancing once, because the fault never happens while you're standing there with a meter. Then correlate the fault timestamps against what the process was doing, because "always under load" or "always when that other line cycles" or "always after lunch" is a clue a static test on a quiet plant will never reproduce.</p>
+    <p>And keep an honest accounting of what software can and cannot reach. A duplicate address, a saturated segment, a badly configured connection interval: those you can genuinely fix in the controls layer. A cable sharing a tray with a motor lead, or a corroded connector, or an optical budget that has run dry, you cannot touch from the engineering workstation. Those are physical, and the right move is to fix the physical thing rather than paper over it with longer timeouts and more retries, which only trains the system to tolerate a fault that is going to get worse.</p>
+    <p>If you have a rack that keeps dropping and a maintenance log full of parts that didn't fix it, it is usually worth someone reading the retry counters and the fault timing before you swap another card. I am happy to go through the diagnostics with you and sort the physical from the configurable; there is a short note describing how that works <a href="/index.html#contact">here</a>.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in Napa and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

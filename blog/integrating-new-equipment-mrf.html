@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRF Control System Integration | Strule Automation</title>
+<meta name="description" content="MRF control system integration without stalling lines that already run: check PLC headroom, keep the interface small, and sequence interlocks to protect uptime.">
+<link rel="canonical" href="https://struleautomation.com/blog/integrating-new-equipment-mrf.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="MRF Control System Integration | Strule Automation">
+<meta property="og:description" content="MRF control system integration without stalling lines that already run: check PLC headroom, keep the interface small, and sequence interlocks to protect uptime.">
+<meta property="og:url" content="https://struleautomation.com/blog/integrating-new-equipment-mrf.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MRF Control System Integration | Strule Automation">
+<meta name="twitter:description" content="MRF control system integration without stalling lines that already run: check PLC headroom, keep the interface small, and sequence interlocks to protect uptime.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Adding a Sorter or Screen Without Stalling the Lines You Already Run", "description": "MRF control system integration without stalling lines that already run: check PLC headroom, keep the interface small, and sequence interlocks to protect uptime.", "datePublished": "2026-08-07", "author": {"@type": "Person", "name": "Jonathan Gilmour"}, "publisher": {"@type": "ProfessionalService", "name": "Strule Automation", "url": "https://struleautomation.com/"}, "mainEntityOfPage": "https://struleautomation.com/blog/integrating-new-equipment-mrf.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>Adding a Sorter or</div>
+      <div class="label">Field notes &middot; Integration</div>
+      <h1>Adding a Sorter or Screen Without Stalling the Lines You Already Run</h1>
+      <p class="lead">Cutting a new machine into a live sortation system is mostly about protecting what already runs, not about the machine on the truck.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+    <p>You already know the sortation lines don't stop for anybody. A material recovery facility (MRF) booked solid runs two shifts, maybe three, and the window to cut in a new optical sorter or a fresh disc screen gets measured in hours, not whole weekends. The machine shows up on a truck, the vendor's commissioning engineer is booked for three days, and the plant manager's real worry isn't whether the new sorter works. It's whether the four lines already running will start clean on Monday morning.</p>
+    <p>That worry is the correct one. The new box is a known quantity: factory-tested, documented, a support number on the side. The risk lives everywhere it touches the old system, and most of that surface never shows up in the sales demo.</p>
+    <h3>The running plant is the hard part</h3>
+    <p>When people talk about MRF control system integration they picture wiring up the newcomer. The hard engineering sits on the other side of the fence, in the running plant you're not allowed to break. Your existing programmable logic controller (PLC), the industrial computer that runs the line logic, has a finite pool of input/output (I/O) capacity, a worst-case scan time it has to stay under, and a supervisory control and data acquisition (SCADA) system on top that operators have learned to trust. Each is a budget you're about to spend.</p>
+    <p>Here's the part people get backwards. A modern optical sorter does its own high-speed work: the camera or near-infrared sensor, the belt encoder, and the valve manifold that fires the air jets all live inside the vendor's dedicated controller, because tracking a bottle down a moving belt is too time-critical to hang off a general-purpose PLC scan. The ejector timing is not your processor's problem, and any integrator who proposes to run the valve array from your shared line PLC is telling you something useful about themselves.</p>
+    <p>What lands on your PLC is the connective tissue: interlocks, feed-throttle logic, startup and shutdown sequencing, the comms handshakes with the new controller, the extra alarms on the SCADA. A few hundred rungs of that on a current processor is tens to a couple hundred microseconds of added scan, not milliseconds; rung count rarely hurts you. What pushes scan into territory that matters is heavy communications traffic, big message instructions, stacks of analog and PID (proportional-integral-derivative) control, and it's the worst-case scan you watch, not the average. If a piece of new logic really is time-critical, the fix isn't to let the whole main loop grow, it's a periodic task at a set interval or a hardware output that doesn't wait on the scan. So the first honest question, before anyone pulls a cable, is whether the existing processor has headroom for the connective work, or whether the new equipment should sit on its own controller and trade a small, well-defined set of signals with the main system. That second option often costs less in every way that matters, even though it looks like more hardware on the drawing.</p>
+    <h3>What actually crosses the fence</h3>
+    <p>A new machine rarely arrives naked. Modern sorters and screens ship with their own controller, their own operator screen, sometimes their own small SCADA node. The integration work is deciding, deliberately, what crosses the boundary between their system and yours, and keeping that list short. A handful of clean handshakes and nothing else: the line tells the sorter it's running and up to speed; the sorter tells the line it's healthy and ready, or faulted so the upstream feed backs off; maybe a rate or grade selection if you change target material by the load. What you don't want is two systems reaching deep into each other's guts, because then a firmware update on their side six months out silently rewrites how your line behaves.</p>
+    <p>How those signals cross matters as much as which ones do. Hardwired discrete wiring is slow to change but very predictable; a dropped wire is a dropped wire. A network link (Modbus TCP, an industrial Ethernet protocol, OPC UA) carries far more and wires in minutes, but it can go quiet while both ends still think everything's fine. Whichever you choose, the feed-throttle and not-ready signals need a heartbeat or comms watchdog behind them, so a dead link drops the feed to a safe state instead of freezing on the last value it heard. A stale "sorter ready" bit that keeps a feed running into a machine that tripped ten minutes ago will make you religious about watchdogs.</p>
+    <p>The other meeting point is the operator's screen, and it gets skipped constantly. If the new sorter's alarms only show up on a laptop bolted to the machine, your night-shift operator won't see them from the control room and won't act on them. Folding the new equipment's key states and alarms into the SCADA the crew already watches is not cosmetic; it's the gap between a fault someone catches in two minutes and one that runs blind until the quality check three hours downstream.</p>
+    <h3>Sequencing, interlocks, and jams</h3>
+    <p>Drop a screen into the middle of a running flow and you've changed the sequence whether you meant to or not. The startup order, the safe way to shut down without burying a transfer point, the interlocks that stop you feeding a machine that isn't ready: all of it was tuned, formally or by scar tissue, for the old arrangement.</p>
+    <p>The classic failure is the cascade on a jam. Upstream keeps feeding while the new machine is stopped, the transfer chute in front of it packs solid, and now there's a manual dig-out on a line that was supposed to be more automated than before. Preventing that means the new machine's not-ready and jam signals reach back up the line and throttle or stop the feed, with the right delays so a half-second blip doesn't trip the whole plant. It has to be thought through before the machine goes live. The first bad load of wet cardboard is a lousy time to find out.</p>
+    <p>Screens bring a mechanical wrinkle worth flagging. The control system can sequence a disc or star screen perfectly and the screen can still choke because the discs are wrapped or the spacing is wrong for your material. Sometimes the fix is genuinely in the logic, and sometimes it's a maintenance call about media and wrap, and dressing up a mechanical problem with a cleverer control scheme just wastes a week. I'd rather tell you which one it is.</p>
+    <h3>Before you touch a live processor</h3>
+    <p>Everything above is about keeping the plant running. The bigger risk during the actual cut-in is to the people doing it. Tying a new machine into running lines means emergency-stop (E-stop) zones that now have to take in the new equipment, guarding and safety-rated interlocks that are not the same animal as the process interlocks I've been describing, and lockout/tagout and arc-flash discipline the moment anyone opens a live panel. A jam-throttle interlock keeps product moving; a safety-rated stop keeps a hand out of a screen. They run on different hardware and get engineered differently, and conflating them is how people get hurt. Alongside that, the cheapest insurance in the job is a verified backup of the existing program and a rollback to a clean Monday start if the cut-in goes sideways. Before you touch a processor carrying two other lines, know exactly how you undo what you're about to do.</p>
+    <h3>What this looks like on a real plant</h3>
+    <p>A regional MRF I worked with wanted to add an optical sorter to pull a PET thermoform grade off a line already near capacity. The vendor's plan put all the interface and sequencing logic on the existing main PLC because the I/O count fit. It did, on paper. The trouble wasn't the sorter's ejection timing, which stayed on the sorter's own controller where it belonged; it was that the main processor was already carrying two other lines with a worst-case scan in the low twenties of milliseconds, and the added comms load and sequence logic nudged it up enough that a couple of existing interlocks started answering a beat late under load.</p>
+    <p>We moved the sorter's coordination onto its own compact controller and cut the interface to six signals: line running, line at speed, sorter ready, sorter fault, feed-throttle request, and selected grade, each with a heartbeat so a dropped link backed the feed off. Their key alarms got mapped into the existing SCADA. The physical cut-in happened inside a planned maintenance window, under lockout, tested one handshake at a time against a simulated line before it touched the real belts. It wasn't seamless: the two systems numbered the grades differently and we didn't catch the mismatch until the sim, and the capture rate needed a week of the vendor trimming ejector timing before it settled. But the running lines never lost a shift, and the main processor's scan went back to where it started. What made that boring was deciding where the boundary sat before drilling the first hole.</p>
+    <p>The risk lives in your old PLC's spare capacity and in the boundary around it. The new box that arrived on the truck is the least of it. Check the existing processor's headroom before you assume the connective logic fits, and lean toward a separate controller with a short, watchdogged interface when it doesn't. Get the new machine's alarms onto the screen your crew already trusts. Sequence the interlocks so a jam backs off the feed instead of packing a chute, keep the safety-rated stops on their own hardware, and don't open a live panel without lockout and a tested rollback. And when the honest answer turns out to be a mechanical fix, media or wrap or a chute liner, rather than a smarter loop, take the mechanical fix. It's the unglamorous groundwork that decides whether a capital project pays off, and it runs through all the <a href="/sectors/waste-material-recovery.html">waste and material recovery work</a> where uptime is the whole game.</p>
+    <p>If you've got a machine on order and you want to know the cut-in won't cost you the lines already running, <a href="/index.html#contact">tell me what you're adding and how the plant runs now</a> and I'll give you a straight read on where the real risk sits.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in Napa and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

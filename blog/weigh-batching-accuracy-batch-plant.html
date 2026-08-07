@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Weigh Batching Accuracy on a Batch Plant | Strule Automation</title>
+<meta name="description" content="Why batch weights drift on a concrete plant: in-flight preact, load-cell calibration, aggregate moisture, and the mechanical faults that software can't fix.">
+<link rel="canonical" href="https://struleautomation.com/blog/weigh-batching-accuracy-batch-plant.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="Weigh Batching Accuracy on a Batch Plant | Strule Automation">
+<meta property="og:description" content="Why batch weights drift on a concrete plant: in-flight preact, load-cell calibration, aggregate moisture, and the mechanical faults that software can't fix.">
+<meta property="og:url" content="https://struleautomation.com/blog/weigh-batching-accuracy-batch-plant.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Weigh Batching Accuracy on a Batch Plant | Strule Automation">
+<meta name="twitter:description" content="Why batch weights drift on a concrete plant: in-flight preact, load-cell calibration, aggregate moisture, and the mechanical faults that software can't fix.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Why Your Batch Weights Wander Even When the Recipe Never Changes", "description": "Why batch weights drift on a concrete plant: in-flight preact, load-cell calibration, aggregate moisture, and the mechanical faults that software can't fix.", "datePublished": "2026-08-07", "author": {"@type": "Person", "name": "Jonathan Gilmour"}, "publisher": {"@type": "ProfessionalService", "name": "Strule Automation", "url": "https://struleautomation.com/"}, "mainEntityOfPage": "https://struleautomation.com/blog/weigh-batching-accuracy-batch-plant.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>Why Your Batch Weights</div>
+      <div class="label">Field notes &middot; Optimization</div>
+      <h1>Why Your Batch Weights Wander Even When the Recipe Never Changes</h1>
+      <p class="lead">The recipe hasn't changed, the operator hasn't changed, and yet your cement, aggregate, or additive weights keep drifting outside tolerance — here's where the accuracy actually leaks out.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+    <p>You usually know the batch is out before the paperwork tells you. The mixer sounds a little wrong, the slump comes back stiff, and a day later a strength test flags a number that shouldn't be flagging. Somebody pulls the batch report and finds the cement came in three percent light and the coarse aggregate a couple percent heavy. Nobody touched the recipe. The operator who ran the good batches last week is running the bad ones this week. And the plant, which has weighed material more or less the same way for a decade, has quietly stopped agreeing with itself.</p>
+    <p>Weigh batching accuracy is one of those problems that looks like a single fault and almost never is. It's usually three or four small things stacking up, each individually within spec, that together push a batch past tolerance. Worth being clear on what tolerance even means here: the concrete industry generally works to roughly one percent on cementitious material and water, two percent on aggregate, three percent on admixture, which is the ASTM C94 and ACI 117 neighborhood. Three percent light on cement isn't a rounding error, it's well outside the window. The real skill is knowing which of those stacked-up things the control system can fix and which it can't, because chasing a mechanical problem with a cleverer control loop is a good way to spend a month getting nowhere.</p>
+    <h3>In-flight material is the accuracy you're already committing to</h3>
+    <p>Every gravimetric batch has a moment where the controller closes the feed gate or stops the auger, and material that has already left the source but hasn't landed on the scale keeps coming. That falling column of cement or aggregate is the in-flight material, and on a lot of plants it's the single biggest source of batch-to-batch error. The compensation goes by a couple of names, and they aren't quite the same thing: preact is the number you dial in, the amount you cut the feed early by, while free-fall or in-flight is the physical mass that number is trying to predict. Same idea either way. Stop the feed short of target so the material still in the air brings you home instead of overshooting.</p>
+    <p>The problem is that most preact values were set once, by hand, at commissioning, and then left alone forever. A fixed preact assumes the in-flight mass is constant, and it isn't. How much material hangs in the air when you cut the gate depends on feed rate, on how full the hopper above is, on moisture in the aggregate, and on whether you're trimming the last of the batch in a slow dribble or slamming the gate shut at full flow. A preact tuned for a full hopper on a dry morning will overshoot on a near-empty hopper feeding damp sand that afternoon.</p>
+    <p>The fix that actually holds is adaptive preact: let the controller measure the real overshoot on each batch, compare it to what it predicted, and nudge the number for the next batch of that material. Set up right, it tracks free-fall across hopper levels and feed rates and keeps up as conditions drift through the day. Set up carelessly, it chases noise. I've watched a learning routine walk the preact something like four percent across an afternoon because nobody had bounded the step size or filtered the input, and the crew ended up switching the whole thing off and running fixed again, which put them right back where they started. So the learning has to be filtered and the correction bounded. But the gain is real, and it's usually the first place I look, because it costs nothing in hardware and it's often been sitting misconfigured since the plant was new.</p>
+    <h3>Load cells drift, and calibration is not a one-time event</h3>
+    <p>A load cell turns weight into a small electrical signal, and like anything that lives on a plant, it drifts with age. Connections in the summing box corrode, temperature swings move the zero, and material builds up on the scale structure until the empty weight isn't empty anymore. None of it is dramatic. A fraction of a percent here, a slow zero walk there, and it hides well because the plant keeps running and the numbers still look plausible.</p>
+    <p>Two patterns show up over and over. Zero drift, where the tare creeps and every batch carries the same bias until someone starts re-zeroing between batches without realizing they're papering over a real fault. And span error, where the calibration slope has shifted, so small weigh-ups read about right but big ones are off by a growing amount, or the other way round. A single-point calibration will never catch span error, which is why you check it at several points across the working range with certified test weights, not only at some convenient reference down near the bottom. On a dry-batch plant this matters more than it first looks, because the aggregates are often weighed cumulatively on one scale, so a span error shifts every cut in the sequence and preact errors compound down the weigh-up instead of staying put. And you can't hold a tolerance tighter than the scale can read: if the controller's division size is coarse next to the accuracy you're chasing, no amount of adaptive preact saves you, and the answer is a better-resolved scale, not smarter logic.</p>
+    <p>There's a wiring and grounding layer under all of this that gets overlooked. A load cell signal is millivolts, and it shares a plant with variable frequency drives (VFDs), contactors, and welding. Ground the cable shield at both ends and you've built yourself a ground loop; run the signal alongside a motor feed and you get noise riding on the weight reading that software filtering never fully cleans up. On one job the intermittent readings turned out to be a summing box a third full of water, corroding away quietly behind a cover everyone assumed was sealed. Sometimes the honest diagnosis is that the scale needs a real calibration and a look at its wiring, and the control system is reporting exactly what it's being handed. Software can filter and compensate, but it cannot invent a weight the load cell never measured cleanly.</p>
+    <h3>Aggregate moisture moves the weight and the water at the same time</h3>
+    <p>Here's the one that catches concrete plants specifically, and it's the part a quick read of this problem tends to skip. Sand and aggregate carry free surface water, and that water gets weighed as if it were solid rock. Load a sand target at six percent moisture when the recipe assumed three, and you've put in less actual aggregate than the ticket claims and dumped the extra water straight into the mix, which moves your water-cement ratio without anyone touching the water batcher. It reads at the panel as weights that wander and yield that won't sit still, and no calibration or preact tuning touches it, because the scale is weighing exactly what's on it. The fix is measuring moisture, usually a probe in the sand bin feeding a correction so the batcher trims aggregate and water per batch. A probe that's wrong or uncalibrated is worse than none, because now you're confidently correcting toward a bad number. In a concrete plant, moisture is often the biggest single reason weights and yield drift from one day to the next, and it has nothing to do with the control loop.</p>
+    <h3>Some flow problems are yours to tune and some belong to the millwright</h3>
+    <p>Cement flows one way warm and freshly delivered, another way after it's sat in a silo bridging against the walls. Aggregate flow changes with moisture, with fines content, with how the stockpile was built. A gate that meters cleanly on dry, free-flowing material will surge and stall on damp sand, and a surging feed makes in-flight compensation harder because the mass in the air jumps around from batch to batch.</p>
+    <p>Some of that is a control problem: a feed rate too aggressive at cutoff, a gate with only fully open and fully shut and no dribble stage, a coarse-and-fine arrangement that should be trimming the last few percent slowly. Those live in the logic and the payoff is consistency. Some of it is mechanical and physical, and loop tuning will never touch it. Sand bridging in a hopper is a hopper, liner, or moisture problem. A worn screw flight is a flight problem. Try to stabilize a mechanically unstable feed with a software change and you'll waste the time, and worse, you'll burn the credibility you need for the fixes that would actually have worked.</p>
+    <h3>What this looks like on a real plant</h3>
+    <p>A dry-batch operation running structural mixes had intermittent low-cement batches, maybe one in fifteen, with no pattern anyone could name. The recipe was fine. The load cells passed a single-point calibration. Everyone decided the weigh system was healthy and started blaming the cement supplier.</p>
+    <p>Two things were going on at once. The cement preact was a fixed number set years earlier for a full silo, so late in the silo, when flow slowed and in-flight mass dropped, that fixed early cutoff stopped the feed too soon and left the batch light. Only when the silo was low, which is why it came and went and drove everyone up the wall. Underneath that, a two-point check found a small span error that made the shortfall worse on the bigger pours, where more cement went across the scale. Adaptive preact learning free-fall against feed rate cleared most of the intermittent lights, and a proper multi-point calibration took care of the rest. The supplier, as it turned out, had never been the problem. Had the feeder been mechanically worn, none of the logic would have helped and we'd have been talking about a flight replacement instead. That layered kind of diagnosis, working down through the plant until the fault stops moving, is most of what the <a href="/sectors/building-materials-cement.html">building materials and cement work</a> I do actually is.</p>
+    <h3>The plain-English version</h3>
+    <p>Consistent batches need a few things true at the same time: an in-flight compensation that adapts to real feed conditions instead of a number frozen at commissioning; a scale calibrated at more than one point, wired so it isn't reading electrical noise, and reading finely enough to resolve the accuracy you want; a moisture correction that's actually right on your aggregate; and a feed mechanically capable of the accuracy you're asking software for. When batches wander, work through those roughly in that order and stay honest about which layer the fault is really in. Preact is usually the cheapest thing to fix and calibration and moisture are the most overlooked, and plenty of times the honest answer is a liner or a worn flight that software was never going to fix in the first place.</p>
+    <p>If your batch weights have started disagreeing with your paperwork and you'd rather run down the cause than keep blaming the material, <a href="/index.html#contact">get in touch</a> and we can work out where the accuracy is actually leaking.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in Napa and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

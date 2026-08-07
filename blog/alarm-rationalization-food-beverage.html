@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCADA Alarm Rationalization | Food &amp; Beverage Lines</title>
+<meta name="description" content="SCADA alarm rationalization cuts the alarm flood on a food and beverage line down to signals operators trust and act on, lifting uptime and safety. Here's how.">
+<link rel="canonical" href="https://struleautomation.com/blog/alarm-rationalization-food-beverage.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="SCADA Alarm Rationalization | Food &amp; Beverage Lines">
+<meta property="og:description" content="SCADA alarm rationalization cuts the alarm flood on a food and beverage line down to signals operators trust and act on, lifting uptime and safety. Here's how.">
+<meta property="og:url" content="https://struleautomation.com/blog/alarm-rationalization-food-beverage.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="SCADA Alarm Rationalization | Food &amp; Beverage Lines">
+<meta name="twitter:description" content="SCADA alarm rationalization cuts the alarm flood on a food and beverage line down to signals operators trust and act on, lifting uptime and safety. Here's how.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "When Your Line Throws 400 Alarms an Hour, Operators Stop Reading Them", "description": "SCADA alarm rationalization cuts the alarm flood on a food and beverage line down to signals operators trust and act on, lifting uptime and safety. Here's how.", "datePublished": "2026-08-07", "author": {"@type": "Person", "name": "Jonathan Gilmour"}, "publisher": {"@type": "ProfessionalService", "name": "Strule Automation", "url": "https://struleautomation.com/"}, "mainEntityOfPage": "https://struleautomation.com/blog/alarm-rationalization-food-beverage.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>When Your Line Throws</div>
+      <div class="label">Field notes &middot; Optimization</div>
+      <h1>When Your Line Throws 400 Alarms an Hour, Operators Stop Reading Them</h1>
+      <p class="lead">An alarm system that cries wolf a few hundred times a shift trains your best operators to ignore it, and that is exactly when it fails you.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+    <p>Walk up to the supervisory control and data acquisition (SCADA) screen on a busy filling or process line late in a shift, and it usually does not take long to tell how healthy the alarm system is. If the alarm banner is a solid scrolling wall of red and yellow, and the operator is working around it rather than through it, the system has already lost. Nobody is reading a few hundred lines an hour. They are watching the machine, listening for the sound that means trouble, and treating the screen as background noise. The alarm system that was supposed to be their early warning has quietly become wallpaper.</p>
+    <p>That is not the operator's fault, it is a design problem, and it is one of the most common things I find when I get called in to look at a line that "keeps going down for no reason." The reasons are usually right there in the alarm history, where nobody can see them under the flood.</p>
+    <h3>Why food and beverage lines drown in alarms</h3>
+    <p>Food and beverage plants earn their alarm floods honestly. You have fast lines with a lot of discrete devices: photo-eyes, level probes, temperature loops on pasteurizers and cook kettles, clean-in-place (CIP) sequences with their own valve trees, metal detectors, checkweighers, labelers, and a filler that everything upstream and downstream has to stay in step with. Every one of those wants to tell you something. When the original system was commissioned, the fast path was to alarm on everything and sort it out later. Nobody ever went back and did the sorting.</p>
+    <p>So you end up with configurations I see again and again. A conveyor photo-eye that alarms every single time product backs up at a merge, which on a good day is a couple hundred times, none of which needs an operator to do anything. A tank that throws a high-level alarm and a high-high-level alarm and a pump-should-have-stopped alarm inside the same two seconds, three lines of red for one event. Alarms with no deadband on a noisy analog signal, chattering on and off around the setpoint dozens of times a minute. And the ones that hurt most: real, load-bearing alarms, the kind that mean stop now before you scrap a batch or hurt someone, sitting in the same list, the same color, the same priority, as a photo-eye that just noticed a gap in the flow.</p>
+    <p>When the important alarm looks identical to the trivial one, the operator has no way to triage. The human response to a channel that is wrong most of the time is entirely rational: stop trusting the channel.</p>
+    <h3>What alarm rationalization actually means</h3>
+    <p>Alarm rationalization is the unglamorous work of going through every configured alarm and asking one thing of each: does this require the operator to do something, right now, that they would not otherwise be doing? If the answer is no, it is not an alarm. It might be a status indication, an event to log, a maintenance flag, or a condition that belongs in a trend, but it is not something that should demand attention on the alarm banner.</p>
+    <p>Done properly, this starts before you ever open the alarm list, with an alarm philosophy document: the plant's written rules for what qualifies as an alarm, how priorities are defined, what class each alarm belongs to, and what performance you are aiming for. Without that, "rebuilt the priority scheme to three levels" is just one person's opinion on a given afternoon, and it will not survive the next integrator who comes through and starts adding alarms back.</p>
+    <p>The discipline behind this has been written down for years. Most people reference ANSI/ISA-18.2; IEC 62682 is essentially the internationally harmonized version of the same standard, so if you work to one you are close to the other. Older than both, and the source of the number everyone quotes, is the Engineering Equipment and Materials Users Association guide, EEMUA 191, which fed into the ISA work rather than following from it. It puts a well-designed system at roughly one alarm every ten minutes for an operator under steady running, staying manageable during an upset. Most lines I first look at are running one or two orders of magnitude above that.</p>
+    <p>Deciding what stays an alarm, and at what priority, is only the first half of the job. The other half is detailed design, where those decisions get built into the system, and a handful of techniques do most of the work. Deadband and on-delay so a signal has to genuinely cross the line and stay across it before anyone hears about it. I have watched a level probe with no deadband chatter dozens of times a minute around a setpoint, generating nothing but noise. Priorities that mean something, usually three levels tied to how fast the operator has to move and how bad it is if they do not, rather than everything defaulting to "high." Related-alarm suppression, sometimes called cause-and-effect, so that when one event trips a device the consequential alarms behind it are held back instead of adding eight more lines to the cascade. And state-based suppression, so the CIP alarms stay quiet during a wash cycle when those conditions are exactly what you expect.</p>
+    <h3>Doing it without breaking anything</h3>
+    <p>You cannot rationalize an alarm system from a desk. Sitting alone at a laptop deciding a photo-eye alarm is "nuisance" and shelving it is exactly how you shelve the one that was telling you a guard interlock had drifted. This work is done with the people who run the line, going condition by condition, and the operators are usually the best source of truth about which alarms they already ignore and why.</p>
+    <p>Every one of those decisions is a change, and it needs to be treated like one. Reclassifying a photo-eye to a status indication, adding suppression, moving an alarm's priority: each should go through your management of change (MoC) process with a record of what changed and why, so that two years from now the next engineer can see the alarm did not vanish by accident. Cleanups that skip this paperwork are how a rationalized system quietly rots back to four hundred alarms an hour.</p>
+    <p>It also has to respect the safety layer. Some of what shows up on a SCADA alarm list is the operator annunciation tied to a safety instrumented function (SIF): the automatic protection itself lives in the safety system, but its alarm sits in the same list as everything else, and that does not get re-prioritized or suppressed as part of a housekeeping exercise. Part of doing this properly is drawing a clear line, in writing, between the safety-related alarms that stay exactly as they are and the operational noise you are free to clean up. The plants that get burned by "alarm cleanups" are the ones that treated that line as negotiable.</p>
+    <h3>What this looks like on a real plant</h3>
+    <p>A beverage line I worked on, high-speed hot-fill, was averaging something north of 250 alarms an hour across a shift, with peaks during changeover where the banner scrolled faster than anyone could read. The operators had, sensibly, stopped looking. Downtime got blamed on "the filler being temperamental."</p>
+    <p>Pulling the alarm history and sorting by frequency told a blunter story. Roughly two-thirds of all alarms came from about a dozen tags. A handful of conveyor photo-eyes at merge points accounted for a huge share, all of them announcing normal accumulation. A buffer-tank level probe with no deadband was chattering hundreds of times an hour. And buried in the flood, showing up maybe fifteen times a shift, was a recurring fault on the capper that was the actual cause of most of the micro-stops. It had been invisible because it looked like everything else.</p>
+    <p>We put deadband and short delays on the noisy analogs, reclassified the accumulation photo-eyes as status rather than alarms, added related-alarm suppression so a downstream stop stopped announcing every device that backed up behind it, and rebuilt the priority scheme down to three meaningful levels. Steady-state alarm rate came down to a handful an hour. Nothing dramatic happened on day one. Over the following weeks the capper fault, now visible, got diagnosed as a mechanical adjustment (not a controls problem at all) and got fixed with a wrench. The software cleanup did not fix the line; it let someone finally see the thing that a mechanic then fixed. Sometimes the honest answer at the end of a rationalization is that the remaining real alarm is pointing at hardware, and no cleverer logic will change that.</p>
+    <p>That lower number is not the finish line, either. Alarm rates creep back, so the useful version of this comes with a scorecard you can re-run every few months: standing and stale alarms, how many tags are chattering, the peak count in the worst ten minutes of an upset, and whether the priority split still looks roughly like most alarms low, a few medium, only a handful high. If nobody watches those numbers, you are back where you started inside a couple of years.</p>
+    <h3>What it comes down to</h3>
+    <p>An alarm is a request for a human to act. If it does not need action, it is not earning its place on the banner, and every one of those freeloaders makes the real alarms harder to see. Cut the list to the ones that mean something, give them priorities an operator can trust, document what you changed, and keep measuring it. The payoff shows up mostly as uptime, because you can finally diagnose the faults that were hiding in the noise. The quieter payoff is that on the day the alarm that matters comes up, someone is still reading the screen. Fast lines with dense instrumentation, which is most of food and beverage, have more to gain from this than almost anyone, which is part of why it comes up so often in the <a href="/sectors/food-beverage.html">work I do on food and beverage lines</a>.</p>
+    <p>If your banner has become something operators work around instead of through, the quickest way to find out how bad it is: export a week of alarm history and <a href="/index.html#contact">send it over</a>. I can usually tell you your top ten offenders and whether this is a few days of structured config work or something mechanical hiding underneath.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in Napa and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>
