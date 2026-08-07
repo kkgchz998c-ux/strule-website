@@ -91,6 +91,7 @@
       <a href="../index.html#how">Approach</a>
       <a href="../index.html#about">About</a>
       <a class="btn" href="../index.html#contact">Get in touch</a>
+      <a href="https://hub.struleautomation.com/portal.html">Client portal</a>
     </nav>
   </div>
 </header>
@@ -116,7 +117,7 @@
     <h3>Sequencing, interlocks, and jams</h3>
     <p>Drop a screen into the middle of a running flow and you've changed the sequence whether you meant to or not. The startup order, the safe way to shut down without burying a transfer point, the interlocks that stop you feeding a machine that isn't ready: all of it was tuned, formally or by scar tissue, for the old arrangement.</p>
     <p>The classic failure is the cascade on a jam. Upstream keeps feeding while the new machine is stopped, the transfer chute in front of it packs solid, and now there's a manual dig-out on a line that was supposed to be more automated than before. Preventing that means the new machine's not-ready and jam signals reach back up the line and throttle or stop the feed, with the right delays so a half-second blip doesn't trip the whole plant. It has to be thought through before the machine goes live. The first bad load of wet cardboard is a lousy time to find out.</p>
-    <p>Screens bring a mechanical wrinkle worth flagging. The control system can sequence a disc or star screen perfectly and the screen can still choke because the discs or stars are wrapped or the spacing is wrong for your material. Sometimes the fix is genuinely in the logic, and sometimes it's a maintenance call about media and wrap, and dressing up a mechanical problem with a cleverer control scheme just wastes a week. I'd rather tell you which one it is.</p>
+    <p>Screens bring a mechanical wrinkle worth flagging. The control system can sequence a disc or star screen perfectly and the screen can still choke because the discs are wrapped or the spacing is wrong for your material. Sometimes the fix is genuinely in the logic, and sometimes it's a maintenance call about media and wrap, and dressing up a mechanical problem with a cleverer control scheme just wastes a week. I'd rather tell you which one it is.</p>
     <h3>Before you touch a live processor</h3>
     <p>Everything above is about keeping the plant running. The bigger risk during the actual cut-in is to the people doing it. Tying a new machine into running lines means emergency-stop (E-stop) zones that now have to take in the new equipment, guarding and safety-rated interlocks that are not the same animal as the process interlocks I've been describing, and lockout/tagout and arc-flash discipline the moment anyone opens a live panel. A jam-throttle interlock keeps product moving; a safety-rated stop keeps a hand out of a screen. They run on different hardware and get engineered differently, and conflating them is how people get hurt. Alongside that, the cheapest insurance in the job is a verified backup of the existing program and a rollback to a clean Monday start if the cut-in goes sideways. Before you touch a processor carrying two other lines, know exactly how you undo what you're about to do.</p>
     <h3>What this looks like on a real plant</h3>
