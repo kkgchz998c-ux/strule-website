@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pump Station Control: Cut Energy &amp; Wear | Strule Automation</title>
+<meta name="description" content="Smarter pump station control cuts energy and pump wear. How wet-well setpoints, VFDs, sequencing, and telemetry blind spots decide your real operating cost.">
+<link rel="canonical" href="https://struleautomation.com/blog/pump-station-control-energy.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="Pump Station Control: Cut Energy &amp; Wear | Strule Automation">
+<meta property="og:description" content="Smarter pump station control cuts energy and pump wear. How wet-well setpoints, VFDs, sequencing, and telemetry blind spots decide your real operating cost.">
+<meta property="og:url" content="https://struleautomation.com/blog/pump-station-control-energy.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pump Station Control: Cut Energy &amp; Wear | Strule Automation">
+<meta name="twitter:description" content="Smarter pump station control cuts energy and pump wear. How wet-well setpoints, VFDs, sequencing, and telemetry blind spots decide your real operating cost.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "The Money in a Lift Station Is Hiding in the Control Logic", "description": "Smarter pump station control cuts energy and pump wear. How wet-well setpoints, VFDs, sequencing, and telemetry blind spots decide your real operating cost.", "datePublished": "2026-08-07", "author": {"@type": "Person", "name": "Jonathan Gilmour"}, "publisher": {"@type": "ProfessionalService", "name": "Strule Automation", "url": "https://struleautomation.com/"}, "mainEntityOfPage": "https://struleautomation.com/blog/pump-station-control-energy.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a href="../resources.html">Resources</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>The Money in a</div>
+      <div class="label">Field notes &middot; Optimization</div>
+      <h1>The Money in a Lift Station Is Hiding in the Control Logic</h1>
+      <p class="lead">The pumps at a lift station are usually fine; it's the logic deciding when and how hard they run that quietly runs up the power bill and grinds the mechanical seals to dust.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+    <p>If you run a collection system, you already know which stations wake you up at 2am and which ones you forget exist. The quiet ones and the troublesome ones are often burning money in the same way, and the power bill won't itemize it for you. A lift station is a deceptively simple machine: a wet well, two or three pumps, some level sensing, and a controller deciding what turns on and when. Almost all of the operating cost and most of the mechanical wear come down to that last part, the deciding, and that part is software, which you can change without buying a single pump.</p>
+    <p>I get called out to stations for a failed pump or a nuisance alarm, and while I'm there I'll pull the run logs. More often than not the real story isn't the fault that generated the ticket. It's the start counts. When a pump is starting a few hundred times a day where it could be doing a fraction of that, nobody wrote a work order for it, but you're paying for it in energy, in seals, and in the callout you'll make in eighteen months when the bearings let go early.</p>
+    <h3>Start-stop control is the expensive habit</h3>
+    <p>The classic lift station runs bang-bang: a float or a level setpoint calls the pump at a high level, it runs flat out until the well pulls down to a low setpoint, then it stops. Simple, robust, and it has worked for decades. It also does two things you'd rather it didn't.</p>
+    <p>First, every across-the-line start slams a large motor from zero to full speed, drawing several times its running current and hammering the pump mechanically as it does. On a bigger machine that inrush runs a second or two; a small lift-station motor is up to speed quicker than that. The rougher hydraulic transient, the water hammer people worry about, mostly shows up on the stop, when the column reverses and snaps the check valve shut. Either way, motors are rated for a finite number of starts per hour, and when you blow past that number day after day you're spending seal and bearing life you didn't need to.</p>
+    <p>Second, a fixed-speed pump has essentially one operating point, or a narrow range that walks the curve as wet-well level and static head shift through the cycle. Pump efficiency is a curve, and the pump is happiest near its best efficiency point (BEP). In a well-designed duplex or triplex you size the duty pump near average flow and buy peak capacity with staging rather than oversizing one machine, but plenty of stations in the field don't run that way. A pump sized fat for a storm it sees twice a year pushes water at a duty point nowhere near BEP the rest of the time, and you pay for that on every kilowatt-hour.</p>
+    <h3>What a variable frequency drive actually buys you</h3>
+    <p>Put a variable frequency drive (VFD) on a pump and you can run it at reduced speed to match inflow instead of cycling on and off. The physics is on your side here. For a centrifugal pump the affinity laws say flow scales with speed, head scales with the square of speed, and shaft power scales with the cube of speed. Drop a pump to 80 percent speed and, where the system curve allows it, you're pulling roughly half the power for 80 percent of the flow.</p>
+    <p>There's a ceiling on this, and it's the thing most VFD retrofits get wrong. The affinity-law savings only fully show up when your system is friction-dominated, meaning most of the head the pump fights is pipe loss that falls away as flow drops. A station lifting water up a tall static head, a big vertical rise to a force main discharge, keeps that static component no matter how slow you run, and the savings shrink with it. I've watched a drive go onto a station that was mostly lift where somebody upstream had floated a big energy number, and the real reduction came in at a fraction of that, because the physics never supported the promise. On a high-static station a VFD still earns its keep for cycle reduction and a gentler start, but the energy number depends on your specific system curve, and it's worth measuring before you spend.</p>
+    <p>If start stress is the only thing you're chasing on a high-static station, a reduced-voltage soft starter (RVSS) handles the inrush and the stop-side transient for a fraction of a drive's cost and complexity. It won't save energy the way a VFD can, but on a station that's mostly static lift there isn't much energy to save anyway, so it's often the right tool.</p>
+    <h3>Wet-well level control is where the savings live</h3>
+    <p>The setpoints in the wet well are the cheapest optimization on the whole site, because changing them costs nothing but engineering time. Widen the band between pump-on and pump-off and each pump runs longer per cycle and starts far less often. The band is constrained at both ends. Too wide at the top and sewage sits long enough to turn septic and generate odor, and you can't back water up into the incoming sewers, so the top is fixed by the invert of the lowest inflow pipe. The bottom is fixed too: you need enough submergence over the intake to avoid drawing a vortex and losing prime, and on a submersible you have to keep the motor covered for cooling. Most stations I see aren't running against either limit, though. They're running a needlessly narrow band somebody dialed in at commissioning that nobody has touched since.</p>
+    <p>Pair a wider band with a VFD and level control gets smarter. Instead of chasing two on/off floats, the controller can modulate speed to hold a target level, ramping up as inflow rises and easing off as it falls. But there's a floor on how slow you can go, and on raw sewage it matters more than the energy math does. A force main needs a scouring velocity, roughly two feet per second, to keep solids in suspension; run a non-clog pump too slow and you drop grit and rag in the main and eventually plug it. So a sensible VFD setup on wastewater runs a minimum-speed floor plus periodic full-speed flush cycles to keep the main swept, and it accepts that at low night inflow the pump will still cycle, because even minimum speed moves more than a trickle. You don't get continuous modulation all the way down. You get it across the middle of the flow range, which is where most of the hours are anyway.</p>
+    <p>For sequencing across multiple pumps you want duty rotation so wear spreads evenly, and lead-lag staging that only brings the second pump in when the first genuinely can't keep up. And you want alternation that doesn't quietly let one pump rack up all the hours because it happens to be wired as lead. I've found stations where the standby pump had a fraction of the duty pump's run time three years running, which is a great way to discover a seized standby pump on the night you need it.</p>
+    <h3>The telemetry blind spot at remote stations</h3>
+    <p>All of this optimization assumes you can see what the station is doing, and at a lot of remote stations you can't. The supervisory control and data acquisition (SCADA) screen shows three things: pump running, pump stopped, high-level alarm. Nobody is trending starts per hour, run time per pump, or motor current.</p>
+    <p>Current is worth trending because it moves before an alarm does, but you have to read the direction right. A pump dragging rag or debris is working harder and pulls more current. A pump throttled toward shutoff by a partly closed valve, or one with a worn-down impeller, is doing less work and pulls less. Both are failures headed somewhere bad; they just move the needle in opposite directions, and if you're only watching for a rising number you'll miss the worn impeller completely. Trend the amps over weeks and the drift, up or down, shows up long before anything trips. If you're not logging it, you find out when the pump quits.</p>
+    <p>Plenty of remote stations report back over a thin cellular or radio link that was scoped years ago to carry alarms, not data. So even where the controller knows its own start counts, that number never reaches anyone who could act on it, and you end up optimizing blind, or more often not optimizing at all because the data to justify it is trapped in a panel out on a county road.</p>
+    <p>Fixing the blind spot doesn't always mean a forklift SCADA upgrade. Often it's a current transducer and a few analog points, logged locally, with a daily summary coming back over the link you already have so somebody actually sees the trend. On water and wastewater the work usually starts here, with measurement, because you can't tune what you can't see. There's more on how I approach these stations on the <a href="/sectors/water-wastewater.html">water and wastewater sector page</a>.</p>
+    <h3>What this looks like on a real station</h3>
+    <p>A duplex station I worked on in a mid-sized collection system had two constant-speed pumps and a narrow float band left over from commissioning. The run logs showed the duty pump starting a bit over two hundred times on an ordinary dry day, roughly eight or nine starts an hour, close to the motor's rated ceiling. The lead pump was carrying nearly all the hours because the alternation logic had been switched off during some long-forgotten troubleshooting and never switched back. When I showed the operator the start count he didn't argue; he just said the station had always been a maintenance headache and left it there. Nothing was broken. Everything was wearing out ahead of schedule.</p>
+    <p>We didn't touch the pumps. We widened the level band as far as the top invert and the intake submergence allowed, restored proper duty alternation, and added current logging on both motors with a daily report over the existing link. That station happened to be friction-dominated, so on the better-suited pump a VFD let it hold level at reduced speed through the middle of the day, with a minimum-speed floor and a short full-speed flush so the force main stayed swept. Starts on the duty pump dropped from a bit over two hundred to somewhere around fifty. It wasn't all smooth: the first band we set tripped the low-level float on a quiet night, because I'd trusted the drawing's intake elevation instead of measuring it, and we pulled the bottom setpoint up a couple of inches after that. Within a few weeks the current trend on the second pump started drifting the wrong way and flagged an impeller wearing out, something the old on/off screen would never have shown. The energy came down as well, though that figure was specific to that station's curve and I wouldn't hang a percentage on yours from it.</p>
+    <h3>The plain-English version</h3>
+    <p>The pumps in your stations are probably fine. The logic deciding when and how hard they run is where the cost hides, and that logic is usually a decade of commissioning defaults and forgotten workarounds nobody has revisited. Wider wet-well bands cost nothing and are the place to start. Proper sequencing and rotation, a VFD where the system curve actually rewards one and where you can still respect the scouring floor, and enough telemetry to see starts and motor current will cut energy and stretch pump life at most stations without buying new iron. And sometimes the answer really is mechanical, a worn impeller or a valve that won't seat, which no control change will fix, so the first job is always to measure well enough to tell the difference.</p>
+    <p>If you've got a station that starts more than it should, or one you simply can't see clearly from the control room, I'm happy to look at the run logs and tell you what's worth doing and what isn't. You can reach me <a href="/index.html#contact">here</a>.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in the Bay Area and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving the Bay Area and Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Independent Controls Engineer vs OEM | Strule Automation</title>
+<meta name="description" content="An honest guide for plant managers on when to call the OEM and when to call an independent controls engineer for PLC and SCADA faults, and how to tell.">
+<link rel="canonical" href="https://struleautomation.com/blog/independent-engineer-vs-oem.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="Independent Controls Engineer vs OEM | Strule Automation">
+<meta property="og:description" content="An honest guide for plant managers on when to call the OEM and when to call an independent controls engineer for PLC and SCADA faults, and how to tell.">
+<meta property="og:url" content="https://struleautomation.com/blog/independent-engineer-vs-oem.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Independent Controls Engineer vs OEM | Strule Automation">
+<meta name="twitter:description" content="An honest guide for plant managers on when to call the OEM and when to call an independent controls engineer for PLC and SCADA faults, and how to tell.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Who do you actually call when the control system is misbehaving?", "description": "An honest guide for plant managers on when to call the OEM and when to call an independent controls engineer for PLC and SCADA faults, and how to tell.", "datePublished": "2026-08-07", "author": {"@type": "Person", "name": "Jonathan Gilmour"}, "publisher": {"@type": "ProfessionalService", "name": "Strule Automation", "url": "https://struleautomation.com/"}, "mainEntityOfPage": "https://struleautomation.com/blog/independent-engineer-vs-oem.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a href="../resources.html">Resources</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>Who do you actually</div>
+      <div class="label">Field notes &middot; Buyer's guide</div>
+      <h1>Who do you actually call when the control system is misbehaving?</h1>
+      <p class="lead">The original equipment manufacturer isn't always the answer, and neither is an independent. Here's how to tell which one your problem actually needs.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+    <p>Something on the line is behaving badly. A pump keeps tripping. A screen throws a fault it never used to. A batch that ran clean for three years is suddenly finishing short, and nobody touched it. You've got a phone in your hand and two directions to dial. You can call the original equipment manufacturer (OEM), the company that built the machine or wrote the original program, or you can call an independent controls engineer who works across brands and owes loyalty to none of them. Most plants pick out of habit, or by whoever answered last time, which is less a decision than a reflex.</p>
+    <p>The two are good at genuinely different things, and guessing wrong costs you, in downtime and in invoices for work that changed nothing.</p>
+    <h3>What the OEM is actually good at</h3>
+    <p>The OEM knows their own machine better than anyone. They have the source code, the mechanical drawings, the failure history across hundreds of installs, and the firmware roadmap. If your problem lives entirely inside their box — a proprietary controller, a safety system they built and validated, a recipe engine they wrote and won't document — they're often the fastest and safest route, and sometimes the only legal one.</p>
+    <p>There are a few situations where you call them first and don't overthink it. If the equipment is under warranty, doing your own work or bringing in an outsider can complicate a claim, so read the terms before you do anything (in the US a manufacturer generally can't void the whole warranty over unrelated third-party work, but they can and will argue about what your work caused). If the fault touches a certified safety function (a light curtain, an emergency stop circuit, a burner management system), responsibility sits with whoever specified and validated that function — which may be the manufacturer, the integrator, or your own engineering — and as the employer you carry the duty for worker safety regardless. And if the machine is genuinely young and the failure looks like a design defect rather than wear, the OEM has every reason to make it right; a batch of bad units is their problem too.</p>
+    <p>The honest limitation is that the OEM sees the world through their own product. They're experts on their panel. They're not necessarily experts on your process, on the three other vendors' equipment feeding into and out of their machine, or on the way your specific material behaves at 2 a.m. in February when the plant is freezing. Ask them why the upstream conveyor's variable frequency drive (VFD) keeps dragging their infeed out of spec and you'll usually get a polite version of "not our equipment."</p>
+    <h3>Where the OEM starts to cost you</h3>
+    <p>A few patterns tell you the OEM may not be the right call, or at least not the only one.</p>
+    <p>The first is the multi-vendor seam. Plenty of faults do live inside one box: a failed proximity switch, a blown output card, a seized valve. But the chronic ones, the faults that keep coming back and never quite close out, tend to live in the handshake between two boxes: a signal that arrives late, a scaling mismatch between a sensor and the controller reading it, a sequence that assumes the downstream equipment is ready when it isn't. On the wire that often means a network fault nobody's scope is watching for, EtherNet/IP or PROFINET frames timing out under load, a Modbus read that quietly returns stale data, timing jitter that only bites when the plant is busy. Each OEM tests their own kit, finds it healthy, and hands the ticket back to you, and the next vendor does exactly the same. This is the single most common reason a plant ends up stuck: the problem is nobody's, because it belongs to the gap between everybody's.</p>
+    <p>The second is the orphaned platform. Plenty of systems still running today were commissioned by an integrator who's since been acquired, folded, or simply moved on, on a hardware generation the manufacturer would rather you replaced. Support for that vintage runs from expensive to nonexistent, and the pitch you get is usually a capital project, rip and replace, when a targeted repair would carry you another five years. This is also where you find out whether you actually own your system. Is the PLC program backed up anywhere, and is the processor password-locked by whoever wrote it? If the only copy of the logic sits inside a controller nobody has the password to, that decides what anyone, independent or OEM, can do for you before the conversation even starts.</p>
+    <p>The third is cost and lock-in on routine work. For chasing a nuisance trip, or checking a control loop that used to hold and now doesn't (which, nine times out of ten, is a worn valve or a fouled sensor rather than gains that need retuning), paying premium OEM rates plus travel from a regional office, on their schedule, is a lot of machinery for a small job. The deeper cost is dependency: if the only people allowed to touch your system are the people who sold it to you, every future change runs through their price list.</p>
+    <h3>What an independent brings, and where they stop</h3>
+    <p>An independent controls engineer's value is the vendor-neutral view. Someone who works across brands of programmable logic controller (PLC) and every flavor of supervisory control and data acquisition (SCADA) reads the whole line, not just one box. They can sit in the gap between vendors that nobody else will own. Their incentives aren't zero. They bill for their time, and most are fluent in one or two platforms and will steer toward what they know best. But they're not carrying a product line they need you to buy, so "keep what you have and fix this one loop" is an answer they can actually give you.</p>
+    <p>Independence isn't magic, though, and anyone who tells you software can fix anything is selling. There's a ceiling. If an optical sensor's window is fouling with dust and film every couple of hours, no threshold tweak in code beats cleaning the glass and fitting a wiper or an air purge to keep it clear. If a weigh reading wanders because a load cell cable is chafing on a frame and its shield is breaking down, the fix is a cable clamp and some heat shrink, not a cleverer averaging routine in code. And if the media in a bed has glazed over, or a chute's geometry is wrong so material bridges and then slugs through instead of flowing steadily, the controls can paper over it for a while, and then the mechanics win anyway. Part of an independent's job (the part the honest ones don't skip) is telling you when the real answer is mechanical, or a targeted hardware swap, and saying so plainly instead of billing you to chase a problem that was never in the logic. Sorting out which of those you're dealing with, before money gets spent chasing the wrong one, is most of what <a href="/services.html">this kind of vendor-neutral work</a> is for.</p>
+    <h3>What this looks like on a real plant</h3>
+    <p>A material recovery operation had an optical sorter that kept faulting out mid-shift, a handful of times a day. The sorter's manufacturer had been out twice, run their diagnostics, swapped a valve bank, and pronounced the machine healthy, which it was. The faults kept coming.</p>
+    <p>Watching the whole line instead of the one machine, the trigger was upstream and it came down to air. Every time a particular bunker emptied, it dumped a surge of wet, heavy, densely packed material onto the feed belt. A slug like that presents the sorter with far more objects to reject in the same instant, so its pneumatic ejector bank fires many more valves at once, and that spike in demand pulled the compressed-air header below the sorter's low-pressure threshold. The sorter did exactly what it's built to do: saw the pressure sag and shut down rather than eject blind. The compressor and receiver had been sized for an average duty that the surges blew straight past. Nothing was actually broken. Each piece of equipment was behaving correctly, and the trouble lived in how they loaded each other.</p>
+    <p>The fix was small and mostly mechanical. A baffle in the bunker to even out the discharge so the surges stopped arriving as slugs, a bit of added receiver volume to ride through what surges remained, and a short feed delay so the air system had a moment to recover before the sorter leaned on it again. No new hardware from any of the manufacturers involved. Finding it took the better part of a shift, standing on the platform watching the line run. Fixing it took an afternoon.</p>
+    <h3>The plain-English takeaway</h3>
+    <p>Call the OEM when the problem lives inside their box, when a warranty or a safety certification is on the line, or when only they hold the source code you need and it's locked. Call an independent when the fault lives between vendors, when the platform is old and the manufacturer only wants to sell you a new one, or when you want a second opinion from someone with no product line to defend. Neither is the right call every time. The trick is matching the problem to the tool, and being wary of anyone who insists it's always one or the other.</p>
+    <p>If you've got a fault that keeps getting handed back and forth between vendors and never quite closes out, that seam between the boxes is usually where I'd start looking. If it would help to talk one through, <a href="/index.html#contact">get in touch</a>.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in the Bay Area and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving the Bay Area and Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

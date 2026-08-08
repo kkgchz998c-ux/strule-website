@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MRF Control Systems: A Field Guide for Recycling Plants | Strule Automation</title>
+<meta name="description" content="A practical, vendor-neutral guide to control systems in single- and dual-stream material recovery facilities: conveyor interlocks, sorters, air, safety.">
+<link rel="canonical" href="https://struleautomation.com/blog/mrf-controls-guide.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="MRF Control Systems: A Field Guide for Recycling Plants | Strule Automation">
+<meta property="og:description" content="A practical, vendor-neutral guide to control systems in single- and dual-stream material recovery facilities: conveyor interlocks, sorters, air, safety.">
+<meta property="og:url" content="https://struleautomation.com/blog/mrf-controls-guide.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="MRF Control Systems: A Field Guide for Recycling Plants | Strule Automation">
+<meta name="twitter:description" content="A practical, vendor-neutral guide to control systems in single- and dual-stream material recovery facilities: conveyor interlocks, sorters, air, safety.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Control Systems in Material Recovery Facilities: A Field Guide","author":{"@type":"Person","name":"Jonathan Gilmour"},"publisher":{"@type":"Organization","name":"Strule Automation"},"mainEntityOfPage":"https://struleautomation.com/blog/mrf-controls-guide.html","description":"A practical, vendor-neutral guide to control systems in single- and dual-stream material recovery facilities: conveyor interlocks, sorters, air, safety."}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a href="../resources.html">Resources</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>Control Systems in Material Recove…</div>
+      <div class="label">Field notes &middot; Sector guide</div>
+      <h1>Control Systems in Material Recovery Facilities: A Field Guide</h1>
+      <p class="lead">A material recovery facility (MRF) is a long line of machines that only pays when all of it runs at once. One jammed transfer point, one sorter that keeps dropping offline, one air compressor that can't keep up, and the whole line backs up or trips. The tonnage you lose tends to bunch up. It shows up as a handful of ugly stops that each cost you twenty minutes of restart and cleanup.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+<p>I get called into recycling plants when the control system is in the middle of that. The line runs fine for three hours and then everything downstream of the drum feeder faults for no reason anybody can name. A new optical sorter went in over a shutdown and now the whole zone won't sequence right. The balers keep starving even though the infeed looks full. These are control problems, though not always in the way people expect. A lot of what looks like a programmable logic controller (PLC) fault is really a mechanical, pneumatic, or wiring problem that the controls are faithfully reporting.</p>
+<p>This guide walks through how I think about control systems in single- and dual-stream MRFs: what to check, what tends to be wrong, and where software is the right fix versus where it's just papering over hardware. It's vendor-neutral: I don't sell any of the equipment and don't care whose logo is on the cabinet. I care whether the line runs.</p>
+<h3>The line is one machine, and the controls have to treat it that way</h3>
+<p>Single-stream and dual-stream MRFs differ in what arrives at the tipping floor, but the control philosophy is the same. Material flows from receiving conveyors through screens, magnets, sorters, and separators, and ends at balers or bunkers. Every one of those machines feeds the next. That's the single most important fact about controlling a MRF, and it drives everything else.</p>
+<p>Because the line is a chain, you can't start or stop it in any order you like. Conveyors have to start from the discharge end back toward the infeed, so material always lands on a belt that's already moving. Start an upstream belt before the one it discharges onto and you pile material onto a dead belt, which either jams the transfer or trips the upstream drive on overload. Stopping runs the other way, infeed back toward discharge, so each belt clears before the one feeding it quits. This is start/stop sequencing, the backbone of MRF controls.</p>
+<p>Around that sequencing sits a web of interlocks. An interlock is just a condition that has to be true before something is allowed to run or keep running. Downstream belt running before upstream belt is allowed to start. A screen up to speed before the conveyor feeding it can run. Baler chamber not full before the infeed conveyor keeps loading it. When these are set up well, the line protects itself: a stalled belt stops everything feeding it, so you get one clean stop instead of a cascade of buried equipment. When they're set up poorly, or years of small changes have quietly broken them, one trip in the middle lets material keep arriving from upstream, because the interlock that should have stopped the feed never fired.</p>
+<p>If you inherit a line, map the sequence and interlocks as they actually are in the code, not as the drawings claim; on an older MRF the two have usually drifted apart. I trace which belt permits which, where the zone boundaries are, and what each e-stop actually drops. That map is worth more than any single fix, because most chronic problems turn out to be an interlock doing exactly what it was told, where what it was told stopped making sense three retrofits ago.</p>
+<h3>Integrating new equipment into a running line</h3>
+<p>MRFs get rebuilt in place. A facility takes on a new material stream, or an old screen wears out, or a customer wants cleaner bales, and in goes a new optical (including near-infrared, or NIR) sorter, an eddy-current separator for aluminum, another magnet, a disc screen to replace worn stars. The line still has to run tomorrow morning, so the integration happens over a weekend or in a series of short shutdowns.</p>
+<p>This is where a lot of MRF control problems are born. The new machine arrives with its own controller and its own idea of how it should talk to the world; the existing line has its own logic, written by whoever built it. Somebody has to marry the two: tell the line when the new sorter is ready, tell the sorter when material is coming, and decide what happens to the sequence when the new machine faults. That handshake is where the trouble lives. It's the seam between two vendors' equipment, and it's the first place I look when a retrofitted line acts up. I wrote a longer piece on the mechanics of this in <a href="/blog/integrating-new-equipment-mrf.html">integrating new equipment into a running MRF</a>.</p>
+<p>A few things I try to get right on any integration:</p>
+<p>Make the new machine a good citizen of the sequence: it needs to be in the start/stop order and the interlock chain like everything else. A common failure is a sorter that's electrically live and ejecting but not actually interlocked to the belt feeding it, so when the belt stops the sorter keeps firing air at nothing, and when the sorter faults the belt keeps loading material past it.</p>
+<p>Decide deliberately what a fault on the new machine does: stop the whole line, just its own zone, or nothing. A magnet that drops out probably shouldn't stop the plant; a baler fault probably should stop its infeed. The wrong default is to leave it however the commissioning tech happened to set it under time pressure.</p>
+<p>Watch the timing, not just the wiring. Optical and NIR sorters need to know where an object is when it reaches the ejectors, which means belt speed and object detection have to stay in step. If a retrofit changed belt speed, or the sorter's belt-speed signal is noisy, ejection timing drifts and sort quality falls off even though nothing is technically faulted. That's a controls symptom with a mechanical or signal root, easy to chase in the wrong direction.</p>
+<h3>Compressed air and pneumatic ejectors</h3>
+<p>Most of the sorting in a modern MRF is done by air. Optical and NIR sorters identify a target and fire a bank of pneumatic ejectors, small fast valves that blow a puff of compressed air to knock the object off the belt into a bunker. Air classifiers and air-knife separators may use air too. All of it draws from the same compressed-air system, and that system is the most underappreciated part of the whole plant. One thing worth knowing about the identifying step: NIR reads a polymer by its spectral signature, the near-infrared reflectance fingerprint of the material, which makes it effectively blind to carbon-black-pigmented plastics. Black absorbs the wavelengths the sensor depends on, so a black tray or black film sails past unread. That drives a recurring "the sorter is missing product" complaint that is not a fault at all, just a limit of the sensing method.</p>
+<p>Here's the problem with air in a MRF: the demand is spiky and correlated. When the line is busy and material is dense, many ejectors fire at once, over and over, and each puff is a sharp draw on the header. If the compressor and receiver tank can't refill fast enough between peaks, header pressure sags, every ejector fires weaker, and objects that should get knocked cleanly off the belt only get nudged. Sort quality drops right when the line is working hardest. People see it and blame the sorter's software, when often the sorter is fine and being starved of air.</p>
+<p>That sag-and-recover cycle is what people mean when they say the air "surges." A few things drive it: undersized or leaking receiver capacity, compressors short-cycling because the pressure band is set too tight, a header that's too small or too long for the flow, or simply more ejectors added over the years than the original air system was designed to feed. The controls angle is real but limited. You can stage compressors more intelligently, widen a pressure band that's causing short-cycling, and alarm on low header pressure so the problem announces itself instead of hiding. What you can't do is make a compressor produce air it doesn't have the capacity to produce. When the numbers say the system is undersized for the ejector load it's grown into, that's a mechanical answer, and I'll say so.</p>
+<p>Before touching any of it, check for leaks and read the actual pressure at the ejector manifold under full load, not at the compressor gauge. A plant will chase surging in the logic for months when the real issue is a header that's lost fifteen psi to leaks and a receiver half the size it should be for the current ejector count.</p>
+<h3>Throughput and utilization</h3>
+<p>Every MRF operator wants more tonnage per hour. The instinct is to run the belts faster. Belt speed matters, but it's usually not where the tonnage is going. In most plants I see, throughput is limited by stops and by uneven loading, not by top speed.</p>
+<p>Two numbers are worth separating. Throughput is how much material moves through when the line is running. Utilization is what fraction of the scheduled time the line is actually running. A line that screams along at full speed but stops eight times a shift can move less material than a slightly slower line that never stops. Chase speed on a line with a utilization problem and you just hit the jams harder and more often.</p>
+<p>So I start by making the stops visible: what tripped, when, in what order, and what faulted first versus the cascade that followed. Most MRF control systems already have this information, buried in an alarm log nobody reads because it's full of noise. Cleaning that up so the first-out fault is obvious is some of the highest-value control work there is, closely related to what I described in <a href="/blog/alarm-rationalization-food-beverage.html">alarm rationalization for a food and beverage plant</a>: an alarm system that cries wolf trains people to ignore it, and the one alarm that mattered gets lost.</p>
+<p>Uneven loading is the other big throughput lever, and it's partly a controls problem. A drum feeder or metering conveyor that surges material in slugs overloads screens and sorters in bursts, forces trips, then starves them in the gaps. Smoothing the feed, with better metering logic or a mechanical change to how material is presented, does more for real tonnage than raising belt speed ever will. On most lines the constraint is almost never the number you first want to turn up.</p>
+<h3>The multi-vendor seam</h3>
+<p>The integrating section touched on the vendor seam; it's worth staying on it, because that seam is where the hardest faults live. A MRF is rarely one vendor's plant: the original line came from an integrator, the sorters are one brand, the eddy-current separator another, the baler a third. Each usually works fine on its own. What nobody fully owns is the handshake between two machines from different suppliers.</p>
+<p>The intermittent fault that shows up once an hour, that each vendor's tech looks at and calls "not mine," that never reproduces when someone's watching, is almost always a seam problem: a signal that arrives a few milliseconds late, a shared network that drops a packet under load, a ground that's fine until a big drive across the plant switches, an interlock that assumes a state the other machine doesn't actually guarantee. I've written about how these behave in a recycling context in <a href="/blog/intermittent-plc-faults-organics-recycling.html">intermittent PLC faults at an organics recycling plant</a>, and the pattern holds across MRFs. None of the vendors is bad at their job; each can only see its own box, so a fault living between two of them has no natural owner. That's where an independent set of eyes tends to earn its keep.</p>
+<p>Finding a seam fault takes patience and data. I want time-stamped records from both sides of the handshake, fine enough to see which event came first, which usually means adding temporary logging on both machines and waiting for the fault to show, because intermittent problems don't perform on command. It's slower than anyone wants, and the only honest way to corner something that appears once an hour under load.</p>
+<h3>When the fix is mechanical or a hardware swap</h3>
+<p>Not every problem on a MRF is a controls problem, and one of the most useful things I can do is tell you when the code isn't where the fix lives. Software is cheap to change and easy to blame, so it gets accused first, fairly or not.</p>
+<p>A belt that trips on overload at the same loaded point every time is rarely a logic problem. Look to a worn bearing, a dragging skirt, a misaligned idler, or a genuinely undersized drive for the load. You can raise the trip threshold in software, but push it past what the motor and mechanics can actually handle and you've stripped away the protection that was warning you, without touching the thing it was warning you about. That's a line I won't cross.</p>
+<p>An optical sorter whose accuracy fell off may need its optics cleaned or its air supply fixed long before it needs a logic change. Screens that blind or wrap need mechanical attention, not a new setpoint. And an obsolete controller that faults because it's worn out and unsupported may be past the point where more troubleshooting pays; sometimes the right call is a planned migration to current hardware, which I've written about in <a href="/blog/plc-migration-obsolete-controllers.html">PLC migration off obsolete controllers</a>.</p>
+<p>The reason this matters is money and trust. Tune around a mechanical fault and it comes back next month, angrier. Calling the mechanical answer when it's the mechanical answer is part of the job, even when it doesn't keep me billing.</p>
+<h3>Safety and the control system</h3>
+<p>Everything above is about making the line run better. None of it is worth a person's hand. MRFs are among the more dangerous industrial environments I work in: long conveyors, exposed nip points at every transfer and screen, balers that can kill, and people working close to moving equipment to clear jams that never fully stop happening.</p>
+<p>The control system carries real safety responsibility, and there are lines I don't cross and won't help anyone else cross. E-stop zones have to actually correspond to what a person can reach and what they need stopped when they hit the button; an e-stop that drops the wrong zone, or that a retrofit quietly disconnected, is worse than none because people trust it. Guarding interlocks that stop equipment when a guard opens are protection, not nuisance, and they don't get bypassed to keep the line running. Lockout/tagout (LOTO), the procedure for making equipment truly dead before anyone reaches into it, has to be real and enforced, especially on a line where clearing a jam is a routine, several-times-a-shift event.</p>
+<p>There's an honest distinction worth naming, and it comes up constantly. Retuning a nuisance trip, one that fires on normal operation and trains people to work around it, is legitimate engineering; a protective function that cries wolf is itself a safety problem because it teaches people to ignore trips. Jumpering out a protective interlock so the line will run through a condition the interlock exists to stop is not engineering. If a safety function is tripping too often, the answer is to understand why and fix the cause, never to defeat it. I'm glad to help with the first. I won't touch the second.</p>
+<h3>Honest limits</h3>
+<p>A guide like this makes things sound more solvable than they are on a bad day. Plainly: controls work is a diagnostic process with no guaranteed answer up front. I can't promise a fix from the parking lot, and anyone who does is guessing. Some problems that present as control issues are budget issues wearing a costume: undersized or worn-out equipment that no logic change beats.</p>
+<p>What I can do is work through it methodically, tell you what I actually find, and be straight about which problems are worth chasing in software and which want a wrench or a purchase order.</p>
+<h3>If your line isn't behaving</h3>
+<p>If you run a single- or dual-stream MRF and something keeps stopping you, or a retrofit didn't land the way it was sold, I'm happy to talk it through. I work independently across the Bay Area and Northern California and don't have a product to push, so the advice is about your line rather than something I'm trying to sell. You can see how I work on the <a href="/services.html">services</a> page, and <a href="/index.html#contact">get in touch</a> if you want a real conversation about your plant.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in the Bay Area and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+<section><div class="wrap"><div class="cta">
+      <h2>Got a plant that isn't behaving?</h2>
+      <p>Tell me what's giving you trouble. The first conversation is free, and you'll get a straight assessment.</p>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </div></div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving the Bay Area and Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

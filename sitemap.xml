@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://struleautomation.com/</loc><lastmod>2026-08-08</lastmod></url>
-  <url><loc>https://struleautomation.com/strule-current.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://struleautomation.com/</loc><lastmod>2026-08-07</lastmod></url>
   <url><loc>https://struleautomation.com/services.html</loc><lastmod>2026-08-07</lastmod></url>
   <url><loc>https://struleautomation.com/sectors.html</loc><lastmod>2026-08-07</lastmod></url>
   <url><loc>https://struleautomation.com/blog.html</loc><lastmod>2026-08-07</lastmod></url>
@@ -27,4 +26,11 @@
   <url><loc>https://struleautomation.com/blog/intermittent-network-faults-plant-floor.html</loc><lastmod>2026-08-07</lastmod></url>
   <url><loc>https://struleautomation.com/blog/packaging-line-throughput-oee.html</loc><lastmod>2026-08-07</lastmod></url>
   <url><loc>https://struleautomation.com/blog/independent-engineer-vs-oem.html</loc><lastmod>2026-08-07</lastmod></url>
+  <url><loc>https://struleautomation.com/resources.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://struleautomation.com/blog/crushing-screening-controls-guide.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://struleautomation.com/blog/mrf-controls-guide.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://struleautomation.com/blog/organics-composting-ad-controls-guide.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://struleautomation.com/tools/crushing-throughput-estimator.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://struleautomation.com/tools/compressed-air-cost-estimator.html</loc><lastmod>2026-08-08</lastmod></url>
+  <url><loc>https://struleautomation.com/tools/oee-downtime-cost-estimator.html</loc><lastmod>2026-08-08</lastmod></url>
 </urlset>

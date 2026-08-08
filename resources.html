@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Resources — Guides, Checklists & Tools | Strule Automation</title>
+<meta name="description" content="Free, practical control-systems guides, diagnostic troubleshooting resources, checklists and tools from the plant floor. Independent, vendor-neutral, Bay Area and Northern California.">
+<style>
+  :root{--navy:#132a3e;--teal:#2f6d8f;--slate:#64748b;--line:#e2e8f0;--bg-soft:#f8fafc;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:#fff;color:#1f2937;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55;font-size:17px;}
+  header.site{background:var(--navy);color:#fff;padding:16px 20px;}
+  header.site .wrap{max-width:920px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:15px;gap:14px;flex-wrap:wrap;}
+  header.site b{font-weight:700;letter-spacing:.3px;}
+  header.site span{color:#9fc3d6;font-weight:500;}
+  header.site a{color:#cfe0ea;text-decoration:none;font-weight:500;}
+  header.site .nav a{margin-left:16px;}
+  header.site .nav .tel{color:#fff;font-weight:600;}
+  main{max-width:920px;margin:0 auto;padding:30px 20px 44px;}
+  h1{color:var(--navy);font-size:29px;line-height:1.2;margin:4px 0 6px;}
+  .byline{color:var(--navy);font-weight:600;font-size:15.5px;margin:0 0 12px;}
+  .byline span{color:var(--slate);font-weight:500;}
+  .lede{color:#334155;margin:0 0 14px;font-size:17.5px;max-width:66ch;}
+  .how{background:var(--navy);color:#fff;border-radius:12px;padding:16px 18px;margin:0 0 10px;font-size:15px;max-width:66ch;display:flex;flex-wrap:wrap;align-items:center;gap:12px;justify-content:space-between;}
+  .how .txt{flex:1;min-width:240px;}
+  .how .txt b{color:#fff;}
+  .how .txt span{color:#bcd3e0;}
+  .how .btn{white-space:nowrap;}
+  .how.lib{background:#eef4ef;border:1px solid #cfe0d4;}
+  .how.lib .txt b{color:#1e5b3a;}
+  .how.lib .txt span{color:#3f6b52;}
+  .proof{color:var(--slate);font-size:13.5px;margin:10px 0 26px;max-width:66ch;}
+  .proof a{color:var(--teal);text-decoration:none;font-weight:600;}
+  h2{color:var(--navy);font-size:16px;text-transform:uppercase;letter-spacing:.6px;margin:30px 0 14px;padding-bottom:8px;border-bottom:2px solid var(--line);}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:640px){.grid{grid-template-columns:1fr;}}
+  .card{border:1px solid var(--line);border-radius:14px;padding:20px;background:#fff;box-shadow:0 1px 2px rgba(19,42,62,.04);display:flex;flex-direction:column;}
+  .kick{font-size:12px;text-transform:uppercase;letter-spacing:.7px;color:var(--teal);font-weight:700;margin-bottom:6px;}
+  .card h3{color:var(--navy);font-size:18px;margin:0 0 6px;line-height:1.3;}
+  .card p{color:#475569;font-size:14.5px;margin:0 0 14px;flex:1;}
+  .btn{display:inline-block;text-align:center;background:var(--navy);color:#fff;border:none;border-radius:9px;padding:10px 14px;font-size:15px;font-weight:600;cursor:pointer;text-decoration:none;}
+  .btn:hover{background:#1c3a54;}
+  .btn.teal{background:var(--teal);}
+  .btn.teal:hover{background:#255a76;}
+  .btn.block{display:block;width:100%;}
+  .dl-wrap{display:none;}
+  .dl-wrap .hook{display:block;margin-top:10px;color:#334155;font-size:13.5px;font-weight:500;}
+  .dl-wrap .cta{display:block;margin-top:6px;font-size:13px;}
+  .dl-wrap .cta a{color:var(--teal);font-weight:700;text-decoration:none;}
+  .micro{color:var(--slate);font-size:12px;margin-top:8px;}
+  footer.site{border-top:1px solid var(--line);background:var(--bg-soft);padding:26px 20px 34px;}
+  footer.site .wrap{max-width:920px;margin:0 auto;color:var(--slate);font-size:14px;}
+  footer.site .talk{color:var(--navy);font-size:15px;margin:0 0 12px;}
+  footer.site .talk a{color:var(--teal);font-weight:700;text-decoration:none;}
+  footer.site a{color:var(--teal);text-decoration:none;}
+  footer.site .legal{margin-top:16px;font-size:12.5px;color:#94a3b8;line-height:1.5;}
+  /* modal */
+  .modal-bg{position:fixed;inset:0;background:rgba(19,42,62,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:50;}
+  .modal-bg.open{display:flex;}
+  .modal{background:#fff;border-radius:16px;max-width:470px;width:100%;padding:26px 26px 24px;box-shadow:0 20px 50px rgba(19,42,62,.35);position:relative;max-height:92vh;overflow:auto;}
+  .modal .x{position:absolute;top:12px;right:14px;border:none;background:none;font-size:22px;line-height:1;color:#94a3b8;cursor:pointer;}
+  .modal h3{color:var(--navy);font-size:21px;margin:0 6px 6px 0;line-height:1.25;}
+  .modal .sub{color:#475569;font-size:14.5px;margin:0 0 16px;}
+  .modal .sub b{color:var(--navy);}
+  .modal label.fld{display:block;font-size:13px;font-weight:600;color:var(--navy);margin:0 0 4px;}
+  .modal input[type=text],.modal input[type=email]{width:100%;padding:10px 12px;border:1px solid #cbd5e1;border-radius:9px;font-size:15px;margin-bottom:12px;}
+  .modal input:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal);}
+  .modal .opt{color:var(--slate);font-weight:500;}
+  .modal .consent{display:flex;align-items:flex-start;gap:9px;font-size:13px;color:#475569;line-height:1.45;margin:2px 0 16px;}
+  .modal .consent input{margin-top:2px;}
+  .modal .fineprint{color:var(--slate);font-size:12px;margin:12px 0 0;line-height:1.5;}
+  .modal .fineprint a{color:var(--teal);text-decoration:none;}
+  .modal .success{display:none;text-align:center;}
+  .modal .success .tick{width:48px;height:48px;border-radius:50%;background:#e6f2ec;color:#1e5b3a;font-size:26px;line-height:48px;margin:2px auto 12px;}
+  .modal .success h3{text-align:center;}
+  .modal .success .talk{margin-top:16px;font-size:13.5px;color:#475569;}
+  .modal .success .talk a{color:var(--teal);font-weight:700;text-decoration:none;}
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <div><b>STRULE AUTOMATION</b> <span>&mdash; Field notes</span></div>
+    <!-- Phone: (707) 690-7054 -->
+    <div class="nav"><a class="tel" href="tel:+17076907054">(707) 690-7054</a><a href="/index.html">Home</a></div>
+  </div>
+</header>
+<main>
+  <h1>Field resources</h1>
+  <!-- Credibility anchor. Add a years-on-the-floor figure here if you want one, e.g. "— 20+ years on the plant floor". -->
+  <p class="byline">Jonathan Gilmour <span>&mdash; independent controls engineer (PLC, HMI, SCADA) &middot; aggregate, MRF and organics/AD plants &middot; Bay Area &amp; Northern California</span></p>
+  <p class="lede">The checks, decision guides, tools and primers I actually use on the plant floor, written down so you can use them yourself. Vendor-neutral, no product to sell you.</p>
+  <div class="how" id="howBox">
+    <div class="txt"><b>Get the whole library by email.</b> <span id="howcount">Enter your details once and I&rsquo;ll send you a link to every guide, checklist and primer on this page &mdash; open it any time, from any device.</span></div>
+    <button class="btn teal" type="button" id="howBtn">Email me the link</button>
+  </div>
+  <p class="proof">Want to see the depth first? The <a href="/tools/crushing-throughput-estimator.html">throughput estimator</a> is free and open, and the full <a href="/blog/crushing-screening-controls-guide.html">crushing &amp; screening controls guide</a> is right here on the site.</p>
+
+  <h2>Interactive tools</h2>
+  <div class="grid" id="tools"></div>
+
+  <h2>Diagnostic troubleshooting guides</h2>
+  <div class="grid" id="diagnostics"></div>
+
+  <h2>Plant checklists</h2>
+  <div class="grid" id="checklists"></div>
+
+  <h2>Training &amp; primers</h2>
+  <div class="grid" id="training"></div>
+</main>
+<footer class="site">
+  <div class="wrap">
+    <p class="talk">Got a fault that keeps getting handed back and forth between vendors? That seam is usually where I&rsquo;d start looking. <a href="tel:+17076907054">Call (707) 690-7054</a>.</p>
+    Strule Automation &mdash; independent, vendor-neutral controls engineering, Bay Area &amp; Northern California. <a href="/index.html">struleautomation.com</a> &middot; <a href="mailto:info@struleautomation.com">info@struleautomation.com</a> &middot; <a href="/privacy.html">Privacy</a>
+    <!-- PLACEHOLDER MAILING ADDRESS — required in marketing-email footers, optional here. Replace when you have a P.O. box / mailbox. -->
+    <div class="legal">Strule Automation &middot; 11 Iwanuma Dr, Napa, CA &middot; Enter your email and you&rsquo;ll also get occasional field notes. Unsubscribe any time.</div>
+  </div>
+</footer>
+
+<!-- ACCESS MODAL -->
+<div class="modal-bg" id="modalBg" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="x" type="button" id="modalX" aria-label="Close">&times;</button>
+    <form id="leadForm">
+      <h3 id="modalTitle">Get the field library by email</h3>
+      <p class="sub"><b>Enter your email and I&rsquo;ll send you a link to the whole library</b> <span id="modalCount"></span> &mdash; guides, checklists and primers. Open it any time, no account, no password.</p>
+      <label class="fld" for="lf-name">Name</label>
+      <input type="text" id="lf-name" name="name" autocomplete="name" required>
+      <label class="fld" for="lf-email">Work email</label>
+      <input type="email" id="lf-email" name="email" placeholder="you@yourplant.com" autocomplete="email" required>
+      <label class="fld" for="lf-loc">Plant location <span class="opt">— city or ZIP (optional)</span></label>
+      <input type="text" id="lf-loc" name="plant_location" autocomplete="off">
+      <input type="hidden" name="resource" id="lf-resource" value="">
+      <label class="consent"><input type="checkbox" name="consent" value="yes" id="lf-consent" checked> Send me the occasional field note from Strule &mdash; plant-floor controls tips, no product pitches. Unsubscribe any time.</label>
+      <button class="btn block teal" type="submit">Email me the library link</button>
+      <p class="fineprint" id="leadError" style="display:none;color:#b23c3c;">Sorry — that didn&rsquo;t go through. Please try again, or email <a href="mailto:info@struleautomation.com">info@struleautomation.com</a> and I&rsquo;ll send the link.</p>
+      <p class="fineprint">I&rsquo;ll never share or sell your email. See the <a href="/privacy.html">privacy policy</a>.</p>
+    </form>
+    <div class="success" id="leadSuccess">
+      <div class="tick">&#10003;</div>
+      <h3>Check your email.</h3>
+      <p class="sub">I&rsquo;ve sent your link to the full library to <b id="successEmail">your inbox</b>. Click it and every download is yours &mdash; open it any time, from any device. If it&rsquo;s not there in a minute or two, have a look in your spam folder.</p>
+      <p class="talk">In the meantime, if you&rsquo;ve got a fault you want a second set of eyes on: <a href="tel:+17076907054">call (707) 690-7054</a>.</p>
+      <p class="fineprint"><button class="btn" type="button" id="successClose" style="background:none;color:var(--teal);padding:6px 0;">Close</button></p>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  // --- CAPTURE ENDPOINT -------------------------------------------------
+  // Posts to the Cloudflare Pages function /functions/subscribe.js, which adds the
+  // contact to the Brevo "Resource downloads" list and emails them the library link.
+  var ENDPOINT = "/subscribe";
+  var LIBKEY = "strule-library";   // arriving with ?key=strule-library opens the unlocked library
+  // ---------------------------------------------------------------------
+
+  var PHONE_HREF = "tel:+17076907054", PHONE_TXT = "(707) 690-7054";
+
+  // library mode = the person clicked the link I emailed them
+  var libMode = false;
+  try { libMode = (new URLSearchParams(location.search).get('key') === LIBKEY); } catch(e){}
+  var unlocked = libMode;
+
+  var tools = [
+    { title:"Crushing Plant Throughput & Utilization Estimator",
+      desc:"Put in your nameplate, your average throughput while crushing and your hours, and see whether a crushing circuit is losing its shift to downtime or to slow running. All the math is shown; nothing leaves the browser.",
+      url:"/tools/crushing-throughput-estimator.html", cta:"Open the tool" },
+    { title:"Compressed Air Cost & Leak Estimator",
+      desc:"Put in your compressor size, load, run hours and power rate, and see what your plant air actually costs &mdash; and how much of it is leaking away. Every formula is shown; nothing leaves the browser.",
+      url:"/tools/compressed-air-cost-estimator.html", cta:"Open the tool" },
+    { title:"OEE & Downtime Cost Estimator",
+      desc:"Put in your planned hours, downtime, ideal rate and output, and see availability, performance and OEE &mdash; plus what the losses cost you in a year. Every formula is shown; nothing leaves the browser.",
+      url:"/tools/oee-downtime-cost-estimator.html", cta:"Open the tool" }
+  ];
+  var diagnostics = [
+    { title:"Chasing the Intermittent Fault", file:"/downloads/intermittent-fault-field-guide.pdf",
+      desc:"The fault that clears before anyone reaches the panel. How to capture evidence, sort the usual causes, and set a trap so the next occurrence tells you something.",
+      hook:"Set the trap and it&rsquo;s still slipping through? Send me what the trap caught and I&rsquo;ll take a look." },
+    { title:"Is It the Sensor or the Process?", file:"/downloads/sensor-or-process-signal-diagnostic.pdf",
+      desc:"A method for deciding whether a reading is lying or the process really is doing what the number says &mdash; cross-checks, signal integrity, grounding and drift.",
+      hook:"Still can&rsquo;t tell if the sensor&rsquo;s lying? Tell me the loop and I&rsquo;ll help you corner it." },
+    { title:"Why Is the Crusher Tripping?", file:"/downloads/crusher-trip-cause-diagnostic.pdf",
+      desc:"A decision guide for nuisance and protective trips on a crushing and screening circuit &mdash; telling a real trip from a nuisance one, and retuning without ever defeating protection.",
+      hook:"Worked the triage and it&rsquo;s still tripping? Tell me about the plant and we&rsquo;ll dig in." },
+    { title:"Optical Sorter Faulting Mid-Shift", file:"/downloads/optical-sorter-midshift-fault-diagnostic.pdf",
+      desc:"Why an optical sorter drops out a few times a shift, and the upstream causes crews miss &mdash; air-demand sag, feed presentation, window fouling. Watch the line, not the machine.",
+      hook:"Sorter still dropping out mid-shift? Let&rsquo;s find the upstream cause together." },
+    { title:"Chasing Faults in a Corrosive Plant", file:"/downloads/corrosive-plant-fault-diagnostic.pdf",
+      desc:"Composting and digester control faults driven by the environment &mdash; H2S, ammonia, moisture and dust &mdash; where they show up first and how to separate them from a real process problem.",
+      hook:"Environment still eating your I/O? Let&rsquo;s talk about hardening it before the next outage." },
+    { title:"Blower Won&rsquo;t Hit Airflow Setpoint", file:"/downloads/blower-airflow-setpoint-diagnostic.pdf",
+      desc:"Why an aeration or gas-mixing blower falls short of setpoint &mdash; backpressure and media, worn clearances, drifted flow sensing, or a control loop fighting itself &mdash; and how to tell which without over-tuning a slow biological process.",
+      hook:"Blower still short of setpoint after the triage? Tell me the plant and we&rsquo;ll corner it." },
+    { title:"The VFD Keeps Tripping", file:"/downloads/vfd-trip-fault-code-diagnostic.pdf",
+      desc:"Reading the fault code and working it the right way &mdash; overcurrent, overvoltage, ground fault, overtemp, overload, comms &mdash; before anyone reaches for the trip setting. What each fault really means and how to confirm it.",
+      hook:"Drive still tripping and no one can read the log? Send me the fault code and the conditions at trip." },
+    { title:"Conveyor Belt Drift and Nuisance Trips", file:"/downloads/conveyor-drift-trip-diagnostic.pdf",
+      desc:"Belt mistracking and the protection devices that pull the interlock and get blamed &mdash; drift switches, pull-cords, slip and plugged-chute detection &mdash; with the honest fixes versus the wrong one of widening the switch.",
+      hook:"Belt still drifting or nuisance-tripping? Let&rsquo;s separate the real trips from the noise." },
+    { title:"When the Plant Network Drops", file:"/downloads/plant-network-comms-dropout-diagnostic.pdf",
+      desc:"Comms faults on the floor &mdash; EtherNet/IP, Modbus, PROFINET, DeviceNet. Physical layer, VFD noise and grounding, switch and duplex faults, and reading the port counters and module fault bits before you swap hardware.",
+      hook:"Network still dropping out? Send me the port-error counts and we&rsquo;ll trace it." },
+    { title:"Losing Screen Efficiency: Blinding & Pegging", file:"/downloads/screen-blinding-pegging-diagnostic.pdf",
+      desc:"Why a vibrating or disc screen loses efficiency &mdash; blinding, pegging and carryover &mdash; sorted by feed, media, machine motion and disc wear, with how to measure it and where the honest fix is mechanical.",
+      hook:"Screen still blinding or carrying over? Tell me the material and we&rsquo;ll work it." },
+    { title:"A Bin Level You Can&rsquo;t Trust", file:"/downloads/bin-hopper-level-reading-diagnostic.pdf",
+      desc:"Radar and ultrasonic false readings in silos and hoppers &mdash; buildup, dust attenuation, false echoes, angle of repose &mdash; how to tell them apart and when to change technology. All diagnosed from the ground, never from inside the bin.",
+      hook:"Level reading still lying to you? Let&rsquo;s figure out which failure mode it is." }
+  ];
+  var checklists = [
+    { title:"Crushing & Screening Controls — walk-around checklist", file:"/downloads/crushing-screening-controls-checklist.pdf",
+      desc:"A one-page walk-around that separates utilization losses from real capacity limits: feed control, choke/level loops, belt-scale honesty, trip settings and the stops that quietly eat your shift.",
+      hook:"Something on the walk-around you want a second opinion on? Send it over." },
+    { title:"MRF Controls — walk-down checklist", file:"/downloads/mrf-controls-checklist.pdf",
+      desc:"A one-page walk-down for a material recovery facility: start/stop sequencing, interlocks, compressed-air floor and manifold pressure, encoder registration, and the multi-vendor seams.",
+      hook:"Found a gap on the walk-down? Let&rsquo;s talk through it." },
+    { title:"Composting & Digester Controls — health check", file:"/downloads/composting-ad-controls-checklist.pdf",
+      desc:"A one-page health check for composting and anaerobic digestion controls, built for a harsh environment &mdash; gas safety first, then aeration, interlocks, and the corrosion that fools your instruments.",
+      hook:"Want a second set of eyes on your digester or aeration controls? Get in touch." },
+    { title:"Controls Commissioning (FAT/SAT) Checklist", file:"/downloads/controls-commissioning-fat-sat-checklist.pdf",
+      desc:"A working checklist for factory and site acceptance: I/O checkout, loop calibration, interlock and permissive proving, sequencing, alarm test, and the power-loss/fail-safe check most schedules skip.",
+      hook:"Commissioning a system and want a second set of eyes on the interlock proving? Get in touch." },
+    { title:"Alarm Rationalization Worksheet", file:"/downloads/alarm-rationalization-worksheet.pdf",
+      desc:"A per-alarm worksheet built on EEMUA-191 / ISA-18.2 thinking: is it actionable, what&rsquo;s the consequence, how much time to respond, priority, setpoint and deadband &mdash; plus a method for killing the nuisance repeaters first.",
+      hook:"Drowning in alarms? Send me your top-offenders list and we&rsquo;ll thin it out." },
+    { title:"PLC Migration Planning Checklist", file:"/downloads/plc-migration-planning-checklist.pdf",
+      desc:"A planning checklist for replacing an obsolete PLC or HMI: risk assessment, capturing the old system before you touch it, I/O mapping, code approach, a written rollback plan, cutover, and proving every interlock after.",
+      hook:"Planning a migration? Happy to sanity-check your cutover and rollback plan." },
+    { title:"Panel & Enclosure Hardening Checklist", file:"/downloads/panel-enclosure-hardening-checklist.pdf",
+      desc:"A hardening checklist for corrosive, dusty and washdown plants: enclosure rating, sealing, condensation and breathing control, corrosion mitigation, thermal and grounding &mdash; keeping the panel alive in a harsh environment.",
+      hook:"Losing panels to the environment? Let&rsquo;s talk about what to harden first." }
+  ];
+  var training = [
+    { title:"Reading a 4&ndash;20 mA Loop", file:"/downloads/reading-4-20ma-loop-primer.pdf",
+      desc:"The instrumentation fundamental everything else rests on: what a current loop is, the live zero and why it starts at 4 mA, how to measure it properly, NAMUR fault bands, and turning mA into engineering units &mdash; taught from first principles.",
+      hook:"Want this walked through with your crew on-site? Happy to talk training." },
+    { title:"PLC Basics for Maintenance Techs", file:"/downloads/plc-basics-maintenance-primer.pdf",
+      desc:"What a PLC actually does: the scan cycle, digital and analog I/O, how to read a ladder rung, and why forcing an I/O point is a powerful tool that must never be left in place. Written for techs, not programmers.",
+      hook:"Want to bring your crew up to speed on the controls? Let&rsquo;s talk." },
+    { title:"Reading Electrical & Control Drawings", file:"/downloads/reading-control-drawings-primer.pdf",
+      desc:"P&IDs, schematics, wiring diagrams and loop sheets &mdash; instrument tags, wire numbering, cross-references, and tracing one circuit end to end across the drawing set. The skill every tech needs and few are taught.",
+      hook:"Want a drawing-reading session with your team? Get in touch." },
+    { title:"VFD Fundamentals: How a Drive Runs a Motor", file:"/downloads/vfd-fundamentals-primer.pdf",
+      desc:"What a variable frequency drive does and why plants use one: volts-per-hertz, the rectifier/DC-bus/inverter chain, the parameters that matter, and the stored-energy hazard behind the cover. Pairs with the VFD trip diagnostic.",
+      hook:"Want drive training for your crew? Happy to set it up." },
+    { title:"PID Loops Without the Math", file:"/downloads/pid-loops-without-math-primer.pdf",
+      desc:"What P, I and D actually do, in plain terms &mdash; and what too much or too little of each looks like on a trend, so a tech can recognize a badly-tuned loop without touching an equation.",
+      hook:"Want help getting your loops stable? Let&rsquo;s look at the trends together." },
+    { title:"Alarms & Interlocks: What They&rsquo;re For", file:"/downloads/alarms-interlocks-primer.pdf",
+      desc:"The vocabulary made clear &mdash; alarm, permissive, interlock, trip, safety system &mdash; and the line between retuning a genuine nuisance and defeating a protective function, taught with a real example instead of a lecture.",
+      hook:"Want to build this thinking into your team? Get in touch." }
+  ];
+
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+  var unlockCards = [];   // { getBtn, dlWrap }
+
+  // ---- modal wiring
+  var modalBg = document.getElementById('modalBg');
+  var leadForm = document.getElementById('leadForm');
+  var leadSuccess = document.getElementById('leadSuccess');
+  var resourceField = document.getElementById('lf-resource');
+  var successEmail = document.getElementById('successEmail');
+
+  function openModal(r){
+    resourceField.value = r ? String(r.title).replace(/<[^>]+>/g,'') : 'Full library';
+    leadForm.style.display = 'block';
+    leadSuccess.style.display = 'none';
+    modalBg.classList.add('open');
+    var nm = document.getElementById('lf-name'); if(nm){ setTimeout(function(){ nm.focus(); }, 30); }
+  }
+  function closeModal(){ modalBg.classList.remove('open'); }
+
+  leadForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    var email = (document.getElementById('lf-email').value || '').trim();
+    var btn = leadForm.querySelector('button[type=submit]');
+    var err = document.getElementById('leadError');
+    if(err) err.style.display = 'none';
+    if(btn){ btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Sending…'; }
+    var fd = new FormData(leadForm);
+    fetch(ENDPOINT, {method:'POST', body:fd})
+      .then(function(res){ return res.ok ? res.json().catch(function(){ return {ok:true}; }) : {ok:false}; })
+      .then(function(data){
+        if(data && data.ok){
+          successEmail.textContent = email || 'your inbox';
+          leadForm.style.display = 'none';
+          leadSuccess.style.display = 'block';
+        } else { throw new Error('failed'); }
+      })
+      .catch(function(){
+        if(btn){ btn.disabled = false; btn.textContent = btn.dataset.label || 'Email me the library link'; }
+        if(err) err.style.display = 'block';
+      });
+  });
+
+  document.getElementById('modalX').addEventListener('click', closeModal);
+  document.getElementById('successClose').addEventListener('click', closeModal);
+  modalBg.addEventListener('click', function(e){ if(e.target === modalBg) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') closeModal(); });
+  document.getElementById('howBtn').addEventListener('click', function(){ openModal(null); });
+
+  // ---- card builders
+  function toolCard(r){
+    var d = document.createElement('div'); d.className='card';
+    d.innerHTML = '<div class="kick">Free tool</div><h3>'+esc(r.title)+'</h3><p>'+r.desc+'</p>'+
+      '<a class="btn teal block" href="'+r.url+'">'+esc(r.cta)+' &rarr;</a>';
+    return d;
+  }
+  function gatedCard(r, kind){
+    var d = document.createElement('div'); d.className='card';
+    d.innerHTML = '<div class="kick">'+kind+' &middot; PDF</div><h3>'+esc(r.title)+'</h3><p>'+r.desc+'</p>'+
+      '<button class="btn block get" type="button">Get instant access &rarr;</button>'+
+      '<div class="dl-wrap">'+
+        '<a class="btn teal block dl" href="'+r.file+'" download>Download the PDF &darr;</a>'+
+        '<span class="hook">'+r.hook+'</span>'+
+        '<span class="cta"><a href="'+PHONE_HREF+'">Call '+PHONE_TXT+'</a></span>'+
+      '</div>';
+    var getBtn = d.querySelector('.get');
+    var dlWrap = d.querySelector('.dl-wrap');
+    // In gate mode, the button opens the "email me the link" modal.
+    // In library mode (arrived via the emailed link), the card shows the download directly.
+    getBtn.addEventListener('click', function(){ openModal(r); });
+    if(unlocked){ getBtn.style.display='none'; dlWrap.style.display='block'; }
+    return d;
+  }
+
+  tools.forEach(function(r){ document.getElementById('tools').appendChild(toolCard(r)); });
+  diagnostics.forEach(function(r){ document.getElementById('diagnostics').appendChild(gatedCard(r,'Diagnostic guide')); });
+  checklists.forEach(function(r){ document.getElementById('checklists').appendChild(gatedCard(r,'Checklist')); });
+  training.forEach(function(r){ document.getElementById('training').appendChild(gatedCard(r,'Training primer')); });
+
+  var n = diagnostics.length + checklists.length + training.length;
+  if(libMode){
+    // The person followed the link from their email — this is their library.
+    var box = document.getElementById('howBox'); box.className = 'how lib';
+    document.getElementById('howcount').innerHTML = 'Welcome back &mdash; all ' + n + ' downloads below are unlocked. Bookmark this page and you can open the library any time.';
+    box.querySelector('.txt b').textContent = 'Your field library is open.';
+    document.getElementById('howBtn').style.display = 'none';
+  } else {
+    document.getElementById('howcount').innerHTML = 'Enter your details once and I&rsquo;ll send you a link to all ' + n + ' guides, checklists and primers on this page &mdash; open it any time, from any device.';
+    document.getElementById('modalCount').innerHTML = '(all ' + n + ')';
+  }
+})();
+</script>
+</body>
+</html>

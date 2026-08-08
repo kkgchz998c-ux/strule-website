@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intermittent PLC Faults: Chasing Ghosts | Strule Automation</title>
+<meta name="description" content="Intermittent PLC faults in composting and AD plants rarely start in the code. A field-first method for catching nuisance trips and ghost I/O faults.">
+<link rel="canonical" href="https://struleautomation.com/blog/intermittent-plc-faults-organics-recycling.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="Intermittent PLC Faults: Chasing Ghosts | Strule Automation">
+<meta property="og:description" content="Intermittent PLC faults in composting and AD plants rarely start in the code. A field-first method for catching nuisance trips and ghost I/O faults.">
+<meta property="og:url" content="https://struleautomation.com/blog/intermittent-plc-faults-organics-recycling.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Intermittent PLC Faults: Chasing Ghosts | Strule Automation">
+<meta name="twitter:description" content="Intermittent PLC faults in composting and AD plants rarely start in the code. A field-first method for catching nuisance trips and ghost I/O faults.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Chasing Ghosts: Diagnosing Intermittent PLC Faults That Come and Go","description":"Intermittent PLC faults in composting and AD plants rarely start in the code. A field-first method for catching nuisance trips and ghost I/O faults.","datePublished":"2026-08-07","author":{"@type":"Person","name":"Jonathan Gilmour"},"publisher":{"@type":"ProfessionalService","name":"Strule Automation","url":"https://struleautomation.com/"},"mainEntityOfPage":"https://struleautomation.com/blog/intermittent-plc-faults-organics-recycling.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a href="../resources.html">Resources</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>Chasing ghosts</div>
+      <div class="label">Field notes · Troubleshooting</div>
+      <h1>Chasing Ghosts: Diagnosing Intermittent PLC Faults That Come and Go</h1>
+      <p class="lead">Come-and-go faults on wet, corrosive plants are rarely in the code. Here's how to corner one instead of resetting it every shift.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+    <p>You know the one. The line trips at 4 a.m. on a Sunday, drops a batch, and by the time anyone with a laptop reaches the panel the fault has cleared and the HMI is green across the board. No alarm history worth reading, no smoking gun, nothing to grab. Intermittent PLC faults are among the most expensive you'll ever chase, because they bleed you twice: lost throughput when they hit, and engineering hours when you go looking and come back empty-handed.</p>
+    <p>If you run an organics recycling, composting, or anaerobic digestion site, you get a special edition of the problem. Your control gear lives in one of the harsher environments industrial electronics survive: warm, wet, laden with hydrogen sulfide (H2S) and ammonia, dusty, cycling through big temperature swings daily. That environment doesn't throw random faults — it throws the same handful of faults on a schedule you haven't decoded yet. And on a digester, the knock-on effects are what hurt: a signal dropping out for a moment can stall a feed or a mixer, and if that stoppage runs on unnoticed it can upset the biology or trigger an odor complaint that brings a call from the county.</p>
+
+    <h3>"Intermittent" usually describes the environment, not the electronics</h3>
+    <p>When a fault comes and goes, it's almost always tracking something you haven't identified yet. Ask what's different at the moment it trips. Time of day is usually ambient temperature; wash-down means moisture; digester load moves vibration and current draw together. A trip that only shows up on cold mornings after a humid night isn't a mystery — it's condensation forming across a terminal strip, bridging something it shouldn't and burning off by mid-morning. You don't have a ghost. You have a dew point.</p>
+    <p>On these sites the usual suspects cluster in the physical layer. Moisture tops the list: enclosures breathe as they heat and cool, pull in humid air, and drop it as water on the coldest surface inside. H2S and ammonia do the slower work, growing a high-resistance film on terminals and connectors that reads fine on a continuity check and goes marginal under load or vibration. I've opened field boxes where the copper had gone black as a spent match, and the "sensor drift" someone chased in software for a month was a sulfided ferrule adding a few ohms every time the humidity climbed.</p>
+    <p>Then there's everything mechanical. Vibration from blowers, mixers, and screens finds every termination that went in a quarter-turn shy on install day. Thermal cycling does the rest: brass, steel, and aluminum expand at different rates, so every hot-cold cycle works a joint a little, and over a season the clamp takes a set and loosens — usually reading worst when everything's cold and contracted. Long analog runs are antennas for every VFD on site, and a shield grounded at both ends, or nowhere, or bonded to a floating "ground" gives you 4–20 mA signals that wander and spike just like a failing sensor and aren't.</p>
+
+    <h3>Physical-first, before you open the code</h3>
+    <p>When a fault won't reproduce, there's a strong temptation to go straight into the logic and start reading ladder. Resist it a while. Most come-and-go faults on wet, corrosive, shaking plants are field problems — wiring, power quality, sensor degradation, connectors — and if you modify code to chase a corroded terminal, you'll "fix" it by coincidence and watch it come back the first cold snap of winter.</p>
+    <p>So set the baseline physically first. Is the 24 VDC feeding your remote I/O holding up under full load, or sagging on every blower start — an inrush dip deep enough to reset a marginal module or brown out a rack for a scan? Are shields and grounds bonded the way the drawings claim, or the way it actually got wired in a hurry on a Friday? A structured walk of the panel, the power, the grounding, and the field terminations — done methodically and written down — gives you a documented starting point, and often turns up the problem before any logging is needed.</p>
+
+    <h3>Catching a fault that refuses to reproduce</h3>
+    <p>When the physical survey doesn't hand you the answer, stop trying to catch the fault live and set a trap so it catches itself. Read and timestamp the controller's fault and diagnostic buffers first. Every platform keeps some form of fault log and module diagnostic word, and people ignore them because the display just says "faulted." Line the timestamps up against your process historian and see what else moved in that second. Then instrument the suspects: trend the signals you distrust — the analog that drifts, the discrete that flickers, the remote I/O rack's comms status — sampled fast enough to see the event instead of averaging it away. Where you can, arm an event trigger that snapshots the tags the instant a condition goes true, so you catch the state at the trip, not the tidied-up aftermath. Log the environment alongside it — that correlation is usually where the answer's been hiding.</p>
+    <p>I'll be straight about the cost. I've watched it go both ways. Sometimes you instrument a signal, wait a week, and the thing simply doesn't fire while you're watching. Meter's running the whole time. That's the honest reality of intermittent I/O fault troubleshooting, and it's exactly why you don't lean on logging alone.</p>
+
+    <h3>It isn't always the field</h3>
+    <p>After three sections on the wiring, I won't pretend software is witchcraft. Occasionally it really is the controls or comms layer, and those causes hide just as well. A flaky network segment or a marginal fiber run drops packets only when it's hot, or when someone leans on the cable tray. EtherNet/IP connection timeouts, Profibus token drops, a duplicate IP that only conflicts when a maintenance laptop joins the network — all of it presents as random I/O dropouts. On the software side there's scan-time creep, a watchdog that only bites under a rare state combination, or a timer that misbehaves when three conditions line up: maybe one event in eight.</p>
+    <p>You tell these apart with the same discipline. If the buffers show clean I/O and healthy comms at the moment of the trip and the logic still faulted, then you open the code — this time with evidence instead of a hunch.</p>
+    <p>One category earns its own sentence. An intermittent trip on a light curtain, a tired E-stop contact block, or a safety relay is sometimes the system working correctly, catching a real, marginal fault you'd much rather it caught than missed. Do not "solve" a nuisance safety trip by desensitizing the safety function. Find out what it's actually seeing.</p>
+
+    <h3>What this looks like on a real plant</h3>
+    <p>A compost site had a screening line that faulted a handful of times a week, always clearing before anyone arrived, always blamed on "the PLC glitching." Once someone timestamped the fault log against the historian, every event fell within twenty minutes of the morning wash-down. Trending the I/O supply and enclosure humidity made it plain: wash-down drove the humidity up, condensation formed on a corroded terminal strip in a field box downstream of the screening area, and a digital input the line depended on went marginal for a few scans.</p>
+    <p>There was no single clean root cause to bill as a hero fix. That terminal strip was one of a whole population that had breathed the same sulfide for years, so the corroded suspects got re-terminated, a filtered breather and drain went in so the enclosure stopped trapping wet air, and one analog run got re-routed while the covers were off. Targeted replacement plus a bit of environmental hardening — no dramatic single-part fix to point at, but it held. On a biogas plant, remember that some enclosures sit in classified areas — sealing, venting, or pressurizing one is a hazardous-location question under the NEC as much as a moisture one, not something to fix with a drill and good intentions.</p>
+
+    <h3>When it's worth bringing in help</h3>
+    <p>The honest version, for whoever signs off on the time: keep chasing it yourself while the cost of looking stays below the cost of the fault. That's often the right call — nobody knows your plant like the people who run it every day. But once you've made two or three trips and come back empty, or the fault is safety-related or sitting on a line you can't afford to lose, a fresh set of eyes usually earns its keep. Someone who <a href="../services.html">chases these across a lot of different plants</a> tends to have met the same ghost before, and the pattern lands faster for it.</p>
+    <p>Whoever does the chasing, the method is the same: start in the field, not the ladder, log the environment right next to the signal, and let the fault catch itself instead of waiting to catch it live. If you're stuck on one that won't quit, <a href="../index.html#contact">tell me what's tripping</a> — happy to talk it through.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour — Strule Automation, independent, vendor-neutral control-systems engineering in the Bay Area and Northern California. <a class="backlink" href="../blog.html">← More field notes</a></p>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>© 2026 Strule Automation · Northern California</div>
+    <div><a href="../services.html">Services</a> · <a href="../sectors.html">Sectors</a> · <a href="../blog.html">Blog</a> · <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving the Bay Area and Northern California — organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crushing & Screening Plant Controls: A Field Guide | Strule Automation</title>
+<meta name="description" content="A working engineer's guide to getting more from a crushing and screening plant through controls: feed, surge bins, screens, measurement, and safe trips.">
+<link rel="canonical" href="https://struleautomation.com/blog/crushing-screening-controls-guide.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="Crushing & Screening Plant Controls: A Field Guide | Strule Automation">
+<meta property="og:description" content="A working engineer's guide to getting more from a crushing and screening plant through controls: feed, surge bins, screens, measurement, and safe trips.">
+<meta property="og:url" content="https://struleautomation.com/blog/crushing-screening-controls-guide.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crushing & Screening Plant Controls: A Field Guide | Strule Automation">
+<meta name="twitter:description" content="A working engineer's guide to getting more from a crushing and screening plant through controls: feed, surge bins, screens, measurement, and safe trips.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Getting More From a Crushing and Screening Plant Through Controls","author":{"@type":"Person","name":"Jonathan Gilmour"},"publisher":{"@type":"Organization","name":"Strule Automation"},"mainEntityOfPage":"https://struleautomation.com/blog/crushing-screening-controls-guide.html","description":"A working engineer's guide to getting more from a crushing and screening plant through controls: feed, surge bins, screens, measurement, and safe trips."}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a href="../resources.html">Resources</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>Getting More From a Crushing and S…</div>
+      <div class="label">Field notes &middot; Sector guide</div>
+      <h1>Getting More From a Crushing and Screening Plant Through Controls</h1>
+      <p class="lead">Most of the crushing and screening plants I get called out to are not short on horsepower. They are short on hours of good running. The crusher spends part of every shift starved or gorged, the surge bin bounces between full and empty, and a screen deck that should be doing clean work is passing material it ought to hold back. None of that shows up as a dramatic failure. It shows up as a monthly tonnage number below what the plant is plainly capable of, with no single reason anyone can name.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+<p>This guide is about closing that gap with controls. The aim is to make the plant run steadily at the rate the mechanical design already allows, rather than to buy bigger iron or chase a magic setpoint. I work as an independent, vendor-neutral controls engineer, which means I have no crusher brand and no automation platform to sell you. What follows is how I actually think about these plants when I walk them. If you run <a href="/sectors/quarrying-aggregates.html">aggregate operations</a>, most of this should feel familiar, and a few pieces might change how you look at your next shift report.</p>
+<h3>Chase Utilization Before Capacity</h3>
+<p>Here is the thing I say on almost every first visit. If you feel like you have a capacity problem, there is a good chance you actually have a utilization problem.</p>
+<p>Capacity is what the plant can produce in an hour when everything is running well. Utilization is how much of the available time you actually spend at that rate. A plant rated for a given tons per hour that only holds that rate for a fraction of the shift is producing well under what it could, and no amount of extra crusher power fixes it. The fix is running closer to the rated rate, more of the time, with fewer stops and less time spent recovering from stops.</p>
+<p>The reason this matters for controls specifically is that most utilization losses are control losses in disguise. A crusher that trips on high power because the feed surged. A conveyor that gets shut down because the bin downstream filled up. A screen that blinded and started carrying material over, so an operator throttled the whole plant back by hand to cope. Each of those is a place where a steadier control strategy buys back running time you already paid for.</p>
+<p>Before touching a single tuning parameter, I want to see the plant's own record of how it spends its hours. If you have run-time and stoppage logging in the programmable logic controller (PLC), pull it. If you do not, that is often the first thing worth adding, because without it you are guessing at where the hours actually go. I wrote more about this way of thinking in a <a href="/blog/crushing-plant-throughput-optimization.html">field note on crushing plant throughput</a>, and it is the lens for everything below.</p>
+<h3>Feed Control and Choke Feeding</h3>
+<p>This section is about the secondary and tertiary <strong>cone</strong> crushers, which is where choke feeding on a power-regulated loop earns its keep. A cone wants to be choke fed: the crushing chamber stays full, so rock crushes against rock and the machine produces a consistent, well-shaped product. Run it starved, with the chamber only part full, and you get worse product shape, uneven liner wear, and lower throughput for the same power. Feed control is the single biggest lever most plants have on a cone, and it is almost always a controls job.</p>
+<p>A note on scope, because the practice is not universal. Primary gyratories are dump- or apron-fed straight from haul trucks or a rock breaker, not surge-bin choke-fed in the sense I mean here, so the power-regulated feed loop below is not the same conversation for them. And on most aggregate plants the primary is a jaw, not a gyratory or a cone, which I cover separately at the end of this section.</p>
+<p>The goal on the cone is to keep the crusher loaded right up to the edge of its comfortable working range and hold it there, while the feed varies. Material coming off a pit face or a primary is never uniform. The control system's job is to smooth that out.</p>
+<h3>Control on True Power Instead of Amps</h3>
+<p>This is the detail I care most about, and the one most often gotten wrong. Many feed control loops regulate on motor current, in amps. Amps are easy to get and they feel like a proxy for load. The trouble is that the relationship between amps and actual mechanical load is not clean. At light loads a motor draws a fair amount of current just magnetizing itself, so amps do not drop off proportionally when the crusher unloads. Power factor, meaning how much of the drawn current actually does useful work rather than just circulating, shifts with load. Line voltage moves around during the day. All of that means a given amp reading can correspond to quite different amounts of real work being done in the chamber.</p>
+<p>True motor power, measured in kilowatts (kW), is a much more honest picture of how hard the crusher is actually working. Power accounts for voltage and power factor, so a kilowatt of power is a kilowatt whether the line is sagging under afternoon load or not. If you regulate the feeder to hold the crusher at a target power draw, and you have the kilowatt signal to do it, the loop behaves far more predictably than an amp-based one. Most modern variable frequency drives (VFDs) and many smart motor protection relays already calculate and publish real power. Often the signal is sitting there in the drive, unused, while the feed loop reads a separate current transformer (CT), which measures line current directly. Getting power onto the network and into the loop is usually a configuration change rather than new hardware.</p>
+<p>I am not saying amps are useless. On a fixed-speed motor with a stable supply, an amp-based loop can run acceptably for years. But if you are fighting a feed loop that hunts or drifts, ask what it controls on. Moving from amps to kilowatts is one of the higher-value, lower-cost changes on a lot of these plants.</p>
+<h3>Keep the Feed Loop Slow</h3>
+<p>However you measure load, resist the urge to make the feed loop fast. The crusher chamber is a buffer with real transport delay: material you add at the feeder takes time to work down and change the power draw. A loop tuned aggressively against that delay chases its own tail, surging the feeder up and down and making the very instability you were trying to remove. A calmer loop that nudges the feed and waits usually holds a steadier chamber than a twitchy one.</p>
+<h3>Jaw Primaries Feed Differently</h3>
+<p>On most aggregate plants the primary is a jaw, and it does not choke feed the way a cone does. A jaw wants a full chamber for good nip and steady output, but pack the throat and you do not gently load a chamber, you bog the drive and stall the flywheels. So the aim of jaw feed control is to keep the machine full enough to stay productive without packing: usually regulate the apron or pan feeder against crusher cavity level and drive load together, and back off hard the moment either climbs. The signals behave differently than on a cone. A jaw's power draw is spikier, tied to individual large rocks fracturing rather than a steady bed of rock, so you filter the reading harder and react slower. Do not carry cone feed tuning straight across to a jaw.</p>
+<h3>Surge Bins and Buffer Management</h3>
+<p>A surge bin or surge pile sits between two parts of the plant that do not naturally run at the same rate, and its whole purpose is to absorb the mismatch. The primary feeds in lumps. The secondary and tertiary circuit wants a steady diet. The bin is the shock absorber between them.</p>
+<p>The mistake I see is treating the bin like a tank you want to keep full, or like one you want to keep empty, when what you actually want is to keep it in the middle with room to move both ways. A bin pinned at full has no capacity left to absorb a surge from upstream, so the next surge backs up and trips the primary. A bin pinned near empty starves the downstream circuit the moment the primary hiccups. The value of the buffer lives in the middle of its range, where it still has room to move both ways.</p>
+<p>So the control strategy is to regulate downstream draw to hold the bin around a target level, and to let the level float within a band rather than forcing it to a hard number. Give the level loop a wide, slow response. You want it to lean the downstream rate up gently when the bin is filling and ease it down when the bin is drawing low, so the bin does the buffering and the crushers see a smooth demand. A tight bin-level loop just passes the upstream variability straight through to the machines you were trying to protect.</p>
+<p>Level measurement matters here too. Radar or ultrasonic level on a bin full of dust and an uneven material surface will bounce around. Before you tune anything, look at the raw level signal and add sensible filtering, because a loop is only ever as good as the measurement under it. And keep the low-level and high-level protection separate from the regulating loop. The regulating loop keeps the bin comfortable; the protection stops the belt if the bin genuinely fills or empties.</p>
+<h3>Screen Behavior: Blinding, Pegging, and Recirculating Load</h3>
+<p>Screens quietly cost more throughput than most operators credit, and the symptoms are easy to misread from the control room.</p>
+<p><strong>Blinding</strong> is fine, damp or sticky material coating and bridging the screen cloth so the openings skin over. Moisture and clay are the usual culprits; the fines mat onto the wire and seal it. <strong>Pegging</strong> is different: near-size particles physically wedge into the apertures and lodge there, plugging them one hole at a time. The two have separate causes, but they do the same thing to your numbers. The screen's open area drops, undersize that should have dropped through instead carries over the end of the deck, and your product gradation, the mix of particle sizes, drifts off spec. Sticky, damp, clay-bearing feed makes both worse.</p>
+<p>Here is why it matters to a controls person even though the fix is often mechanical. When a screen stops passing undersize, that material does not vanish. On a closed circuit it goes back around to the crusher as recirculating load. The crusher is now chewing on material it already made to size, its power climbs, and if you are feed-controlling on power the loop reads that as a full chamber and backs off the fresh feed. So a blinded screen quietly throttles your whole plant, and the feed loop is doing exactly what you told it to. From the control room it can look like a feed or crusher problem when the real cause is a matted deck three conveyors downstream.</p>
+<p>What controls can do about it: trend the recirculating load if you have a scale on that return, trend screen motor power and any available bearing or vibration data, and watch product gradation over time if you sample it. A slow rise in circulating load or a drift in gradation is often the earliest honest sign that a deck is blinding, well before anyone standing at the screen would call it. What controls cannot do is un-blind the deck. That is media selection, screen stroke and speed, spray bars, or heating, and I will come back to when the answer lives in the hardware rather than the code.</p>
+<h3>Honest Measurement: Calibrate the Belt Scale</h3>
+<p>Every optimization argument on a plant eventually comes down to a number, and on an aggregate plant that number usually comes off a belt scale. So I will say it plainly. Calibrate the belt scale, and keep calibrating it.</p>
+<p>A belt scale is a load cell weighing a short span of a moving belt, multiplied by belt speed, integrated over time. It drifts. Belt tension changes with the seasons and with wear. Material builds up on the idlers. The zero wanders. A scale that read true at commissioning can be several percent off a year later, and several percent on your primary tonnage number is the difference between a real improvement and a rounding error you talked yourself into. I have watched people chase a throughput gain that existed only in an uncalibrated scale, and real gains get dismissed because the scale hid them.</p>
+<p>Zero the scale on an empty, running belt regularly. Do a material test, running a known weight across and comparing what the scale reports against a truck weighed on a certified static scale, on whatever interval your quality system calls for. If two scales on the same material stream disagree, find out why before you trust either. This is unglamorous, and it is the foundation the whole optimization case stands on.</p>
+<p>The same discipline applies to the power and level signals feeding your loops. A control system acts on what it is told, and if the signal it reads is wrong, the loop will act on that wrong number just as readily as a right one.</p>
+<h3>When the Real Answer Is Mechanical or a Hardware Swap</h3>
+<p>I make my living on controls, so it would be easy to frame every problem as a tuning problem. It is not, and part of being useful is saying so.</p>
+<p>If a screen is blinding because the media is wrong for a sticky feed, no control change fixes that; the honest answer is different media, a different stroke, spray bars, or in some climates deck heating. If a crusher cannot make product shape because its liner profile is worn out, that is a liner problem, and no setpoint reaches it. A chute that plugs every time it rains because the geometry holds wet fines needs a geometry change. And if a conveyor is the true bottleneck because it is undersized for the rate everything else can hit, smoothing the feed loop just delivers material to a belt that still cannot carry it, and the fix is the belt.</p>
+<p>Sometimes the boundary sits at the instrument. A feed loop that will never behave because it reads a current transformer with no real power available might genuinely need a drive or a power meter added to expose kilowatts. That is a small hardware change in service of a controls result, and it is worth it. An independent set of eyes helps here, because the answer sometimes points away from more automation, and a vendor whose product is automation is not the best person to hear it from. I wrote about that tension between an <a href="/blog/independent-engineer-vs-oem.html">independent engineer and an equipment maker</a> if you want the longer version.</p>
+<p>Controls give you the most leverage when the mechanical plant is fundamentally sound and just running inconsistently. When the mechanicals are the real constraint, controls can help you see it clearly and run right up to it, but they cannot move it.</p>
+<h3>Tuning Conservative Trips Without Ever Defeating Protection</h3>
+<p>The last piece, and the one I will not compromise on. A lot of nuisance stops on these plants come from protective trips set conservatively at commissioning and never revisited. A high-power trip on the crusher set with a big margin, so it fires on normal surges. A belt-drift or plugged-chute switch that trips on nothing. A vibration trip on a screen set for a machine that has since been rebalanced. Every one of those costs you utilization, and every one is tempting to make go away by widening the trip or bypassing the switch.</p>
+<p>There is a bright line here. Retuning a nuisance trip, understanding why it fires and adjusting it back to a level that still protects the machine while it stops firing on normal operation, is good engineering. Studying the real load profile and moving a crusher power trip so it rides through normal surges but still catches a genuine overload is exactly the kind of work worth doing. That is tuning the alarm to the real process, and it buys back running time honestly.</p>
+<p>Jumpering out a protective interlock, bypassing a switch, or widening a trip past the point where it actually protects anything is not tuning. It is removing the protection, and on machines with this much stored energy that is how people get hurt and how you turn a stopped belt into a wrecked gearbox. I do not do it and I will tell you not to. If a protective function is nuisance-tripping, the right path is to understand the mechanism, correct the cause where you can, and set the trip to the tightest level that still does its job. Never defeat the function. Sorting out which alarms actually mean something is often the fastest route to a calmer, safer plant, the same logic behind <a href="/blog/alarm-rationalization-food-beverage.html">rationalizing a flood of alarms</a> in any process.</p>
+<h3>Where to Start</h3>
+<p>If you take one thing from all of this, take the utilization idea. Walk your plant and honestly account for where the running hours go, because that number usually reveals more than any single loop. Then work down the chain: feed control on true power, a surge bin managed as a buffer instead of a tank, screens watched for the quiet signs of blinding, and a belt scale you actually trust. None of it requires ripping anything out. Most of it is making equipment you already own run the way it was meant to.</p>
+<p>I am Jonathan Gilmour, and I run Strule Automation working on PLC, human-machine interface (HMI), and supervisory control and data acquisition (SCADA) systems across the Bay Area and Northern California. I am happy to look at a plant and tell you honestly whether the answer is in the code or in the iron. If any of this matches what you are fighting, take a look at <a href="/services.html">what I do</a> or just <a href="/index.html#contact">get in touch</a> and describe the plant. Even a short conversation usually surfaces one thing worth trying.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in the Bay Area and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+<section><div class="wrap"><div class="cta">
+      <h2>Got a plant that isn't behaving?</h2>
+      <p>Tell me what's giving you trouble. The first conversation is free, and you'll get a straight assessment.</p>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </div></div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving the Bay Area and Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

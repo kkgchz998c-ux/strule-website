@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Compressed Air Cost &amp; Leak Estimator — Strule Automation</title>
+<style>
+  :root {
+    --navy: #132a3e;
+    --teal: #2f6d8f;
+    --slate: #64748b;
+    --line: #e2e8f0;
+    --bg-soft: #f8fafc;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--white);
+    color: #1f2937;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  header.site {
+    background: var(--navy);
+    color: #fff;
+    padding: 18px 20px;
+  }
+  header.site .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    font-size: 15px;
+  }
+  header.site .wrap span { color: #9fc3d6; font-weight: 500; }
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 28px 20px 40px;
+  }
+  h1 {
+    color: var(--navy);
+    font-size: 27px;
+    line-height: 1.25;
+    margin: 8px 0 6px;
+  }
+  .lede {
+    color: var(--slate);
+    margin: 0 0 24px;
+    font-size: 17px;
+  }
+  h2 {
+    color: var(--navy);
+    font-size: 19px;
+    margin: 0 0 16px;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 22px;
+    box-shadow: 0 1px 2px rgba(19,42,62,0.04);
+  }
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  label {
+    display: block;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+    font-size: 15px;
+  }
+  .help {
+    display: block;
+    color: var(--slate);
+    font-size: 13px;
+    margin-bottom: 7px;
+  }
+  input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 16px;
+    color: #1f2937;
+    background: #fff;
+  }
+  input[type="number"]:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+    border-color: var(--teal);
+  }
+  select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 16px;
+    color: #1f2937;
+    background: #fff;
+  }
+  select:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+    border-color: var(--teal);
+  }
+  .unit { color: var(--slate); font-weight: 500; font-size: 13px; }
+  .results .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .results .row:last-child { border-bottom: none; }
+  .results .label {
+    color: var(--slate);
+    font-size: 15px;
+    max-width: 62%;
+  }
+  .results .value {
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 20px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .value.accent { color: var(--teal); }
+  .hint {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    border-radius: 9px;
+    padding: 10px 12px;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .interp {
+    background: var(--bg-soft);
+    border-left: 4px solid var(--teal);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: #334155;
+    font-size: 15.5px;
+    margin-top: 6px;
+  }
+  .interp strong { color: var(--navy); }
+  .note {
+    color: var(--slate);
+    font-size: 13px;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .illus {
+    color: var(--slate);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  footer.site {
+    border-top: 1px solid var(--line);
+    background: var(--bg-soft);
+    padding: 26px 20px 34px;
+  }
+  footer.site .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    color: var(--slate);
+    font-size: 14.5px;
+  }
+  footer.site a { color: var(--teal); text-decoration: none; }
+  footer.site a:hover { text-decoration: underline; }
+  footer.site .cta { margin-bottom: 10px; color: #334155; }
+  @media (max-width: 560px) {
+    .results .value { font-size: 18px; }
+    h1 { font-size: 23px; }
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">STRULE AUTOMATION <span>&mdash; Field notes</span></div>
+</header>
+
+<main>
+  <h1>Compressed Air Cost &amp; Leak Estimator</h1>
+  <p class="lede">Put in your compressor motor size, how hard it works, and your power rate, and this works out roughly what it costs to make your plant air for a year &mdash; and how much of that is blowing out through leaks. All the math is shown, and nothing leaves your browser.</p>
+
+  <div class="card">
+    <h2>Your numbers</h2>
+    <div class="field">
+      <label for="motor">Compressor motor size</label>
+      <span class="help">The rated motor power off the nameplate. Pick the unit you have. This is the motor, not the delivered air &mdash; a 100&nbsp;hp compressor has a 100&nbsp;hp motor.</span>
+      <input type="number" id="motor" value="100" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="unit">Motor size unit</label>
+      <span class="help">Horsepower (hp) or kilowatts (kW). 1&nbsp;hp &approx; 0.746&nbsp;kW.</span>
+      <select id="unit">
+        <option value="hp" selected>Horsepower (hp)</option>
+        <option value="kw">Kilowatts (kW)</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="load">Average load fraction <span class="unit">(%)</span></label>
+      <span class="help">How hard the compressor works on average across the hours it is on. A fixed-speed unit that loads and unloads a lot might average 50&ndash;70%; a well-matched or variable-speed drive (VSD) unit runs higher. If you are not sure, 65% is a fair starting point &mdash; check against your machine's own duty.</span>
+      <input type="number" id="load" value="65" min="0" max="100" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="eff">Motor and drive efficiency <span class="unit">(%)</span></label>
+      <span class="help">How much of the electrical power reaches the shaft. A modern premium-efficiency motor sits around 92&ndash;95%. This does not include air-end losses; it just converts electrical draw to shaft work. Typical &mdash; verify against your motor's efficiency class.</span>
+      <input type="number" id="eff" value="93" min="1" max="100" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="rate">Electricity rate <span class="unit">($/kWh)</span></label>
+      <span class="help">Your blended cost per kilowatt-hour (kWh) off the utility bill, including demand charges if you want a fuller picture. Northern California industrial rates often land near $0.18&ndash;$0.25/kWh &mdash; use your actual bill.</span>
+      <input type="number" id="rate" value="0.20" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="hours">Annual run hours <span class="unit">(hours/year)</span></label>
+      <span class="help">Hours per year the compressor is energized and running. One shift, five days is roughly 2,000; two shifts is roughly 4,000; around the clock is 8,760.</span>
+      <input type="number" id="hours" value="4000" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="leak">Estimated leak fraction <span class="unit">(%)</span></label>
+      <span class="help">Share of the air you make that never does useful work &mdash; it just leaks out. Quick gauge with the plant idle and no production demand: watch the compressor over several load/unload cycles and time how long it runs loaded versus unloaded. Loaded time &divide; (loaded + unloaded) is roughly your leak fraction, since with nothing running that air is going to leaks. That timing check works on a load/unload machine; a variable-speed drive (VSD) unit won't cycle that way, so instead read its power draw or flow with the plant idle. Plants that have never chased leaks often land 20&ndash;35%; a tight, maintained system is under 10%.</span>
+      <input type="number" id="leak" value="25" min="0" max="100" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="targetleak">Target leak fraction for the &ldquo;what if&rdquo; <span class="unit">(%)</span></label>
+      <span class="help">Where you think you could get leaks with a survey-and-repair round. Under 10% is a realistic well-kept target for most plants.</span>
+      <input type="number" id="targetleak" value="10" min="0" max="100" step="any" inputmode="decimal">
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>What this suggests</h2>
+    <div id="results" class="results"></div>
+    <div id="interp"></div>
+    <p class="note" id="howcalc"></p>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="cta">If you want a second set of eyes on a compressed-air bill that keeps climbing, or on the controls tying your compressors together, <a href="https://struleautomation.com/index.html#contact">get in touch</a>.</div>
+    <div>Strule Automation &mdash; independent, vendor-neutral PLC, HMI, and SCADA work across the Bay Area and Northern California. <a href="https://struleautomation.com">struleautomation.com</a></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var HP_TO_KW = 0.746;
+
+  var ids = ["motor", "load", "eff", "rate", "hours", "leak", "targetleak"];
+  var el = {};
+  ids.forEach(function (id) { el[id] = document.getElementById(id); });
+  var unitEl = document.getElementById("unit");
+  var resultsEl = document.getElementById("results");
+  var interpEl = document.getElementById("interp");
+  var howEl = document.getElementById("howcalc");
+
+  function num(id) {
+    var raw = el[id].value.trim();
+    if (raw === "") return null;
+    var v = Number(raw);
+    if (!isFinite(v)) return null;
+    return v;
+  }
+
+  function fmt(n, dp) {
+    if (dp === undefined) dp = 0;
+    return n.toLocaleString("en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  }
+
+  function row(label, value, accent) {
+    return '<div class="row"><div class="label">' + label + '</div>' +
+      '<div class="value' + (accent ? ' accent' : '') + '">' + value + '</div></div>';
+  }
+
+  function hint(msg) {
+    return '<div class="hint">' + msg + '</div>';
+  }
+
+  function recompute() {
+    var motor = num("motor");
+    var load = num("load");
+    var eff = num("eff");
+    var rate = num("rate");
+    var hours = num("hours");
+    var leak = num("leak");
+    var targetLeak = num("targetleak");
+    var unit = unitEl.value;
+
+    var problems = [];
+
+    if (motor === null || motor <= 0) problems.push("Enter a motor size greater than zero.");
+    if (load === null || load < 0) problems.push("Enter an average load fraction of zero or more.");
+    if (eff === null || eff <= 0) problems.push("Enter a motor and drive efficiency greater than zero.");
+    if (rate === null || rate < 0) problems.push("Enter an electricity rate of zero or more.");
+    if (hours === null || hours < 0) problems.push("Enter annual run hours of zero or more.");
+    if (leak === null || leak < 0) leak = 0;
+
+    // Clamp the absurd inputs rather than reject them outright.
+    if (load !== null && load > 100) load = 100;
+    if (eff !== null && eff > 100) eff = 100;
+    if (leak > 100) leak = 100;
+    if (targetLeak === null || targetLeak < 0) targetLeak = 0;
+    if (targetLeak > 100) targetLeak = 100;
+    if (hours !== null && hours > 8760) hours = 8760;
+
+    if (problems.length) {
+      resultsEl.innerHTML = hint(problems.join("<br>"));
+      interpEl.innerHTML = "";
+      howEl.textContent = "";
+      return;
+    }
+
+    // Motor rated power in kW.
+    var motorKW = (unit === "hp") ? motor * HP_TO_KW : motor;
+
+    // Average electrical draw = rated kW * load fraction / efficiency.
+    var loadFrac = load / 100;
+    var effFrac = eff / 100;
+    var avgDrawKW = motorKW * loadFrac / effFrac;
+
+    var annualKWh = avgDrawKW * hours;
+    var annualCost = annualKWh * rate;
+
+    var leakFrac = leak / 100;
+    var leakKW = avgDrawKW * leakFrac;
+    var leakCost = annualCost * leakFrac;
+
+    var targetFrac = targetLeak / 100;
+
+    var html = "";
+    html += row("Average electrical draw", fmt(avgDrawKW, 1) + " kW");
+    html += row("Air made per year (energy)", fmt(annualKWh, 0) + " kWh");
+    html += row("Annual cost to make the air", "$" + fmt(annualCost, 0), true);
+    html += row("Power lost to leaks (average)", fmt(leakKW, 1) + " kW");
+    html += row("Annual cost lost to leaks", "$" + fmt(leakCost, 0), true);
+
+    if (targetFrac >= leakFrac) {
+      html += row("What-if saving cutting leaks to " + fmt(targetLeak, 0) + "%",
+        "Target is at or above current &mdash; no saving shown", false);
+    } else {
+      // Saving assumes the compressor output tracks demand: cut leak air, cut energy.
+      var savedFrac = leakFrac - targetFrac;
+      var savedCost = annualCost * savedFrac;
+      var savedKWh = annualKWh * savedFrac;
+      html += row("Saving if leaks cut to " + fmt(targetLeak, 0) + "% (energy that tracks demand)",
+        "$" + fmt(savedCost, 0) + "/yr", true);
+      html += row("Energy freed at that target",
+        fmt(savedKWh, 0) + " kWh/yr", false);
+    }
+
+    resultsEl.innerHTML = html;
+
+    // Interpretation that changes with the numbers.
+    var interp = "";
+    if (leak >= 30) {
+      interp = "<strong>The leaks are the loudest number on the page.</strong> A quarter to a third of your air bill going to leaks is common on a system that has never been surveyed, and it is almost always the cheapest air you will ever recover. An ultrasonic leak survey, tag-and-repair, and a follow-up round tends to pay back fast because you are not buying anything &mdash; you are just stopping paying for air that does no work. Start with the fittings, quick-disconnects, hose whips, drain traps, and threaded joints; those are where most of it hides.";
+    } else if (leak >= 15) {
+      interp = "<strong>There is real money in the leaks, worth a survey round.</strong> You are in the range where a leak survey and repair pass usually pays for itself, though you are not in crisis. Tag what you find, fix on a schedule, and re-check &mdash; leak rate creeps back up between rounds, so a once- or twice-a-year sweep keeps it honest.";
+    } else if (leak > 0) {
+      interp = "<strong>Leaks look reasonably under control.</strong> Under about 10% suggests the system is maintained, so the bigger levers may be elsewhere: how well compressor output matches actual demand, whether you are running more pressure than the plant needs, and whether multiple compressors are sequenced sensibly instead of fighting each other. A dropped setpoint of a couple psi across the whole plant is often free money.";
+    } else {
+      interp = "<strong>No leaks entered.</strong> Even a tight system carries a few percent; a truly zero-leak plant is rare. Put in a real estimate from the loaded-versus-unloaded check to see the leak share.";
+    }
+
+    interp += "<br><br>These are planning estimates to size up the opportunity, not a metered audit. The real draw moves with pressure setpoint, ambient conditions, how the compressor loads and unloads, and how well it is matched to demand. The saving shown assumes the compressor actually turns air production down when the leaks stop &mdash; a fixed-speed machine that keeps cycling may not capture all of it until controls or sequencing catch up. And to be plain about scope: fixing air-supply problems is mechanical and operational work &mdash; find and repair the leaks, right-size the pressure, service the dryers and drains. Before anyone opens an air line to fix a leak or rebuild a drain trap, isolate that section and bleed the receiver and downstream volume to zero; stored receiver pressure and compressed-air injection through the skin both put people in the hospital, and a receiver holds that energy long after the compressor stops. It is not a controls setpoint you can dial in from the HMI, and no PLC change makes a leaking system stop leaking.";
+
+    interpEl.innerHTML = '<div class="interp">' + interp + '</div>';
+
+    // How it is calculated.
+    var unitLabel = (unit === "hp")
+      ? ("motor kW = rated hp &times; 0.746 (so " + fmt(motor, 0) + " hp = " + fmt(motorKW, 1) + " kW); ")
+      : ("motor kW is entered directly (" + fmt(motorKW, 1) + " kW); ");
+    howEl.innerHTML = "How this is calculated: " + unitLabel +
+      "average electrical draw = motor kW &times; load fraction &divide; efficiency = " +
+      fmt(motorKW, 1) + " &times; " + fmt(loadFrac, 2) + " &divide; " + fmt(effFrac, 2) + " = " +
+      fmt(avgDrawKW, 1) + " kW. " +
+      "Annual energy = average draw &times; annual run hours = " + fmt(avgDrawKW, 1) + " &times; " +
+      fmt(hours, 0) + " = " + fmt(annualKWh, 0) + " kWh. " +
+      "Annual cost = annual energy &times; rate = " + fmt(annualKWh, 0) + " &times; $" + fmt(rate, 3) + " = $" +
+      fmt(annualCost, 0) + ". " +
+      "Cost lost to leaks = annual cost &times; leak fraction. " +
+      "What-if saving = annual cost &times; (current leak fraction &minus; target leak fraction), which assumes the air you stop leaking is air you stop making. " +
+      "Load and efficiency are treated as percentages and clamped to sensible bounds; run hours are capped at 8,760 (a full year). " +
+      "This is average power &mdash; peak demand and demand charges are not modeled separately.";
+  }
+
+  ids.forEach(function (id) {
+    el[id].addEventListener("input", recompute);
+    el[id].addEventListener("change", recompute);
+  });
+  unitEl.addEventListener("change", recompute);
+
+  recompute();
+})();
+</script>
+</body>
+</html>

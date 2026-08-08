@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PLC Migration: Keep Your Process Logic | Strule Automation</title>
+<meta name="description" content="A PLC migration off an obsolete controller can quietly delete decades of process knowledge. Here is where the real risk hides and how to de-risk the swap.">
+<link rel="canonical" href="https://struleautomation.com/blog/plc-migration-obsolete-controllers.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="PLC Migration: Keep Your Process Logic | Strule Automation">
+<meta property="og:description" content="A PLC migration off an obsolete controller can quietly delete decades of process knowledge. Here is where the real risk hides and how to de-risk the swap.">
+<meta property="og:url" content="https://struleautomation.com/blog/plc-migration-obsolete-controllers.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="PLC Migration: Keep Your Process Logic | Strule Automation">
+<meta name="twitter:description" content="A PLC migration off an obsolete controller can quietly delete decades of process knowledge. Here is where the real risk hides and how to de-risk the swap.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BlogPosting", "headline": "Your Old PLC Is Dying. The Logic Inside It Is the Part You Can't Reorder.", "description": "A PLC migration off an obsolete controller can quietly delete decades of process knowledge. Here is where the real risk hides and how to de-risk the swap.", "datePublished": "2026-08-07", "author": {"@type": "Person", "name": "Jonathan Gilmour"}, "publisher": {"@type": "ProfessionalService", "name": "Strule Automation", "url": "https://struleautomation.com/"}, "mainEntityOfPage": "https://struleautomation.com/blog/plc-migration-obsolete-controllers.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a href="../resources.html">Resources</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>Your Old PLC Is</div>
+      <div class="label">Field notes &middot; Integration</div>
+      <h1>Your Old PLC Is Dying. The Logic Inside It Is the Part You Can't Reorder.</h1>
+      <p class="lead">When you replace an unsupported controller, the hardware is the easy part; the twenty years of process knowledge buried in the program is what you can actually lose.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+    <p>Somewhere on your plant floor there is a controller that a supplier stopped making before some of your operators were hired. It still runs. That is the problem, because "still runs" is doing a lot of work in that sentence. The processor is fine until the day a power supply pops, and then the replacement module has a months-long lead time, the programming software only runs on a Windows version IT killed years ago, and the one laptop that can still talk to it lives in a drawer with a sticky note that says DO NOT UPDATE.</p>
+    <p>Most plant managers know they are exposed here. What surprises them is where the exposure actually sits. It is not the metal. You can buy new metal. The thing you cannot reorder is the fifteen or twenty years of process logic living inside that program, most of which was never written down anywhere else.</p>
+    <h3>The hardware is the cheap part of the loss</h3>
+    <p>A programmable logic controller (PLC) is a rugged industrial computer that reads sensors and commands the motors, valves, and variable frequency drives (VFDs) on your line. Swapping the box is a solved problem. Vendors sell migration kits and conversion tools that promise to translate an old program onto a new platform automatically. Those tools are useful and I use them. But they translate syntax, and not always even that: retentive versus non-retentive timers and reset conditions rarely map cleanly, so even a simple timer can come across wrong.</p>
+    <p>What no tool can translate is intent. It will convert a timer that waits four and a half seconds before opening a diverter. It cannot tell you that the four and a half seconds exists because a specific chute used to plug at three seconds, and somebody, on a bad night shift a decade ago, tuned it by hand until the jams stopped.</p>
+    <p>That number is process knowledge. Multiply it by every fudge factor, every interlock somebody added the week after an incident, the "temporary" bypass from a shutdown in 2016 that is still in there, and you have the real asset. A rushed migration copies the boxes and discards the reasons, and three weeks after commissioning you are chasing a product-quality drift nobody can explain, because a compensation that used to happen invisibly is gone.</p>
+    <h3>The risk is the logic nobody wrote down</h3>
+    <p>When people call a control program "undocumented" they usually picture missing manuals. The deeper problem is that the program is the documentation, written in a dialect only the original integrator spoke. Rung comments are sparse or wrong. Tag names like AUX_7 and SPARE_TMR_12 turn out to be load-bearing. There is a routine everyone is scared to touch because the last person who understood it retired and does not answer his phone.</p>
+    <p>Get an offline backup of that program early, because on some systems just getting the legacy software onto a machine that can still drive the programming cable is the first real fight. But a backup only gives you the code, and the code tells you what the logic does, not what the process does. For that you need the old controller powered and running, so you can watch the sequences step, force an output, trend a loop under real load. Right up until cutover, that controller is the most honest specification of your process you will ever have. Mine it while it is alive.</p>
+    <p>You will also find logic that is not worth preserving. It is software papering over a mechanical problem that should have been fixed years ago: a worn liner, a load cell that has read low since it got flooded, a chute whose angle was wrong the day it went in. Carrying that compensation forward just moves the debt onto a new platform. A migration is a rare chance to clear it, and the right call is often to fix the iron and delete the workaround. Half the time, though, you dig in and the old tuning was fine, and you will have spent a week proving what you could have assumed. Still cheaper than the alternative.</p>
+    <p>One category you never treat this way is safety. If an interlock is a safety function (an e-stop, guard logic, a rated shutdown), you do not informally "prove it still behaves." You re-validate it, and depending on how it is rated you may have to re-certify it on the new hardware, as its own piece of work. Lumping safety-rated logic in with the rest of the tribal knowledge to be mined and reproduced is how people get hurt.</p>
+    <h3>What actually breaks at cutover</h3>
+    <p>Everything above is about logic, and logic is not where most migrations bleed. The bulk of the schedule and the risk live in the physical layer: landing hundreds of field wires onto new terminals, re-addressing input/output (I/O), rescaling every analog signal so a 4-20 mA reading still means the same pressure it did before. If the old system ran remote I/O or drives over a legacy fieldbus, moving that network onto a modern one is often the highest-risk piece of the whole job.</p>
+    <p>Two controller-level traps catch people who looked only at the program. Scan time is the first: old and modern processors execute at very different speeds, and logic that leaned on a slow scan can misbehave on a fast one. A contact that self-filtered when the processor came around every forty milliseconds now gets sampled every two, so a bounce the old scan never saw makes a one-shot fire twice, and any logic that quietly counted scans as its timing base now runs fast. The second is that proportional-integral-derivative (PID) loop tuning does not port. Platforms differ in PID form, scaling, and execution rate, so the old gains are a starting reference at best and you re-tune on the new one. And the operator interface counts too: the human-machine interface (HMI) and the supervisory control and data acquisition (SCADA) layer above it are often as much work as the PLC.</p>
+    <p>What ties all of it together is proving equivalence: capture how the machine behaves before you touch it, write a plain-English functional description from the live plant rather than from drawings three modifications out of date, then test the new code against that captured behavior on a simulation or a bench before it goes near production. None of this is proprietary; your own controls staff or any competent integrator can run the same playbook. A good cutover is quiet by design, but nobody should sell you "quiet" as "the easy day." The field wiring is the drama. It always is.</p>
+    <h3>What this looks like on a real plant</h3>
+    <p>A mid-sized <a href="/sectors/manufacturing.html">manufacturing operation</a>, three obsolete processors chained together, the newest roughly two decades old. The stated job was a straight hardware refresh before an unsupported card failed and took the line with it. The interesting part showed up in the raw material feed.</p>
+    <p>The infeed drive was throttled off a downstream level signal, and the tuning was aggressive in a way that made no sense on the drawings. Watching it run for a shift explained it. Between the infeed and that level sensor sat a surge bin with a dead spot where material bridged. Not always, not predictably, but enough. Each time, flow to the downstream dropped, the level sagged, and the loop slammed the infeed to catch it before anyone downstream felt a thing. Nobody on site knew that logic was doing that. They knew the line "ran smooth."</p>
+    <p>A naive conversion would have carried the tuning across, and the line would have kept running, operators none the wiser, the bin still bridging. Instead we flagged the bridging as the mechanical problem it was, wrote the new logic to handle it deliberately, and added an alarm so the next person would actually know it was happening.</p>
+    <h3>The plain-English version</h3>
+    <p>Replacing an obsolete PLC reads like a hardware project and mostly isn't one. What is at risk is the tuning, interlocks, and quiet compensations inside it, most exposed on the day everyone is staring at the new panel. Capture that behavior while the old system is still alive to watch. Handle the safety functions as their own formal job. Decide honestly what deserves to survive the trip and what was only covering for a mechanical fault. And prove the new system does what the old one did before cutover, not afterward through a stack of complaints.</p>
+    <p>If you have a controller you would rather understand than gamble on, <a href="/index.html#contact">get in touch</a> and we can talk through where your real exposure sits.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in the Bay Area and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving the Bay Area and Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crushing Plant Throughput Optimization | Strule Automation</title>
+<meta name="description" content="Boost crushing plant throughput without a bigger crusher. How feed control, choke feeding and surge management increase tons per hour in aggregate plants.">
+<link rel="canonical" href="https://struleautomation.com/blog/crushing-plant-throughput-optimization.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="Crushing Plant Throughput Optimization | Strule Automation">
+<meta property="og:description" content="Boost crushing plant throughput without a bigger crusher. How feed control, choke feeding and surge management increase tons per hour in aggregate plants.">
+<meta property="og:url" content="https://struleautomation.com/blog/crushing-plant-throughput-optimization.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crushing Plant Throughput Optimization | Strule Automation">
+<meta name="twitter:description" content="Boost crushing plant throughput without a bigger crusher. How feed control, choke feeding and surge management increase tons per hour in aggregate plants.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"Crushing Plant Throughput: Getting More Tons Per Hour From the Plant You Already Own","description":"Boost crushing plant throughput without a bigger crusher. How feed control, choke feeding and surge management increase tons per hour in aggregate plants.","datePublished":"2026-08-07","author":{"@type":"Person","name":"Jonathan Gilmour"},"publisher":{"@type":"ProfessionalService","name":"Strule Automation","url":"https://struleautomation.com/"},"mainEntityOfPage":"https://struleautomation.com/blog/crushing-plant-throughput-optimization.html"}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a href="../resources.html">Resources</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>Crushing plant throughput</div>
+      <div class="label">Field notes · Optimization</div>
+      <h1>Crushing Plant Throughput: Getting More Tons Per Hour From the Plant You Already Own</h1>
+      <p class="lead">The missing tons usually aren't in the steel. They're in the way the plant stops and restarts itself all shift for reasons nobody logs.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+    <p>If you run a crushing and screening circuit, you know the gap between the nameplate and your real crushing plant throughput. The plant is rated for a number the sales sheet was proud of, and at the end of the shift you did 380 tons per hour (TPH) against a 450 nameplate, and nobody can say where the other seventy went. The instinct is to blame the machine and price a bigger crusher. Before anyone signs that check, though: on a lot of plants those missing tons never had much to do with the steel. They get lost in the way the plant stops and restarts itself a dozen times a shift for reasons nobody logs. I've spent a lot of time next to running crushers with a laptop and hearing protection, and more often than not what's holding you back is a set of interlocks tuned during a nervous commissioning week and never revisited.</p>
+
+    <h3>Where the tons actually leak</h3>
+    <p>It's rarely one dramatic failure. It's twelve or fifteen small hesitations a shift, none worth an alarm on their own.</p>
+    <p>A downstream conveyor blips on a speed switch, the whole train trips, and the plant coasts to a stop. Then you eat two or three minutes of sequenced restart while the chambers sit empty. Do that often enough and you've handed back a real slice of run time that a smarter permissive chain would have ridden through. Be careful here, because this is where people get hurt: riding through a spurious signal is one thing, but a genuinely stopped downstream belt means you cut feed immediately, or you bury a stationary conveyor and buy yourself an hour with a shovel. The skill is telling a nuisance trip from a real one.</p>
+    <p>Then there's stop/start surging. Fixed-speed feeders slamming on and off, no ramp, no response to how loaded the crusher actually is — that's a circuit fighting itself. Overload trips set too tight clip the top off every good feed before the chamber is working; level trips set with too much margin starve the crusher to guard against an overflow that rarely comes. Each one looks like prudence in isolation. I've walked plants carrying four of them, set by four different people, none talking to each other.</p>
+
+    <h3>Choke feeding, and why sloppy feed control is expensive</h3>
+    <p>Every crusher manufacturer says the same thing: keep the chamber full. That's choke feeding, a full, even column of material in the chamber so rock is crushed against rock instead of rattling around for a single glancing blow. A choke-fed cone gives you better particle shape, more consistent gradation, a proper reduction ratio, and even liner wear. The tonnage comes with it, because a full chamber running steady does more work per hour than a half-starved one sawing up and down, and you get it without touching the closed-side setting (CSS). That's the smallest gap between mantle and concave as the crusher gyrates, and it sets your product top size. It creeps open as the liners wear, so "the same setting" is a moving target across a liner life.</p>
+    <p>Keeping the chamber full is a control problem, and plenty of plants solve it by having an operator eyeball the feed and nudge a dial. Better to close a loop, controlling on true motor power in kilowatts (kW) from a power transducer rather than motor amps off a current transformer. Amps look like a shortcut, but a motor's power factor droops badly below about half load, so the current stays stubbornly high while the actual work falls away, and a loop chasing amps misjudges a lightly-fed chamber.</p>
+    <p>The arrangement that works is an override loop: surge-bin level and crusher power each drive the feeder, whichever is the binding constraint wins through a high/low select, with anti-windup so the feeder doesn't saturate. Hold power at a setpoint that leaves real surge margin, often the high-70s to high-80s as a percentage of rated kW, with the overload trip well above it as a separate backstop. Set the target hard against the trip and every lumpy patch of feed rides you into it; that's how you nuisance-trip all shift. And if fines and coarse segregate on the feed conveyor, power swings for reasons unrelated to feed rate, and a loop tuned too tight chases that noise and worsens ring bounce. Sometimes the fix there is a rock box, not a cleverer gain.</p>
+
+    <h3>Surge and buffer management</h3>
+    <p>The most underused lever is the buffer between the feed source and the crusher. A surge bin with real level control decouples a lumpy feed (a haul truck dumping, a primary running in bursts) from a crusher that wants a steady diet. Put a variable-speed feeder under the bin, usually a variable frequency drive (VFD) on the motor, and control its speed off bin level and crusher demand together: bin well stocked, run the crusher at its choke-fed target and draw the buffer down; bin low, ease the crusher back rather than let it starve and slam. Instead of lurching between blocked and empty, the circuit rides the middle third of the bin and stacks up run time. That assumes the material flows, which it won't always: damp, clay-bound feed bridges and ratholes in the bin, and on a wet morning no loop touches that. It's a chute-design job.</p>
+    <p>Screens belong here too, and two failure modes get run together. Worn media with enlarged apertures passes oversize straight into your product, which is a quality problem, contamination of the spec. Blinding and pegging (fine or sticky material coating the deck shut, or near-size stone wedging in the apertures) and plain deck overload are different: they throw material back into the recirculating load, and that stone competes with fresh feed for crusher capacity. You can tune the crusher perfectly and still choke the circuit at the screen.</p>
+
+    <h3>Measure it honestly, before and after</h3>
+    <p>None of this is worth doing if you can't prove it, and step one is boring: calibrate the belt scale. An uncalibrated belt scale routinely runs three to five percent out, enough to swamp the improvement you're chasing.</p>
+    <p>Crusher power tells you how full the chamber runs and how steady you hold it. A tight band near target is good; a wild sawtooth is money leaking away. TPH off the calibrated belt scale is the headline. But the number that usually explains it is utilization: of the hours the plant was available, how many were actually crushing, versus idle, starved, or blocked-and-cleared. Most plants that think they have a capacity problem have a utilization problem instead, and you can't tell those apart from the office.</p>
+    <p>On one plant, a hard-rock aggregate circuit around a mid-sized cone, the gain came from a rewritten feeder ramp, a power loop on the cone, and level control on a surge bin that had sat in hand for years. Same crusher, same liners: it moved from the high 200s to comfortably over 300 TPH on the days the feed cooperated, and the operators stopped babysitting the dial. Not every plant has that headroom. Plenty do, though.</p>
+    <p>Don't modern crushers come with this built in? Many do, a factory package running cavity level and power control out of the box, and if yours is genuinely in service, use it. The work I get called in for is the other cases: older machines that never had it, a mixed fleet running as one circuit, or a clever package that's sat in hand for years because nobody trusted its tuning. It should run on whatever brand of programmable logic controller (PLC) and drives are already on your panel; being vendor-neutral is the whole point.</p>
+
+    <h3>The honest limits</h3>
+    <p>You do not chase tons by defeating protection. Interlocks and trips exist because a plugged chute, an uncrushable, or a failing bearing will hurt somebody or wreck a machine. Retuning a conservative trip so it stops crying wolf is engineering; jumpering it out to make rate is negligence, and I won't do the second one. A feed loop has to give way the instant tramp-metal or overload protection calls for it. It never gets to win that argument.</p>
+    <p>And software has a ceiling. Liners worn past profile, a feed size wrong for the chamber, blinded screen media, a deck that's simply too small: the control system can present those limits more neatly, but it can't erase them. Often the real route to more tons is a liner change, a different feed gradation, better screen media, or fixing segregation on a conveyor, and any engineer worth having will tell you that instead of selling you a loop that can't help. Do the mechanical housekeeping first, then tighten the control, most of it tuned and logged on a running plant rather than a shutdown job.</p>
+    <p>Most plants have more throughput in them than their owners think, and it's a good deal cheaper to find than a new crusher.</p>
+
+    <p>If you want a second set of eyes on where a circuit is losing its time, the sort of work I do around Northern California quarries and other <a href="../sectors/quarrying-aggregates.html">aggregate operations</a>, I'm happy to talk it through if you <a href="../index.html#contact">get in touch</a>.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour — Strule Automation, independent, vendor-neutral control-systems engineering in the Bay Area and Northern California. <a class="backlink" href="../blog.html">← More field notes</a></p>
+</div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>© 2026 Strule Automation · Northern California</div>
+    <div><a href="../services.html">Services</a> · <a href="../sectors.html">Sectors</a> · <a href="../blog.html">Blog</a> · <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving the Bay Area and Northern California — organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

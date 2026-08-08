@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control Systems for Composting & Digesters | Strule Automation</title>
+<meta name="description" content="How to keep PLC, HMI and SCADA reliable in composting and anaerobic digestion plants: sensors, aeration, blowers, digester interlocks, and chasing faults.">
+<link rel="canonical" href="https://struleautomation.com/blog/organics-composting-ad-controls-guide.html">
+<meta name="theme-color" content="#132a3e">
+<meta name="author" content="Jonathan Gilmour, Strule Automation">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="Strule Automation">
+<meta property="og:title" content="Control Systems for Composting & Digesters | Strule Automation">
+<meta property="og:description" content="How to keep PLC, HMI and SCADA reliable in composting and anaerobic digestion plants: sensors, aeration, blowers, digester interlocks, and chasing faults.">
+<meta property="og:url" content="https://struleautomation.com/blog/organics-composting-ad-controls-guide.html">
+<meta property="og:image" content="https://struleautomation.com/og-cover.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Control Systems for Composting & Digesters | Strule Automation">
+<meta name="twitter:description" content="How to keep PLC, HMI and SCADA reliable in composting and anaerobic digestion plants: sensors, aeration, blowers, digester interlocks, and chasing faults.">
+<meta name="twitter:image" content="https://struleautomation.com/og-cover.png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2048%2048'%3E%3Crect%20width='48'%20height='48'%20rx='10'%20fill='%23132a3e'/%3E%3Cpath%20d='M30%2013%20C%2030%209%2018%209%2018%2015%20C%2018%2020.5%2030%2022%2030%2027%20C%2030%2033%2018%2033%2018%2028'%20fill='none'%20stroke='%23fff'%20stroke-width='3'%20stroke-linecap='round'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='30'%20cy='13'%20r='2.4'%20fill='%232f6d8f'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='3.4'%20fill='%23fff'/%3E%3Ccircle%20cx='18'%20cy='28'%20r='2.4'%20fill='%232f6d8f'/%3E%3C/svg%3E">
+<script>document.documentElement.className += ' js';</script>
+<style>
+  :root{
+    --ink:#17232f; --navy:#132a3e; --slate:#5c6b79; --faint:#8895a2;
+    --line:#e4e8ec; --paper:#ffffff; --mist:#f6f8f9; --band:#122536; --acc:#2f6d8f;
+    --ph:#fff5d6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--paper);line-height:1.65;-webkit-font-smoothing:antialiased;font-size:17px}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3{line-height:1.22;letter-spacing:-0.015em;font-weight:650;color:var(--navy)}
+  .label{text-transform:uppercase;letter-spacing:.18em;font-size:.7rem;font-weight:700;color:var(--faint)}
+  .ph{background:var(--ph);padding:0 4px;border-radius:2px}
+
+  a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:4px}
+  .skip{position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;border-radius:0 0 6px 0;z-index:60;font-weight:600;font-size:.9rem}
+  .skip:focus{left:0}
+
+  header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:70px}
+  .brand{display:flex;align-items:center;gap:11px}
+  .mono{width:30px;height:30px;flex:0 0 30px}
+  .brand b{font-size:1rem;letter-spacing:.01em;font-weight:700;color:var(--navy)}
+  .brand span{display:block;font-size:.58rem;letter-spacing:.24em;color:var(--faint);text-transform:uppercase;margin-top:1px}
+  .nav nav a{color:var(--slate);font-size:.9rem;margin-left:26px;font-weight:500}
+  .nav nav a:hover{color:var(--navy)}
+  .btn{display:inline-block;background:var(--navy);color:#fff!important;padding:11px 20px;border-radius:5px;font-weight:600;font-size:.88rem;transition:background .15s,transform .15s}
+  .btn:hover{background:#0c1d2c}
+  .btn:active{transform:translateY(1px)}
+  @media(max-width:820px){.nav nav a:not(.btn){display:none}}
+
+  section{padding:78px 0;border-bottom:1px solid var(--line)}
+
+  footer{padding:36px 0;border-bottom:none}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;color:var(--faint);font-size:.84rem}
+  footer .area{width:100%;color:var(--faint);font-size:.8rem;margin-top:4px}
+
+  .crumb{font-size:.82rem;color:var(--faint);margin:0 0 8px}
+  .crumb a{color:var(--slate)} .crumb a:hover{color:var(--navy)} .crumb i{font-style:normal;margin:0 8px;color:var(--line)}
+  .subhero{padding:64px 0 26px;border-bottom:1px solid var(--line)}
+  .subhero h1{font-size:2.4rem;margin:8px 0 16px;letter-spacing:-.02em}
+  .subhero p.lead{font-size:1.16rem;color:var(--slate);max-width:740px}
+  @media(max-width:600px){.subhero h1{font-size:1.8rem}.subhero{padding:44px 0 22px}}
+  .prose{max-width:760px}
+  .prose p{color:var(--slate);font-size:1.06rem;margin-bottom:17px}
+  .prose h3{font-size:1.28rem;margin:34px 0 10px;font-weight:650;color:var(--navy)}
+  .prose a{color:var(--acc);font-weight:600}
+  .prose a:hover{text-decoration:underline}
+  .byline{max-width:760px;margin-top:30px;padding-top:18px;border-top:1px solid var(--line);color:var(--faint);font-size:.92rem}
+  .byline a{color:var(--acc);font-weight:600}
+  .backlink{display:inline-block;color:var(--acc);font-weight:600;font-size:.9rem}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Keeping Control Systems Reliable in Composting and Anaerobic Digestion Plants","author":{"@type":"Person","name":"Jonathan Gilmour"},"publisher":{"@type":"Organization","name":"Strule Automation"},"mainEntityOfPage":"https://struleautomation.com/blog/organics-composting-ad-controls-guide.html","description":"How to keep PLC, HMI and SCADA reliable in composting and anaerobic digestion plants: sensors, aeration, blowers, digester interlocks, and chasing faults."}</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="../index.html">
+      <svg class="mono" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Strule Automation"><rect width="48" height="48" rx="10" fill="#132a3e"/><path d="M30 13 C 30 9 18 9 18 15 C 18 20.5 30 22 30 27 C 30 33 18 33 18 28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><circle cx="30" cy="13" r="3.4" fill="#fff"/><circle cx="30" cy="13" r="2.4" fill="#2f6d8f"/><circle cx="18" cy="28" r="3.4" fill="#fff"/><circle cx="18" cy="28" r="2.4" fill="#2f6d8f"/></svg>
+      <div><b>Strule Automation</b><span>Industrial Controls</span></div>
+    </a>
+    <nav>
+      <a href="../index.html">Home</a>
+      <a href="../services.html">Services</a>
+      <a href="../sectors.html">Sectors</a>
+      <a href="../blog.html" aria-current="page">Blog</a>
+      <a href="../index.html#how">Approach</a>
+      <a href="../index.html#about">About</a>
+      <a href="../resources.html">Resources</a>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </nav>
+  </div>
+</header>
+<main id="main">
+<section class="subhero"><div class="wrap">
+      <div class="crumb"><a href="../index.html">Home</a><i>/</i><a href="../blog.html">Blog</a><i>/</i>Keeping Control Systems Reliable i…</div>
+      <div class="label">Field notes &middot; Sector guide</div>
+      <h1>Keeping Control Systems Reliable in Composting and Anaerobic Digestion Plants</h1>
+      <p class="lead">Most control problems at an organics site do not start in the control panel. They start in the air. Hydrogen sulfide (H2S), ammonia (NH3), water vapor coming off a hot pile, fine organic dust, and a temperature that swings twenty or thirty degrees between a summer afternoon and a fall night. The programmable logic controller (PLC), the human-machine interface (HMI), the sensors, the wiring, and the network gear all have to live in that. When something goes wrong, the instinct is to open up the program and start looking for a logic bug. Often the logic is fine and the environment is the story.</p>
+    </div></section>
+<section><div class="wrap">
+  <article class="prose">
+<p>I work on this kind of plant as an independent, vendor-neutral controls engineer, which just means I have no product line to sell and no reason to steer you toward one brand. This guide is the long version of how I think about keeping composting and anaerobic digestion (AD) controls reliable. It is written for the person who actually runs the plant or maintains it, not for a purchasing department. If you get real use out of it and never call me, that is a good outcome.</p>
+<h3>The environment is corroding your control system</h3>
+<p>Start by accepting that the air at an organics facility is chemically active. H2S in the presence of moisture is hard on copper and silver. You will see it first on things nobody armored: relay contacts, unplated connector pins, the copper traces on a cheap input card, the shield drain wires that somebody left bare in a junction box. It shows up as a black or gray tarnish. Once a contact or a pin tarnishes, its resistance climbs, and that is where a lot of "intermittent" faults are born.</p>
+<p>A few things help, and none of them are exotic:</p>
+<ul>
+<li>Keep control electronics out of the process air. A sealed, gasketed enclosure held at a small positive pressure with clean instrument air or filtered outside air keeps the corrosive stuff from getting in. Keep two different jobs straight here, because people constantly conflate them. A clean-air positive-pressure purge to slow corrosion is an environmental-severity mitigation under ISA-71.04 — you are trying to move the enclosure interior out of a corrosive class such as G3 or GX toward G1 — and it does not by itself change any electrical area classification. NFPA 496 pressurization is a separate function: it reduces the electrical area classification of an enclosure sitting in a hazardous area, and it only counts if loss of pressure alarms and either de-energizes the enclosure or otherwise returns the area to a safe state. Around a digester the surrounding space is usually a classified location in its own right — typically Class I, Division 1 or 2 (or Zone 0/1/2) under NEC Articles 500/505 — and the equipment, wiring methods, and any pressurization system have to match that classification, not merely look rugged.</li>
+<li>Watch what you put inside the enclosure. Corrosion-inhibiting sachets, conformal-coated boards where you can get them, and gold-flashed connectors instead of bare tin all buy you time.</li>
+<li>Manage temperature and condensation deliberately. A panel that heats up during the day and cools at night breathes. Each cycle pulls damp air in through every gap. A thermostat-controlled heater sized to keep the interior a few degrees above the dew point does more for long-term reliability than most people expect, and an enclosure cooler or heat exchanger keeps the day side in check.</li>
+<li>Treat cable entries and unused gland holes as leaks. They are.</li>
+</ul>
+<p>Sensors take the worst of it because they have to sit in the process. Temperature probes buried in a pile, oxygen and moisture sensors in the airflow, gas analyzers on the digester and the biofilter. These drift and foul, and a fouled sensor that still reports a plausible number is more dangerous than one that fails outright, because the control system trusts it. Build a habit of checking field devices against a handheld reference on a schedule, and log the drift so you can see a sensor going bad before it lies to you.</p>
+<h3>Aeration and blower control</h3>
+<p>Aerated static pile (ASP) and in-vessel composting both live or die on airflow. You are trying to give the microbes enough oxygen, pull enough heat out to hold the pile in the right range, and do it without wasting blower energy or drying the pile to a stop. That is a genuine multi-variable problem, and it is where I see the most over-complicated logic.</p>
+<p>A few principles that hold up in the field:</p>
+<p><strong>Decide what the control is actually chasing.</strong> Temperature feedback and oxygen feedback pull in different directions at different points in the batch. Early in a batch the pile is oxygen-limited and you are feeding biology. Later you are mostly moving heat. A control strategy that blends temperature and oxygen targets, and shifts emphasis as the batch matures, tends to behave better than one that slaves everything to a single setpoint. As a rough rule of thumb, most active-composting operations aim to keep free-air-space oxygen somewhere in the 5 to 15 percent range at the pile — enough to stay aerobic and avoid odor without over-drying — but treat that as a starting band to confirm against your own feedstock, probe placement, and permit, not a fixed setpoint. Timer-based aeration is simple and surprisingly robust as a fallback, but it wastes air and cannot respond to a hot spot.</p>
+<p><strong>Match the actuator to the job.</strong> A variable frequency drive (VFD) on a blower gives you smooth turndown and real energy savings, but a VFD is also another box in the corrosive air, another heat source, and another thing that trips. On/off blowers with well-chosen dampers are cruder but have fewer failure modes. Reversing aeration, where you alternate pushing and pulling air through the pile, evens out the moisture and temperature gradient but adds valves and sequencing that have to be right. None of these is the correct answer everywhere. It depends on your pile geometry, your feedstock, and how much maintenance attention the plant can realistically give.</p>
+<p><strong>Tune the loop so it stops hunting.</strong> A blower loop that surges up and down is usually tuned too aggressively for a process with this much thermal lag. Composting responds in tens of minutes to hours, not seconds. Slow the loop down, widen the deadband, and let it settle. If you are fighting a nuisance high-temperature or low-oxygen alarm, the honest fix is almost always to understand why the reading is real or to correct a sensor, not to widen the alarm until it stops bothering you. Alarm rationalization is worth doing properly, and the thinking I use on process plants generally carries over well; there is more in this <a href="/blog/alarm-rationalization-food-beverage.html">field note on alarm rationalization</a>.</p>
+<p><strong>Keep the biofilter and odor path in the loop.</strong> On most permitted sites the aeration system and the odor control are the same system. If you pull air through a pile, you are pushing it through a biofilter or scrubber, and the pressure drop across that media is a controlled variable whether you treat it as one or not. Trending biofilter differential pressure and moisture will tell you about a clogging bed long before the neighbors do.</p>
+<h3>Anaerobic digester control: protect the biology, then protect the plant</h3>
+<p>An anaerobic digester is a slow living reactor, and the control system's first job is to not upset it. The bugs that make methane are fussy about temperature, pH, and how fast you feed and load them. They recover slowly from a shock and can take weeks to come back. So the mindset here is different from a fast mechanical process: smooth, gradual, and conservative beats fast and clever almost every time.</p>
+<p><strong>Before any of the control talk: the gas around a digester will hurt you faster than anything in this guide.</strong> Read this part as a person, not an engineer. Hydrogen sulfide is acutely toxic and it lies to you. Around 100 ppm it deadens your sense of smell (olfactory fatigue), so it stops smelling worse right as it turns dangerous, and roughly 100 ppm is also the IDLH (immediately dangerous to life or health). You cannot use your nose as a detector; it quits on you at exactly the wrong moment. Methane is explosive in air from about 5 percent (the lower explosive limit, LEL) up to about 15 percent (the upper explosive limit, UEL). Digesters, gas holders, sumps, wet wells, and pump vaults are permit-required confined spaces: test the atmosphere before entry, every single time. Anyone working the gas areas carries a bump-tested personal 4-gas monitor (H2S, LEL, O2, CO), knows the wind and their own escape direction, and never enters a gas structure alone.</p>
+<p><strong>Feed and loading.</strong> Organic loading rate is the lever that most often goes wrong. Feeding too much too fast drives volatile fatty acids up and pH down, and once the digester sours you are into a long recovery. Good feed control meters the substrate steadily rather than in big slugs, ramps changes gradually, and ideally trends a leading indicator like the ratio of volatile fatty acids to alkalinity rather than waiting for pH or gas production to fall off, because by then you are already behind. If your instrumentation cannot see that ratio directly, feed conservatively and change one thing at a time.</p>
+<p><strong>Mixing.</strong> Whether it is gas mixing, mechanical draft-tube mixers, or pumped recirculation, the goal is to keep the contents homogeneous without shearing the biology or letting a crust or grit layer build. Mixing that is too vigorous or continuous can be as bad as too little. Interlock the mixers sensibly with level and with any foam detection you have, because pushing a mixer through a low level or a heavy foam event is how you damage equipment.</p>
+<p><strong>Temperature.</strong> Digesters run either in the mesophilic range (around 35 C / 95 F) or the thermophilic range (around 55 C / 130 F), and they hate being moved. The heating loop, usually hot water through the digester heat exchanger, needs steady control and good redundancy, because a lost heating loop in cold weather stalls gas production. Trend the approach temperature across the exchanger; a slow loss of heat transfer usually means fouling.</p>
+<p><strong>The interlocks that actually matter.</strong> This is where I want to be very clear. Biogas is roughly 60 percent methane and it contains H2S, so a digester is a flammable and toxic gas system sitting in a wet, corrosive envelope. Overpressure and underpressure protection on the digester, flame arrestors, the flare or gas-use interlocks, gas detection, and the pressure and vacuum relief devices are safety functions. Retuning a nuisance trip so the process runs smoother is legitimate engineering work. Defeating, jumpering, or "temporarily" bypassing a protective interlock is not, and I will not do it or advise it. If an interlock is tripping when it should not, the answer is to find out why the process or the instrument is putting it into that condition and fix that, not to remove the protection.</p>
+<p>One interlock family deserves its own paragraph: guarding against air ingress into the gas space. A digester roof or membrane is designed to hold biogas, not an explosive mixture, and if air gets pulled into the headspace you can build a fuel-air mixture inside the vessel itself. That is why the vacuum-relief (underpressure) protection and the gas-blower low-pressure cutout are not just equipment protection — they exist to stop the gas space from being drawn below the point where air is sucked in past seals, condensate traps, or a starved gas line. Tie them together: the blower must not be able to pull the digester into a vacuum, and the vacuum relief has to be sized, clear, and in service so it opens on clean gas or inert make-up rather than letting the roof pull air.</p>
+<p>Beyond safety, the interlocks that protect the asset and the biology are worth designing carefully: low-level protection on feed and recirculation pumps so they never run dry, foam-over protection, high-temperature limits on the heating loop, and permissives that stop you feeding into a digester that is not being mixed or heated. These rarely get credit and they prevent the events that cost weeks.</p>
+<h3>Chasing intermittent faults in a place that eats electronics</h3>
+<p>Intermittent faults are the signature problem of this sector, and they are maddening precisely because they will not repeat on demand. A blower drops out for ten seconds at three in the morning. A pile temperature reads open-circuit for one scan and then recovers. An input toggles with no obvious cause. By the time anyone looks, everything is normal.</p>
+<p>My approach is boring on purpose:</p>
+<ul>
+<li><strong>Instrument before you theorize.</strong> Set up high-speed data capture or a PLC-side event log that timestamps the fault and the surrounding I/O and analog values. You cannot fix what you cannot see, and human memory of "it happened around lunchtime" is not data. I wrote up how I work these on organics sites specifically in this <a href="/blog/intermittent-plc-faults-organics-recycling.html">field note on intermittent PLC faults</a>.</li>
+<li><strong>Correlate against the environment.</strong> Because so much of this is corrosion and thermal cycling, plot the fault times against ambient temperature, humidity, and the plant's own daily cycle. A fault that clusters at dawn, when panels are coldest and condensation is heaviest, is telling you something a logic trace never will.</li>
+<li><strong>Suspect the connection before the component.</strong> In this environment, a tarnished terminal, a work-hardened wire that vibration has cracked, a shield that lost its ground, or a connector that corroded is far more likely than a bad CPU. Reflow suspect terminations, check grounds and shields, and look for the green or black powder that gives corrosion away.</li>
+<li><strong>Chase noise honestly.</strong> VFDs, contactors, and long cable runs in a wet plant make for real electrical noise. Poor shielding and shared grounds turn that noise into phantom input transitions and analog jumps. Proper single-point grounding, separated signal and power routing, and shielded cable landed correctly at one end fix more "software glitches" than any code change.</li>
+</ul>
+<p>The discipline is to keep narrowing it with evidence until the fault has nowhere to hide. It is slower than guessing and it actually works.</p>
+<h3>Field triage for the three faults I get called about most</h3>
+<p>When it is 2am and the plant is misbehaving, work symptom to cause to first check rather than diving into the code. These three cover most of the calls I get.</p>
+<table>
+<thead>
+<tr>
+<th>Symptom</th>
+<th>Likely cause</th>
+<th>First thing to check</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Blower will not hit its airflow setpoint</td>
+<td>Clogged biofilter/media or fouled ductwork, worn or slipping damper linkage, or too many zones open at once so the header sags and each zone gets weak puffs — which then gets blamed on the software</td>
+<td>Read the blower's true power, not just amps; a centrifugal fan moving no air pulls low power, so power tells you whether it is actually loaded. Check media/filter differential pressure, walk the damper through its full stroke, and compare header pressure against total air demand before touching a line of code</td>
+</tr>
+<tr>
+<td>Pile temperature reads open-circuit or erratic</td>
+<td>Corroded probe or a thermowell packed with debris, a cracked or work-hardened lead, a tarnished terminal, or a shield landed at both ends injecting noise into the RTD/thermocouple loop</td>
+<td>Compare against a handheld reference, ohm out the probe and its lead, reflow the suspect termination, and confirm the shield is grounded at one end only. Check where the reading falls against the NAMUR NE43 bands to tell a real out-of-range from a broken wire</td>
+</tr>
+<tr>
+<td>Intermittent input dropout</td>
+<td>A tarnished terminal or connector pin (look for a spade lug that images warm under load), condensation and thermal cycling at dawn, VFD or contactor noise, or a shared supply sagging when a big load cycles — I once chased a dropout to a chiller kicking on in the next room</td>
+<td>Timestamp the dropout and plot it against ambient and against nearby loads switching; suspect the connection before the card; and confirm the 24V supply holds up under load with a scope or a fast meter, not a steady-state reading</td>
+</tr>
+</tbody>
+</table>
+<p>I write control code for a living and I will still tell you when software is the wrong tool. Plenty of problems at an organics plant look like control problems and are not.</p>
+<p>If a blower cannot hit airflow because the biofilter media is clogged or a damper linkage is worn, no loop tuning fixes that. If a feed pump keeps cavitating, the logic did not cause it and cannot cure it. If a temperature reading is unstable because the probe is corroded or the thermowell is packed with debris, the answer is a new sensor, not a filter in the code. And when an input card has been sitting in H2S for eight years and half its channels are flaky, the right move is to replace the card, and probably to improve the enclosure so the next one lasts, rather than to write logic that works around dying channels.</p>
+<p>There is also a point where the controller itself is the liability. A PLC platform that the manufacturer no longer supports, that you cannot get spare cards for, and that nobody can program anymore is a risk that no clever code offsets. Migrating it is a project with real trade-offs, and it should be planned rather than forced on you by a failure at the worst possible time; I put my thinking on that in this <a href="/blog/plc-migration-obsolete-controllers.html">field note on migrating obsolete controllers</a>. The general rule I hold to: put the money where the physics is. A well-chosen mechanical fix or hardware upgrade often buys more reliability than months of code.</p>
+<h3>SCADA for monitoring, odor, compliance, and the record you will need</h3>
+<p>Supervisory control and data acquisition (SCADA) earns its keep at an organics plant in two ways: it helps you run the process, and it produces the record that keeps you permitted.</p>
+<p>On the process side, the value is trends and context. A single live number tells you where you are. A trend tells you where you are going, which for a slow biological process is the thing that matters. Digester gas flow and composition, feed rates, pile temperatures and oxygen, blower status and energy, biofilter differential pressure and moisture, and heating-loop performance are all worth trending long-term so you can see slow drift and seasonal patterns.</p>
+<p>On the compliance side, most permitted composting and AD sites have to demonstrate things: that piles hit and held their required temperatures for pathogen reduction, that odor control ran, that emissions or flare uptime met the permit. Pathogen reduction is the one worth pinning down in your data model. If you are producing a Class A biosolids-type product, the Process to Further Reduce Pathogens (PFRP) under 40 CFR Part 503 is a time-at-temperature requirement, and the commonly cited threshold is around 55 C (131 F) held for the required duration — but the duration is not one number. It depends on the process: in-vessel and aerated static pile hold that temperature for a period on the order of a few days, while windrow composting requires the temperature to be maintained across a number of days with a set number of turnings. Do not code a single generic timer against 131 F and assume you are covered; confirm the exact time, turning, and temperature requirement for your specific process and permit, and capture the sensor coverage that proves every part of the pile met it. If your SCADA is capturing that reliably, with timestamps and a tamper-resistant historian, then producing a report is a query rather than a scramble through paper logs. Design the data capture around the report you will actually have to file, and confirm it survives a power blip and a network hiccup.</p>
+<p>A word of caution on alarms and dashboards. It is easy to bury the operator under hundreds of nuisance alarms and a wall of gauges. Present the handful of things that mean act now clearly, push the rest to trends and reports, and rationalize the alarm list so every alarm has a meaning and an action.</p>
+<p>If you are also integrating new equipment into an existing plant, a new depack line, a new digester skid, or a receiving upgrade, the integration work has the same failure modes I see across materials handling; this <a href="/blog/integrating-new-equipment-mrf.html">field note on integrating equipment at a materials recovery facility</a> covers the pattern, and my <a href="/services.html">services page</a> lays out how I approach that kind of work.</p>
+<h3>Honest limits</h3>
+<p>A guide like this can only take you so far, and I would rather say so than pretend otherwise. Every plant is a specific combination of feedstock, geometry, climate, and installed equipment, and the right control strategy for one is the wrong one for another. I have not seen your site, your trends, or your panels. Biological processes are variable by nature, and controls work is diagnostic; anyone who promises a guaranteed fix from the outside is guessing. What I can offer is a way of thinking that holds up, and the willingness to gather evidence before acting rather than after.</p>
+<p>I also work across sectors that share this DNA, from aggregate and materials handling to food and beverage process plants, and a lot of what works in one carries into another. The two things I will not compromise on at an organics site are the biogas hazards — overpressure, air ingress into the gas space, and H2S exposure — and the integrity of a protective interlock; on nearly everything else, I would rather help you do less.</p>
+<h3>If you want a second set of eyes</h3>
+<p>If you run a composting or anaerobic digestion site in Northern California and you are fighting nuisance trips, unreliable sensors, aeration that will not settle, or a SCADA that is not giving you the record you need, I am happy to talk it through. Sometimes a conversation is enough to point you at the real problem. You can <a href="/index.html#contact">get in touch</a> and tell me what the plant is doing.</p>
+  </article>
+  <p class="byline">Written by Jonathan Gilmour &mdash; Strule Automation, independent, vendor-neutral control-systems engineering in the Bay Area and Northern California. <a class="backlink" href="../blog.html">&larr; More field notes</a></p>
+</div></section>
+<section><div class="wrap"><div class="cta">
+      <h2>Got a plant that isn't behaving?</h2>
+      <p>Tell me what's giving you trouble. The first conversation is free, and you'll get a straight assessment.</p>
+      <a class="btn" href="../index.html#contact">Get in touch</a>
+    </div></div></section>
+</main>
+<footer>
+  <div class="wrap">
+    <div>&copy; 2026 Strule Automation &middot; Northern California</div>
+    <div><a href="../services.html">Services</a> &middot; <a href="../sectors.html">Sectors</a> &middot; <a href="../blog.html">Blog</a> &middot; <a href="../index.html#contact">Contact</a></div>
+    <div class="area">Serving the Bay Area and Northern California &mdash; organics, waste, quarrying, mining, food &amp; beverage and process industries.</div>
+  </div>
+</footer>
+</body>
+</html>

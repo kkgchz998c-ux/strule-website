@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OEE &amp; Downtime Cost Estimator — Strule Automation</title>
+<style>
+  :root {
+    --navy: #132a3e;
+    --teal: #2f6d8f;
+    --slate: #64748b;
+    --line: #e2e8f0;
+    --bg-soft: #f8fafc;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--white);
+    color: #1f2937;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  header.site {
+    background: var(--navy);
+    color: #fff;
+    padding: 18px 20px;
+  }
+  header.site .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    font-size: 15px;
+  }
+  header.site .wrap span { color: #9fc3d6; font-weight: 500; }
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 28px 20px 40px;
+  }
+  h1 {
+    color: var(--navy);
+    font-size: 27px;
+    line-height: 1.25;
+    margin: 8px 0 6px;
+  }
+  .lede {
+    color: var(--slate);
+    margin: 0 0 24px;
+    font-size: 17px;
+  }
+  h2 {
+    color: var(--navy);
+    font-size: 19px;
+    margin: 0 0 16px;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 22px;
+    box-shadow: 0 1px 2px rgba(19,42,62,0.04);
+  }
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  label {
+    display: block;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+    font-size: 15px;
+  }
+  .help {
+    display: block;
+    color: var(--slate);
+    font-size: 13px;
+    margin-bottom: 7px;
+  }
+  input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 16px;
+    color: #1f2937;
+    background: #fff;
+  }
+  input[type="number"]:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+    border-color: var(--teal);
+  }
+  .unit { color: var(--slate); font-weight: 500; font-size: 13px; }
+  .results .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .results .row:last-child { border-bottom: none; }
+  .results .label {
+    color: var(--slate);
+    font-size: 15px;
+    max-width: 62%;
+  }
+  .results .value {
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 20px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .value.accent { color: var(--teal); }
+  .results .row.big .value { font-size: 24px; }
+  .results .row.big .label { font-weight: 600; color: var(--navy); }
+  .hint {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    border-radius: 9px;
+    padding: 10px 12px;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .interp {
+    background: var(--bg-soft);
+    border-left: 4px solid var(--teal);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: #334155;
+    font-size: 15.5px;
+    margin-top: 6px;
+  }
+  .interp strong { color: var(--navy); }
+  .note {
+    color: var(--slate);
+    font-size: 13px;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .illus {
+    color: var(--slate);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .subhead {
+    color: var(--slate);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    margin: 4px 0 2px;
+    padding-top: 6px;
+  }
+  footer.site {
+    border-top: 1px solid var(--line);
+    background: var(--bg-soft);
+    padding: 26px 20px 34px;
+  }
+  footer.site .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    color: var(--slate);
+    font-size: 14.5px;
+  }
+  footer.site a { color: var(--teal); text-decoration: none; }
+  footer.site a:hover { text-decoration: underline; }
+  footer.site .cta { margin-bottom: 10px; color: #334155; }
+  @media (max-width: 560px) {
+    .results .value { font-size: 18px; }
+    .results .row.big .value { font-size: 21px; }
+    h1 { font-size: 23px; }
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">STRULE AUTOMATION <span>&mdash; Field notes</span></div>
+</header>
+
+<main>
+  <h1>OEE &amp; Downtime Cost Estimator</h1>
+  <p class="lede">Put in a few numbers off your run logs and production reports, and this breaks a line's shift into the three pieces of Overall Equipment Effectiveness (OEE) &mdash; how much of the scheduled time you ran, how fast you ran when running, and how much of what you made was good. If you add a value per unit, it splits the yearly loss between time you stood still and time you ran slow. Every formula is shown, and nothing leaves your browser.</p>
+
+  <div class="card">
+    <h2>Your numbers</h2>
+    <div class="field">
+      <label for="planned">Planned production time per period <span class="unit">(hours)</span></label>
+      <span class="help">Hours the line was scheduled and staffed to run in this period, before any downtime. Leave out planned no-run time (unstaffed shifts, planned maintenance windows you never intended to run).</span>
+      <input type="number" id="planned" value="10" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="downtime">Unplanned downtime this period <span class="unit">(hours)</span></label>
+      <span class="help">Hours lost inside that planned time to stops you did not intend: faults, jams, waiting on feed or trucks, changeovers that ran long, nuisance trips. Total the minutes and divide by 60.</span>
+      <input type="number" id="downtime" value="2" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="ideal">Ideal / nameplate rate <span class="unit">(units or tons per hour)</span></label>
+      <span class="help">The fastest sustainable rate the line is designed for, from the equipment plate or a proven best run. If this is set too low, Performance will read over 100% &mdash; the tool flags that below.</span>
+      <input type="number" id="ideal" value="120" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="total">Total units / tons actually produced <span class="unit">(this period)</span></label>
+      <span class="help">Everything the line put out this period, good and bad, in the same unit as the ideal rate. Use a recently calibrated scale or counter.</span>
+      <input type="number" id="total" value="700" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="good">Good units / tons <span class="unit">(optional)</span></label>
+      <span class="help">Just the sellable output that passed the first time, before rework or scrap. Leave blank if you do not track it &mdash; the tool treats Quality as 100% and says so.</span>
+      <input type="number" id="good" value="" min="0" step="any" inputmode="decimal" placeholder="defaults to total (100% quality)">
+    </div>
+    <div class="field">
+      <label for="valueper">Value per unit / ton <span class="unit">($, optional)</span></label>
+      <span class="help">Leave blank unless you want a rough dollar figure. Use contribution margin or price per unit &mdash; whatever a lost unit really costs you. Used only for an illustrative estimate.</span>
+      <input type="number" id="valueper" value="" min="0" step="any" inputmode="decimal" placeholder="optional">
+    </div>
+    <div class="field">
+      <label for="periods">Periods per year <span class="unit">(for the annual figure)</span></label>
+      <span class="help">How many periods like this one you run in a year. If the numbers above are one shift and you run ~250 production days, put 250. If they are a week, put ~50.</span>
+      <input type="number" id="periods" value="250" min="0" step="any" inputmode="decimal">
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>What this suggests</h2>
+    <div id="results" class="results"></div>
+    <div id="interp"></div>
+    <p class="note" id="howcalc"></p>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="cta">An OEE number handed off between vendors is where the story usually gets lost. If you want an independent read on where a line is really losing its shift, <a href="https://struleautomation.com/index.html#contact">get in touch</a>.</div>
+    <div>Strule Automation &mdash; independent, vendor-neutral PLC, HMI, and SCADA work across the Bay Area and Northern California. <a href="https://struleautomation.com">struleautomation.com</a></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var ids = ["planned", "downtime", "ideal", "total", "good", "valueper", "periods"];
+  var el = {};
+  ids.forEach(function (id) { el[id] = document.getElementById(id); });
+  var resultsEl = document.getElementById("results");
+  var interpEl = document.getElementById("interp");
+  var howEl = document.getElementById("howcalc");
+
+  function num(id) {
+    var raw = el[id].value.trim();
+    if (raw === "") return null;
+    var v = Number(raw);
+    if (!isFinite(v)) return null;
+    return v;
+  }
+
+  function fmt(n, dp) {
+    if (dp === undefined) dp = 0;
+    return n.toLocaleString("en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  }
+
+  function pct(frac, capPlus) {
+    // Display helper: clamp to a sane ceiling so nothing reads an absurd 900%.
+    var p = frac * 100;
+    if (p > 999) return "999%+";
+    if (capPlus && p > 100) return fmt(100, 1) + "%+";
+    return fmt(p, 1) + "%";
+  }
+
+  function row(label, value, accent, big) {
+    return '<div class="row' + (big ? ' big' : '') + '"><div class="label">' + label + '</div>' +
+      '<div class="value' + (accent ? ' accent' : '') + '">' + value + '</div></div>';
+  }
+
+  function subhead(t) {
+    return '<div class="subhead">' + t + '</div>';
+  }
+
+  function hint(msg) {
+    return '<div class="hint">' + msg + '</div>';
+  }
+
+  function recompute() {
+    var planned = num("planned");
+    var downtime = num("downtime");
+    var ideal = num("ideal");
+    var total = num("total");
+    var good = num("good");
+    var valuePer = num("valueper");
+    var periods = num("periods");
+
+    var problems = [];
+
+    if (planned === null || planned <= 0) problems.push("Enter planned production time greater than zero.");
+    if (downtime === null || downtime < 0) problems.push("Enter unplanned downtime of zero or more.");
+    if (ideal === null || ideal <= 0) problems.push("Enter an ideal / nameplate rate greater than zero.");
+    if (total === null || total < 0) problems.push("Enter total units / tons of zero or more.");
+    if (downtime !== null && planned !== null && planned > 0 && downtime > planned) {
+      problems.push("Downtime is more than planned time. Check those two figures.");
+    }
+    if (good !== null && total !== null && good > total) {
+      problems.push("Good units are more than total units. Good output cannot exceed total output.");
+    }
+
+    if (problems.length) {
+      resultsEl.innerHTML = hint(problems.join("<br>"));
+      interpEl.innerHTML = "";
+      howEl.textContent = "";
+      return;
+    }
+
+    // Core OEE math.
+    var runTime = planned - downtime;                 // hours the line was actually up
+    if (runTime < 0) runTime = 0;
+
+    var availability = runTime / planned;             // 0..1
+
+    // Quality: default to 100% if good not given.
+    var qualityGiven = (good !== null);
+    var goodUnits = qualityGiven ? good : total;
+    var quality = (total > 0) ? (goodUnits / total) : 1;
+
+    // Performance: actual output vs what the ideal rate would make in the run time.
+    var idealOutput = ideal * runTime;
+    var performance;
+    var perfDefined = (runTime > 0 && idealOutput > 0);
+    if (perfDefined) {
+      performance = total / idealOutput;
+    } else {
+      performance = 0;
+    }
+    var perfOver100 = performance > 1.0001;
+
+    var oee = availability * performance * quality;
+
+    var html = "";
+
+    html += subhead("The three pieces");
+    html += row("Availability &mdash; ran vs scheduled", pct(availability, true), true);
+    html += row("Performance &mdash; speed vs ideal rate",
+      perfDefined ? pct(performance, false) : "&mdash;", true);
+    html += row("Quality &mdash; good vs total output",
+      pct(quality, true) + (qualityGiven ? "" : ' <span class="illus">(assumed 100%)</span>'), true);
+
+    html += subhead("Overall Equipment Effectiveness");
+    html += row("OEE = Availability &times; Performance &times; Quality",
+      perfDefined ? pct(oee, false) : "&mdash;", true, true);
+
+    // Loss accounting in output units.
+    // Availability loss: output you'd expect to lose from being down, at your actual running speed.
+    var actualRunRate = (runTime > 0) ? (total / runTime) : 0;   // units/hr while running
+    var downtimeLossUnits = actualRunRate * downtime;            // units not made because you were down
+    // Performance loss: units the run time could have made at ideal rate, minus what you made.
+    var perfLossUnits = perfDefined ? Math.max(idealOutput - total, 0) : 0;
+    // Quality loss: bad units.
+    var qualityLossUnits = Math.max(total - goodUnits, 0);
+
+    html += subhead("Where the output went (this period)");
+    html += row("Lost to downtime (at your running speed)", fmt(downtimeLossUnits, 0) + " units/tons");
+    html += row("Lost to slow running (below ideal rate)", fmt(perfLossUnits, 0) + " units/tons");
+    if (qualityGiven) {
+      html += row("Lost to quality (scrap / rework)", fmt(qualityLossUnits, 0) + " units/tons");
+    }
+
+    // Dollarized annual loss split.
+    if (valuePer !== null && valuePer > 0 && periods !== null && periods > 0) {
+      var downCostYr = downtimeLossUnits * valuePer * periods;
+      var perfCostYr = perfLossUnits * valuePer * periods;
+      var qualCostYr = qualityLossUnits * valuePer * periods;
+
+      html += subhead("Illustrative annualized loss (&times; " + fmt(periods, 0) + " periods)");
+      html += row('Downtime losses per year <span class="illus">(illustrative)</span>',
+        "$" + fmt(downCostYr, 0), false);
+      html += row('Slow-running losses per year <span class="illus">(illustrative)</span>',
+        "$" + fmt(perfCostYr, 0), false);
+      if (qualityGiven) {
+        html += row('Quality losses per year <span class="illus">(illustrative)</span>',
+          "$" + fmt(qualCostYr, 0), false);
+      }
+    }
+
+    resultsEl.innerHTML = html;
+
+    // Interpretation that moves with the numbers.
+    var interp = "";
+    var aPct = availability * 100;
+    var pPct = performance * 100;
+    var qPct = quality * 100;
+
+    if (perfOver100) {
+      interp = "<strong>Performance is reading over 100%, so the ideal rate is almost certainly set too low.</strong> The line is making more than the ideal rate says it can in the run time, which means the yardstick is wrong, not the line. Fix the ideal / nameplate rate to a real, sustainable best-run number before you trust the Performance and OEE figures &mdash; everything downstream of a soft ideal rate is optimiztic.";
+    } else {
+      // Find the weakest of the three defined pieces to steer the note.
+      var pieces = [
+        { name: "availability", val: aPct },
+        { name: "performance", val: pPct },
+        { name: "quality", val: qPct }
+      ];
+      var weakest = pieces[0];
+      for (var i = 1; i < pieces.length; i++) { if (pieces[i].val < weakest.val) weakest = pieces[i]; }
+
+      if (weakest.name === "availability") {
+        interp = "<strong>Availability is the weakest of the three, so standing still is your biggest loss.</strong> The line runs at a decent speed and makes good product when it runs &mdash; it just is not running enough of the scheduled hours. That points at stops: jams and plugs, feed starvation, waiting on upstream or downstream, long changeovers, and nuisance trips that keep pulling the line offline. Log every stop with a reason code for a week and sort by total minutes, not by count &mdash; a handful of long stops usually beats a pile of short ones. Where a trip is a genuine nuisance, the legitimate fix is retuning that one setpoint inside the equipment's rated limit, one change at a time and written down. Never jumper out or defeat a protective interlock, a safety function, or gas detection to keep the line running.";
+      } else if (weakest.name === "performance") {
+        interp = "<strong>Performance is the weakest of the three, so slow running is your biggest loss.</strong> The line is up for most of its scheduled hours, but when it runs it sits under the ideal rate. That is usually small stops too short to log, reduced-speed running, feed surging or starvation, worn wear parts, or a bottleneck somewhere else in the line holding this machine back. Before chasing it hard, confirm the ideal rate is honest &mdash; an ideal rate set too high or too aggressive makes Performance look worse than it really is (the flip side of a rate set too low, which flatters it). Then watch a few hours of run data for the pattern of micro-stops and speed dips.";
+      } else {
+        interp = "<strong>Quality is the weakest of the three, so scrap and rework are your biggest loss.</strong> The line runs and runs at speed, but too much of what it makes does not pass the first time. That is expensive twice: you paid the time and the material to make it, then you pay again to scrap or rework it. Trace where the defects enter &mdash; a setpoint that drifted, a worn tool or die, material variation, or a sensor reading off &mdash; and fix the cause rather than sorting harder at the end.";
+      }
+    }
+
+    if (!qualityGiven) {
+      interp += " Quality is assumed at 100% because you left good units blank; if you scrap or rework anything, your real OEE is lower than shown.";
+    }
+
+    interp += "<br><br>Two honest cautions. OEE is a yardstick for comparing a line against itself over time, not a grade you pass or fail &mdash; an 85% on one line and a 55% on another can both be fine or both be a problem depending on what they run. And it is only as good as the inputs: a soft ideal rate, a miscounted stop, or an uncalibrated scale will move the answer more than any real change on the floor. Use these figures to start a conversation and to point you at the right loss to chase, not as a promise.";
+
+    interpEl.innerHTML = '<div class="interp">' + interp + '</div>';
+
+    // How it is calculated.
+    var howParts = [];
+    howParts.push("Run time = planned time &minus; downtime = " + fmt(planned, 2).replace(/\.00$/, "") + " &minus; " + fmt(downtime, 2).replace(/\.00$/, "") + " = " + fmt(runTime, 2).replace(/\.00$/, "") + " hours.");
+    howParts.push("Availability = run time &divide; planned time.");
+    howParts.push("Performance = total produced &divide; (ideal rate &times; run time). It can read over 100% when the ideal rate is set too low, which is a sign to fix the ideal rate rather than trust the number; the value is shown true here, not capped.");
+    howParts.push("Quality = good &divide; total" + (qualityGiven ? "" : ", and defaults to 100% when good is left blank") + ".");
+    howParts.push("OEE = Availability &times; Performance &times; Quality.");
+    howParts.push("For the loss split: downtime loss = your actual running speed (total &divide; run time) &times; downtime hours &mdash; the output you would have made at the pace you were already running; slow-running loss = (ideal rate &times; run time) &minus; total produced; quality loss = total &minus; good.");
+    if (valuePer !== null && valuePer > 0 && periods !== null && periods > 0) {
+      howParts.push("Annual dollars = each loss in units &times; value per unit &times; periods per year (" + fmt(periods, 0) + "). This is illustrative and uses your own value figure.");
+    }
+    howParts.push("Divide-by-zero and out-of-range inputs are held back rather than shown as nonsense.");
+    howEl.innerHTML = "How this is calculated: " + howParts.join(" ");
+  }
+
+  ids.forEach(function (id) {
+    el[id].addEventListener("input", recompute);
+    el[id].addEventListener("change", recompute);
+  });
+
+  recompute();
+})();
+</script>
+</body>
+</html>

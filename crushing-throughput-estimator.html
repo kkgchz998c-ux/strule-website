@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crushing Plant Throughput &amp; Utilization Estimator — Strule Automation</title>
+<style>
+  :root {
+    --navy: #132a3e;
+    --teal: #2f6d8f;
+    --slate: #64748b;
+    --line: #e2e8f0;
+    --bg-soft: #f8fafc;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--white);
+    color: #1f2937;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.55;
+    font-size: 17px;
+  }
+  header.site {
+    background: var(--navy);
+    color: #fff;
+    padding: 18px 20px;
+  }
+  header.site .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    font-size: 15px;
+  }
+  header.site .wrap span { color: #9fc3d6; font-weight: 500; }
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 28px 20px 40px;
+  }
+  h1 {
+    color: var(--navy);
+    font-size: 27px;
+    line-height: 1.25;
+    margin: 8px 0 6px;
+  }
+  .lede {
+    color: var(--slate);
+    margin: 0 0 24px;
+    font-size: 17px;
+  }
+  h2 {
+    color: var(--navy);
+    font-size: 19px;
+    margin: 0 0 16px;
+  }
+  .card {
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 22px;
+    box-shadow: 0 1px 2px rgba(19,42,62,0.04);
+  }
+  .field { margin-bottom: 16px; }
+  .field:last-child { margin-bottom: 0; }
+  label {
+    display: block;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 4px;
+    font-size: 15px;
+  }
+  .help {
+    display: block;
+    color: var(--slate);
+    font-size: 13px;
+    margin-bottom: 7px;
+  }
+  input[type="number"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    font-size: 16px;
+    color: #1f2937;
+    background: #fff;
+  }
+  input[type="number"]:focus {
+    outline: 2px solid var(--teal);
+    outline-offset: 1px;
+    border-color: var(--teal);
+  }
+  .unit { color: var(--slate); font-weight: 500; font-size: 13px; }
+  .results .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .results .row:last-child { border-bottom: none; }
+  .results .label {
+    color: var(--slate);
+    font-size: 15px;
+    max-width: 62%;
+  }
+  .results .value {
+    color: var(--navy);
+    font-weight: 700;
+    font-size: 20px;
+    text-align: right;
+    white-space: nowrap;
+  }
+  .value.accent { color: var(--teal); }
+  .hint {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    color: #9a3412;
+    border-radius: 9px;
+    padding: 10px 12px;
+    font-size: 14px;
+    margin-top: 4px;
+  }
+  .interp {
+    background: var(--bg-soft);
+    border-left: 4px solid var(--teal);
+    border-radius: 8px;
+    padding: 14px 16px;
+    color: #334155;
+    font-size: 15.5px;
+    margin-top: 6px;
+  }
+  .interp strong { color: var(--navy); }
+  .note {
+    color: var(--slate);
+    font-size: 13px;
+    margin-top: 14px;
+    line-height: 1.5;
+  }
+  .illus {
+    color: var(--slate);
+    font-size: 13px;
+    font-weight: 500;
+  }
+  footer.site {
+    border-top: 1px solid var(--line);
+    background: var(--bg-soft);
+    padding: 26px 20px 34px;
+  }
+  footer.site .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    color: var(--slate);
+    font-size: 14.5px;
+  }
+  footer.site a { color: var(--teal); text-decoration: none; }
+  footer.site a:hover { text-decoration: underline; }
+  footer.site .cta { margin-bottom: 10px; color: #334155; }
+  @media (max-width: 560px) {
+    .results .value { font-size: 18px; }
+    h1 { font-size: 23px; }
+  }
+</style>
+</head>
+<body>
+<header class="site">
+  <div class="wrap">STRULE AUTOMATION <span>&mdash; Field notes</span></div>
+</header>
+
+<main>
+  <h1>Crushing Plant Throughput &amp; Utilization Estimator</h1>
+  <p class="lede">Put in a few numbers off your control screens and belt scale, and this works out where a crushing circuit is actually losing its shift: standing still, or running slow. All the math is shown, and nothing leaves your browser.</p>
+
+  <div class="card">
+    <h2>Your numbers</h2>
+    <div class="field">
+      <label for="nameplate">Nameplate rated capacity <span class="unit">(TPH)</span></label>
+      <span class="help">Tons per hour (TPH) the crusher is rated for on the equipment plate or data sheet.</span>
+      <input type="number" id="nameplate" value="450" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="measured">Average throughput while crushing <span class="unit">(TPH)</span></label>
+      <span class="help">Average TPH while actually crushing = total product tons &divide; hours crushing. Not a peak or best-hour figure. Use a recently calibrated scale.</span>
+      <input type="number" id="measured" value="380" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="avail">Available (scheduled) hours per shift <span class="unit">(hours)</span></label>
+      <span class="help">Hours the plant is scheduled and staffed to run this shift, before any downtime.</span>
+      <input type="number" id="avail" value="10" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="crushing">Hours actually crushing this shift <span class="unit">(hours)</span></label>
+      <span class="help">Hours the circuit was genuinely making product, not blocked, waiting on feed, or down.</span>
+      <input type="number" id="crushing" value="7" min="0" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="target">Target utilization for the &ldquo;what if&rdquo; <span class="unit">(%)</span></label>
+      <span class="help">The utilization you would like to reach. Utilization here means crushing hours out of available hours.</span>
+      <input type="number" id="target" value="85" min="0" max="100" step="any" inputmode="decimal">
+    </div>
+    <div class="field">
+      <label for="valueper">Value per ton <span class="unit">($/ton, optional)</span></label>
+      <span class="help">Leave blank unless you want a rough dollar figure. Used only for an illustrative estimate.</span>
+      <input type="number" id="valueper" value="" min="0" step="any" inputmode="decimal" placeholder="optional">
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>What this suggests</h2>
+    <div id="results" class="results"></div>
+    <div id="interp"></div>
+    <p class="note" id="howcalc"></p>
+  </div>
+</main>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="cta">If you want a second set of eyes on where a circuit loses its time, <a href="https://struleautomation.com/index.html#contact">get in touch</a>.</div>
+    <div>Strule Automation &mdash; independent PLC, HMI, and SCADA work for crushing and screening plants. <a href="https://struleautomation.com">struleautomation.com</a></div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var PROD_SHIFTS = 250;
+
+  var ids = ["nameplate", "measured", "avail", "crushing", "target", "valueper"];
+  var el = {};
+  ids.forEach(function (id) { el[id] = document.getElementById(id); });
+  var resultsEl = document.getElementById("results");
+  var interpEl = document.getElementById("interp");
+  var howEl = document.getElementById("howcalc");
+
+  function num(id) {
+    var raw = el[id].value.trim();
+    if (raw === "") return null;
+    var v = Number(raw);
+    if (!isFinite(v)) return null;
+    return v;
+  }
+
+  function fmt(n, dp) {
+    if (dp === undefined) dp = 0;
+    return n.toLocaleString("en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  }
+
+  function row(label, value, accent) {
+    return '<div class="row"><div class="label">' + label + '</div>' +
+      '<div class="value' + (accent ? ' accent' : '') + '">' + value + '</div></div>';
+  }
+
+  function hint(msg) {
+    return '<div class="hint">' + msg + '</div>';
+  }
+
+  function recompute() {
+    var nameplate = num("nameplate");
+    var measured = num("measured");
+    var avail = num("avail");
+    var crushing = num("crushing");
+    var target = num("target");
+    var valuePer = num("valueper");
+
+    var html = "";
+    var problems = [];
+
+    // Basic validation.
+    if (nameplate === null || nameplate <= 0) problems.push("Enter a nameplate capacity greater than zero.");
+    if (measured === null || measured < 0) problems.push("Enter a measured throughput of zero or more.");
+    if (avail === null || avail <= 0) problems.push("Enter available hours greater than zero.");
+    if (crushing === null || crushing < 0) problems.push("Enter crushing hours of zero or more.");
+    if (crushing !== null && avail !== null && avail > 0 && crushing > avail) {
+      problems.push("Crushing hours are more than available hours. Check those two figures.");
+    }
+    if (target === null || target < 0) target = 0;
+    if (target > 100) target = 100;
+
+    if (problems.length) {
+      resultsEl.innerHTML = hint(problems.join("<br>"));
+      interpEl.innerHTML = "";
+      howEl.textContent = "";
+      return;
+    }
+
+    var util = crushing / avail;              // 0..1
+    var rateAtt = measured / nameplate;       // rough index, can exceed 1
+    var rateAttDisp = Math.min(rateAtt, 1);   // clamp display so it can't read an absurd 130%
+    var rateCapped = rateAtt > 1;
+    var tonsPerShift = measured * crushing;
+
+    html += row("Utilization", fmt(util * 100, 1) + "%", true);
+    html += row('Rate index (rough) <span class="illus">&mdash; coarse indicator, see note below</span>',
+      fmt(rateAttDisp * 100, 1) + "%" + (rateCapped ? "+" : ""), true);
+    html += row("Current tons per shift", fmt(tonsPerShift, 0) + " tons");
+
+    // What-if gain.
+    var targetFrac = target / 100;
+    var extraShift = measured * (targetFrac * avail - crushing);
+
+    if (targetFrac <= util || extraShift <= 0) {
+      html += row("What-if gain at target utilization",
+        "Already at or above target", false);
+    } else {
+      var extraYear = extraShift * PROD_SHIFTS;
+      html += row("Extra tons per shift at " + fmt(target, 0) + "% utilization (same rate)",
+        "+" + fmt(extraShift, 0) + " tons", true);
+      html += row("Extra tons per year (~" + PROD_SHIFTS + " production shifts per year)",
+        "+" + fmt(extraYear, 0) + " tons", true);
+
+      if (valuePer !== null && valuePer > 0) {
+        var addedRev = extraYear * valuePer;
+        html += row('Illustrative added revenue per year <span class="illus">(illustrative, your figure)</span>',
+          "$" + fmt(addedRev, 0), false);
+      }
+    }
+
+    resultsEl.innerHTML = html;
+
+    // Interpretation that changes with the numbers.
+    var interp = "";
+    var utilPct = util * 100;
+    var ratePct = rateAtt * 100;
+
+    if (utilPct < 75 && ratePct >= 80) {
+      interp = "<strong>The time looks like the bigger lever.</strong> The crusher is running near its rated rate when it runs, but it is sitting idle for a good part of the shift. That points at downtime: chute plugs, feed starvation, waiting on trucks or the loader, and nuisance trips that keep pulling the circuit offline. Worth logging every stop for a few shifts and sorting by total minutes lost. Nuisance trips can often be retuned once you understand them, but never jumper out a protective interlock to keep running.";
+    } else if (utilPct < 75 && ratePct < 80) {
+      interp = "<strong>Both time and rate have room.</strong> The circuit is idle for part of the shift and running below its rated rate when it does run. Chase the downtime first, since recovering idle hours usually costs less than lifting the rate, then look at feed and choke control and the crusher itself for the rate gap.";
+    } else if (utilPct >= 75 && ratePct < 80) {
+      interp = "<strong>The rate looks like the bigger lever.</strong> The plant runs most of its scheduled hours, so utilization is healthy, but the measured rate sits well under nameplate. That usually points at feed presentation and choke control, liner or mantle wear, closed-side setting drift, or a bottleneck downstream of the crusher rather than the crusher itself. Watch the feed for surging and check whether something after the crusher is holding it back.";
+    } else {
+      interp = "<strong>The headroom looks small.</strong> Utilization and rate are both strong, so there is not a lot of easy tonnage hiding in this circuit. Gains from here tend to be incremental and worth weighing against wear and energy. Make sure the belt scale calibration is current before chasing the last few percent.";
+    }
+
+    interp += "<br><br>Most plants that think they have a capacity problem turn out to have a utilization problem: the machine is fine, it just is not running enough of the shift. These figures are estimates to start a conversation, not a promise. Real numbers move with feed, wear, and how the day actually goes.";
+
+    interpEl.innerHTML = '<div class="interp">' + interp + '</div>';
+
+    // How it is calculated.
+    howEl.innerHTML = "Measured throughput here is the average TPH while actually crushing = total product tons &divide; hours crushing, not a peak or best-hour figure. On the rate index: nameplate is quoted at a specific closed-side setting and feed gradation and is through-crusher throughput, while your product-belt tons are measured post-screen &mdash; so treat the index as a coarse indicator, not a percent of achievable, and it is display-capped at 100%. How this is calculated: utilization = crushing hours &divide; available hours; rate index = measured TPH &divide; nameplate TPH; current tons/shift = measured TPH &times; crushing hours; what-if extra tons/shift = measured TPH &times; (target% &times; available hours &minus; crushing hours), held at the same measured rate, times ~" + PROD_SHIFTS + " production shifts per year for the annual figure. Negative gains are not shown.";
+  }
+
+  ids.forEach(function (id) {
+    el[id].addEventListener("input", recompute);
+    el[id].addEventListener("change", recompute);
+  });
+
+  recompute();
+})();
+</script>
+</body>
+</html>
